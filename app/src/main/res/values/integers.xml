@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--流式布局的列数-->
+    <integer name="span_count_book">2</integer>
+    <integer name="span_count_page">2</integer>
+</resources>

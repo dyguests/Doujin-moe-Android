@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="primary">#E91E63</color>
+    <color name="primary_dark">#C2185B</color>
+    <color name="primary_light">#F8BBD0</color>
+    <color name="accent">#FF5252</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+
+    <!--<color name="deep_purple_300">#9575CD</color>-->
+    <!--<color name="deep_purple_500">#673AB7</color>-->
+    <!--<color name="deep_purple_800">#4527A0</color>-->
+
+    <color name="purple_300">#BA68C8</color>
+    <color name="pink_500">#E91E63</color>
+    <color name="indigo_500">#3F51B5</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="teal_500">#009688</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="green_300">#81C784</color>
+    <color name="orange_500">#FF9800</color>
+    <color name="brown_500">#795548</color>
+    <integer-array name="refresh_array">
+        <item>@color/purple_300</item>
+        <item>@color/pink_500</item>
+        <item>@color/indigo_500</item>
+        <item>@color/blue_500</item>
+        <item>@color/teal_500</item>
+        <item>@color/green_500</item>
+        <item>@color/green_300</item>
+        <item>@color/orange_500</item>
+        <item>@color/brown_500</item>
+    </integer-array>
+
+    <color name="book_card_content_title_background">#7f212121</color>
 </resources>
