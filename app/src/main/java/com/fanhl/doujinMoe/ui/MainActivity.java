@@ -8,18 +8,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.ui.adapter.MainPagerAdapter;
+import com.fanhl.doujinMoe.ui.common.AbsActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AbsActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Bind(R.id.drawer_layout)

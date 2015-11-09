@@ -8,7 +8,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +21,7 @@ import com.fanhl.doujinMoe.exception.GetDataFailException;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.ui.adapter.PageListRecyclerAdapter;
+import com.fanhl.doujinMoe.ui.common.AbsActivity;
 import com.fanhl.util.GsonUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -33,7 +34,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AbsActivity {
     public static final String TAG = DetailsActivity.class.getSimpleName();
 
     public static final String EXTRA_BOOK_DATA = "EXTRA_BOOK_DATA";
@@ -80,10 +81,17 @@ public class DetailsActivity extends AppCompatActivity {
         book = new Gson().fromJson(intent.getStringExtra(EXTRA_BOOK_DATA), Book.class);
 //        book = BookApi.getBookFormJson(this, book);//从本地取最新的数据
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         Picasso.with(this)
                 .load(DouJinMoeUrl.previewUrl(book.token))
                 .into(mPreview);
         setTitle(book.name);
+
+        mAppBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> mSwipeRefreshLayout.setEnabled(verticalOffset == 0));
 
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getIntArray(R.array.refresh_array));
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshData);
@@ -92,6 +100,7 @@ public class DetailsActivity extends AppCompatActivity {
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.span_count_page), StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
+
 
         //mRecyclerView
         mAdapter = new PageListRecyclerAdapter(this, mRecyclerView, book);
