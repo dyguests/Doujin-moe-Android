@@ -101,10 +101,11 @@ public class GalleryActivity extends AbsActivity {
             @Override
             public void onPageSelected(int position) {
                 mSeekBar.setProgress(position);
+                mTotalPagesText.setText(String.format(getString(R.string.info_total_pages), position + 1, book.count));
                 book.position = position;
             }
         });
-        mTotalPagesText.setText(String.format(getString(R.string.info_total_pages), book.count));
+        mTotalPagesText.setText(String.format(getString(R.string.info_total_pages), 1, book.count));
         mSeekBar.setKeyProgressIncrement(1);
         mSeekBar.setMax(book.count - 1);
         mSeekBar.setProgress(book.position);
@@ -114,6 +115,7 @@ public class GalleryActivity extends AbsActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 this.progress = progress;
+                mTotalPagesText.setText(String.format(getString(R.string.info_total_pages), progress + 1, book.count));
             }
 
             @Override

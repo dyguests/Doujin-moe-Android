@@ -6,6 +6,7 @@ package com.fanhl.doujinMoe.api.common;
 public class DouJinMoeUrl {
     public static final String HOME   = "http://www.doujinmoe.us/";
     public static final String NEWEST = HOME + "ajax/newest.php";
+    public static final String BEST   = HOME + "best";
 
     public static String previewUrl(String token) {
         return "http://static.doujin-moe.us/f-" + token + ".jpg";

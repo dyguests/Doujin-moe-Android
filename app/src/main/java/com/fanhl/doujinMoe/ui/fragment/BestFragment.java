@@ -5,18 +5,16 @@ import android.util.Log;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.api.HomeApi;
-import com.fanhl.doujinMoe.model.Book;
-
-import java.util.List;
+import com.fanhl.doujinMoe.api.form.NewestForm;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by fanhl on 15/11/8.
+ * Top Rated
  */
-public class NewestFragment extends AbsRecyclerFragment {
+public class BestFragment extends AbsRecyclerFragment {
     public static final String TAG = NewestFragment.class.getSimpleName();
 
     public static NewestFragment newInstance() {
@@ -25,21 +23,20 @@ public class NewestFragment extends AbsRecyclerFragment {
 
     @Override
     protected void refreshData() {
-        if (true) return;// FIXME: 15/11/10 有空再写
         if (!mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(true);
-        Observable.<List<Book>>create(subscriber -> {
+        Observable.<NewestForm>create(subscriber -> {
             try {
-                subscriber.onNext(HomeApi.best(1));
+                subscriber.onNext(HomeApi.newest(1));
                 subscriber.onCompleted();
             } catch (Exception e) {
                 subscriber.onError(e);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(books -> {
+                .subscribe(newestForm -> {
                     mSwipeRefreshLayout.setRefreshing(false);
                     mBooks.clear();
-                    mBooks.addAll(books);
+                    mBooks.addAll(newestForm.newest);
                     mAdapter.notifyDataSetChanged();
                 }, throwable -> {
                     mSwipeRefreshLayout.setRefreshing(false);
