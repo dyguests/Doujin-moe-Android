@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.api.HomeApi;
-import com.fanhl.doujinMoe.api.form.NewestForm;
+import com.fanhl.doujinMoe.model.Book;
+
+import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -24,19 +26,19 @@ public class BestFragment extends AbsRecyclerFragment {
     @Override
     protected void refreshData() {
         if (!mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(true);
-        Observable.<NewestForm>create(subscriber -> {
+        Observable.<List<Book>>create(subscriber -> {
             try {
-                subscriber.onNext(HomeApi.newest(1));
+                subscriber.onNext(HomeApi.best(1));
                 subscriber.onCompleted();
             } catch (Exception e) {
                 subscriber.onError(e);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(newestForm -> {
+                .subscribe(books -> {
                     mSwipeRefreshLayout.setRefreshing(false);
                     mBooks.clear();
-                    mBooks.addAll(newestForm.newest);
+                    mBooks.addAll(books);
                     mAdapter.notifyDataSetChanged();
                 }, throwable -> {
                     mSwipeRefreshLayout.setRefreshing(false);
