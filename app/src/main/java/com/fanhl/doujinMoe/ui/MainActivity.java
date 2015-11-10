@@ -30,7 +30,7 @@ public class MainActivity extends AbsActivity
     Toolbar              toolbar;
     @Bind(R.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.viewpager)
+    @Bind(R.id.pager)
     ViewPager            mViewpager;
 
     //custom

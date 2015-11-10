@@ -16,17 +16,14 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
-import com.fanhl.doujinMoe.exception.GetDataFailException;
 import com.fanhl.doujinMoe.model.Book;
-import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.ui.adapter.PageListRecyclerAdapter;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
 import com.fanhl.util.GsonUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,8 +71,8 @@ public class DetailsActivity extends AbsActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        fab.setEnabled(false);//取得数据后再能点详细
+        fab.setOnClickListener(view -> GalleryActivity.launch(DetailsActivity.this, book));
 
         Intent intent = getIntent();
         book = new Gson().fromJson(intent.getStringExtra(EXTRA_BOOK_DATA), Book.class);
@@ -106,8 +103,8 @@ public class DetailsActivity extends AbsActivity {
         mAdapter = new PageListRecyclerAdapter(this, mRecyclerView, book);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((position, viewHolder) -> {
-            PageListRecyclerAdapter.ViewHolder holder = (PageListRecyclerAdapter.ViewHolder) viewHolder;
-//            GalleryActivity.launch(this, holder.getItem(),position);
+            book.position = position;
+            GalleryActivity.launch(DetailsActivity.this, book);
         });
 
         refreshData();
@@ -115,19 +112,18 @@ public class DetailsActivity extends AbsActivity {
 
     private void refreshData() {
         if (!mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(true);
-        Observable.<List<Page>>create(subscriber -> {
+        Observable.<Void>create(subscriber -> {
             try {
                 subscriber.onNext(PageApi.pages(book));
-            } catch (GetDataFailException e) {
+            } catch (Exception e) {
                 subscriber.onError(e);
             }
             subscriber.onCompleted();
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(pages -> {
+                .subscribe(aVoid -> {
                     mSwipeRefreshLayout.setRefreshing(false);
-                    book.pages.clear();
-                    book.pages.addAll(pages);
+                    fab.setEnabled(true);
                     mAdapter.notifyDataSetChanged();
                 }, throwable -> {
                     mSwipeRefreshLayout.setRefreshing(false);

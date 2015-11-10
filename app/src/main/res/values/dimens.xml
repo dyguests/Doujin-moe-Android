@@ -12,4 +12,5 @@
     <dimen name="book_card_content_title_padding">5dp</dimen>
     <dimen name="app_bar_height">360dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="gallery_book_page_number_size">100sp</dimen>
 </resources>

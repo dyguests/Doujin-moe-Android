@@ -9,11 +9,13 @@ import java.util.List;
 public class Book {
     public String token;
     public String name;
-    public String count;
+    public int    count;
     public String rating;
     public String date;
 
     public List<Page> pages;
+    /*当前看到的页码*/
+    public int        position;
     public boolean    downloaded;
 
     public Book() {

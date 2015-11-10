@@ -10,4 +10,8 @@ public class DouJinMoeUrl {
     public static String previewUrl(String token) {
         return "http://static.doujin-moe.us/f-" + token + ".jpg";
     }
+
+    public static String detailUrl(String token) {
+        return HOME + token;
+    }
 }
