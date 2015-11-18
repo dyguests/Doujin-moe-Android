@@ -62,9 +62,6 @@ public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecy
         }
 
         public void bind(Context context, Page item) {
-//            Picasso.with(context)
-//                    .load(item.preview)
-//                    .into(mPreview);
             mPreview.setImageURI(Uri.parse(item.preview));
         }
     }

@@ -22,7 +22,7 @@ public class PageApi extends BaseApi {
 
     public static Void pages(Book book) throws GetDataFailException, IOException {
         Log.d(TAG, "取得书籍详细内容.");
-        String token = "mm1qk0kqrf6hs6r82dbkli6fb4";// token();
+        String token = /*"mm1qk0kqrf6hs6r82dbkli6fb4";//*/ token();
         Document document = Jsoup.connect(DouJinMoeUrl.detailUrl(book.token))
                 .cookie(TOKEN_KEY, token)
                 .data("action", "get")
