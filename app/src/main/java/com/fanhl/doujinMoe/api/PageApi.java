@@ -1,11 +1,19 @@
 package com.fanhl.doujinMoe.api;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import com.facebook.binaryresource.BinaryResource;
+import com.facebook.cache.common.CacheKey;
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.facebook.imagepipeline.request.ImageRequest;
 import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
 import com.fanhl.doujinMoe.exception.GetDataFailException;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
+import com.fanhl.doujinMoe.util.FileCacheManager;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,5 +52,13 @@ public class PageApi extends BaseApi {
         }
 
         return null;
+    }
+
+    public static boolean isCached(Context context, String url) {
+        return FileCacheManager.getInstance(context).isCached(url);
+    }
+
+    public static Drawable getCachedDrawable(Context context, String url) {
+        return FileCacheManager.getInstance(context).getCachedDrawable(url);
     }
 }

@@ -1,13 +1,20 @@
 package com.fanhl.doujinMoe.util;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.Log;
 
+import com.facebook.binaryresource.BinaryResource;
+import com.facebook.cache.common.CacheKey;
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.facebook.imagepipeline.request.ImageRequest;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.util.GsonUtil;
 
 import java.io.File;
+import java.io.IOException;
 
 public class FileCacheManager {
     private static final String TAG            = FileCacheManager.class.getSimpleName();
@@ -38,6 +45,25 @@ public class FileCacheManager {
         if (mExternalDir == null) {
             mExternalDir = new File(Environment.getExternalStorageDirectory().getPath(), PROJECT_FOLDER);
         }
+    }
+
+    /**
+     * uri的图片是否已缓存
+     *
+     * @param loadUri
+     * @return
+     */
+    public boolean isCached(String loadUri) {
+        if (loadUri == null) return false;
+        ImageRequest imageRequest = ImageRequest.fromUri(loadUri);
+        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance()
+                .getEncodedCacheKey(imageRequest);
+        return ImagePipelineFactory.getInstance()
+                .getMainDiskStorageCache().hasKey(cacheKey);
+    }
+
+    public File getmCacheDir() {
+        return mCacheDir;
     }
 
     private File getBookDir(Book book) {
@@ -81,5 +107,26 @@ public class FileCacheManager {
         String json = GsonUtil.json(book);
 
         return FileUtil.writeFile(f, json);
+    }
+
+    public Drawable getCachedDrawable(String url) {
+        if (!isCached(url)) {
+            return null;
+        }
+
+        ImageRequest imageRequest = ImageRequest.fromUri(url);
+        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance()
+                .getEncodedCacheKey(imageRequest);
+        BinaryResource resource = ImagePipelineFactory.getInstance()
+                .getMainDiskStorageCache().getResource(cacheKey);
+//        File file = ((FileBinaryResource) resource).getFile();
+
+        try {
+            return Drawable.createFromStream(resource.openStream(), "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -2,20 +2,32 @@ package com.fanhl.doujinMoe.ui.fragment;
 
 
 import android.app.Fragment;
-import android.net.Uri;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.ui.GalleryActivity;
 import com.fanhl.util.GsonUtil;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,7 +49,7 @@ public class BookPageFragment extends Fragment {
     @Bind(R.id.textView)
     AppCompatTextView mTextView;
     @Bind(R.id.imageView)
-    SimpleDraweeView  mImageView;
+    ImageView         mImageView;
 
     private Book book;
     private int  position;
@@ -75,22 +87,39 @@ public class BookPageFragment extends Fragment {
         mBackgroundView.setOnClickListener(view1 -> ((GalleryActivity) getActivity()).toggle());
         mTextView.setText(String.valueOf(position + 1));
         mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
+        mPhotoViewAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
 
         Page page = book.pages.get(position);
-        mImageView.setImageURI(Uri.parse(page.href));
 
-        // FIXME: 15/11/17 以下不要了
-//        Page page = book.pages.get(position);
-//        Picasso.with(getActivity())
-//                .load(page.href)
-//                        // FIXME: 15/11/10 Detail页面取得的preview
-//                .into(mImageView, new Callback.EmptyCallback() {
+        Drawable cachedDrawable = PageApi.getCachedDrawable(getActivity(), page.preview);
+//        if (cachedDrawable != null) {
+//            GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(getResources())
+//                    .setFadeDuration(300)
+//                    .setPlaceholderImage(cachedDrawable, ScalingUtils.ScaleType.FIT_CENTER)
+//                    .build();
+//            mImageView.setHierarchy(hierarchy);
+//        }
+
+        // FIXME: 15/11/18         Fresco 与 PhotoView 不兼容
+//        DraweeController controller = Fresco.newDraweeControllerBuilder()
+//                .setUri(page.href)
+//                .setControllerListener(new BaseControllerListener<ImageInfo>() {
 //                    @Override
-//                    public void onSuccess() {
+//                    public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
 //                        mPhotoViewAttacher.update();
-//                        mPhotoViewAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
 //                    }
-//                });
+//                }).build();
+//        mImageView.setController(controller);
+
+        Picasso.with(getActivity())
+                .load(page.href)
+                .placeholder(cachedDrawable)
+                .into(mImageView, new Callback.EmptyCallback() {
+                    @Override
+                    public void onSuccess() {
+                        mPhotoViewAttacher.update();
+                    }
+                });
 
         return view;
     }

@@ -16,14 +16,17 @@
         android:textSize="@dimen/gallery_book_page_number_size"
         tools:text="99"/>
 
-    <!--<ImageView-->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="ContentDescription"/>
+
+    <!--<com.facebook.drawee.view.SimpleDraweeView-->
     <!--android:id="@+id/imageView"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
-    <!--tools:ignore="ContentDescription"/>-->
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <!--android:scaleType="fitCenter"-->
+    <!--app:placeholderImage="@drawable/place_holder"-->
+    <!--app:placeholderImageScaleType="fitCenter"/>-->
 </FrameLayout>
