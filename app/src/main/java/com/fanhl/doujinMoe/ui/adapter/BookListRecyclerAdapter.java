@@ -1,13 +1,14 @@
 package com.fanhl.doujinMoe.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
 import com.fanhl.doujinMoe.model.Book;
@@ -15,7 +16,6 @@ import com.fanhl.doujinMoe.ui.common.AbsRecyclerViewAdapter;
 import com.fanhl.doujinMoe.ui.widget.TextDrawable;
 import com.fanhl.doujinMoe.util.ColorGenerator;
 import com.fanhl.doujinMoe.util.Utility;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -64,9 +64,9 @@ public class BookListRecyclerAdapter extends AbsRecyclerViewAdapter<BookListRecy
 
     public class ViewHolder extends AbsRecyclerViewAdapter.ClickableViewHolder {
         @Bind(R.id.preview)
-        ImageView mPreview;
+        SimpleDraweeView mPreview;
         @Bind(R.id.title)
-        TextView  mTitle;
+        TextView         mTitle;
 
 
         Book item;
@@ -83,10 +83,7 @@ public class BookListRecyclerAdapter extends AbsRecyclerViewAdapter<BookListRecy
             mPreview.setImageDrawable(drawablePlaceHolder);
 
             if (!item.downloaded) {
-                Picasso.with(context)
-                        .load(DouJinMoeUrl.previewUrl(item.token))
-                        .placeholder(drawablePlaceHolder)
-                        .into(mPreview);
+                mPreview.setImageURI(Uri.parse(DouJinMoeUrl.previewUrl(item.token)));
             } else {
                 //加载预览图
 //                String pagePath = PageApi.getPreviewPath(context, item);

@@ -14,4 +14,5 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="gallery_book_page_number_size">100sp</dimen>
     <dimen name="gallery_page_count_width">70dp</dimen>
+    <dimen name="list_item_book_min_height">160dp</dimen>
 </resources>

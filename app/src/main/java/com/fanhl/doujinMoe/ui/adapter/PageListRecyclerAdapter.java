@@ -1,17 +1,17 @@
 package com.fanhl.doujinMoe.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.ui.common.AbsRecyclerViewAdapter;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecy
 
     public class ViewHolder extends AbsRecyclerViewAdapter.ClickableViewHolder {
         @Bind(R.id.preview)
-        ImageView mPreview;
+        SimpleDraweeView mPreview;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -62,9 +62,10 @@ public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecy
         }
 
         public void bind(Context context, Page item) {
-            Picasso.with(context)
-                    .load(item.preview)
-                    .into(mPreview);
+//            Picasso.with(context)
+//                    .load(item.preview)
+//                    .into(mPreview);
+            mPreview.setImageURI(Uri.parse(item.preview));
         }
     }
 }

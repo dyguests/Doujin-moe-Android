@@ -2,21 +2,20 @@ package com.fanhl.doujinMoe.ui.fragment;
 
 
 import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.ui.GalleryActivity;
 import com.fanhl.util.GsonUtil;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,7 +37,7 @@ public class BookPageFragment extends Fragment {
     @Bind(R.id.textView)
     AppCompatTextView mTextView;
     @Bind(R.id.imageView)
-    ImageView         mImageView;
+    SimpleDraweeView  mImageView;
 
     private Book book;
     private int  position;
@@ -78,18 +77,32 @@ public class BookPageFragment extends Fragment {
         mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
 
         Page page = book.pages.get(position);
-        Picasso.with(getActivity())
-                .load(page.href)
-                        // FIXME: 15/11/10 Detail页面取得的preview
-                .into(mImageView, new Callback.EmptyCallback() {
-                    @Override
-                    public void onSuccess() {
-                        mPhotoViewAttacher.update();
-                        mPhotoViewAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
-                    }
-                });
+        mImageView.setImageURI(Uri.parse(page.href));
+
+        // FIXME: 15/11/17 以下不要了
+//        Page page = book.pages.get(position);
+//        Picasso.with(getActivity())
+//                .load(page.href)
+//                        // FIXME: 15/11/10 Detail页面取得的preview
+//                .into(mImageView, new Callback.EmptyCallback() {
+//                    @Override
+//                    public void onSuccess() {
+//                        mPhotoViewAttacher.update();
+//                        mPhotoViewAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
+//                    }
+//                });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override

@@ -23,15 +23,17 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/preview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_collapseMode="parallax"
+                app:placeholderImage="@drawable/place_holder"
+                app:placeholderImageScaleType="centerCrop"
                 tools:ignore="ContentDescription"
-                tools:src="@mipmap/ic_launcher"/>
+                tools:src="@drawable/place_holder"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

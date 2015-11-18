@@ -17,13 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.api.BookApi;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.adapter.GalleryPagerAdapter;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
 import com.fanhl.doujinMoe.util.FullScreenHelper;
 import com.fanhl.doujinMoe.util.Utility;
 import com.fanhl.util.GsonUtil;
-import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -85,7 +85,9 @@ public class GalleryActivity extends AbsActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        book = new Gson().fromJson(intent.getStringExtra(EXTRA_BOOK_DATA), Book.class);
+        book = GsonUtil.obj(intent.getStringExtra(EXTRA_BOOK_DATA), Book.class);
+        //从本地取最新的数据
+        book = BookApi.getBookFormJson(this, book);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -105,7 +107,7 @@ public class GalleryActivity extends AbsActivity {
                 book.position = position;
             }
         });
-        mTotalPagesText.setText(String.format(getString(R.string.info_total_pages), 1, book.count));
+        mTotalPagesText.setText(String.format(getString(R.string.info_total_pages), book.position + 1, book.count));
         mSeekBar.setKeyProgressIncrement(1);
         mSeekBar.setMax(book.count - 1);
         mSeekBar.setProgress(book.position);
@@ -132,7 +134,7 @@ public class GalleryActivity extends AbsActivity {
     @Override
     protected void onStop() {
         super.onStop();
-//        BookApi.saveBookJson(this, book);
+        BookApi.saveBookJson(this, book);
     }
 
     public void toggle() {

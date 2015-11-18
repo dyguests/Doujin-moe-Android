@@ -36,6 +36,6 @@
 
     <color name="book_card_content_title_background">#7f212121</color>
 
-    <color name="app_bar_translucent_black">#6F000000</color>
+    <color name="app_bar_translucent_black">#6FE91E63</color>
     <color name="gallery_background">#4b4b4b</color>
 </resources>

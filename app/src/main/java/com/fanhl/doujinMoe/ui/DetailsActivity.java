@@ -2,6 +2,7 @@ package com.fanhl.doujinMoe.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,8 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
@@ -23,7 +24,6 @@ import com.fanhl.doujinMoe.ui.adapter.PageListRecyclerAdapter;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
 import com.fanhl.util.GsonUtil;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,7 +41,7 @@ public class DetailsActivity extends AbsActivity {
     @Bind(R.id.toolbar_layout)
     CollapsingToolbarLayout mToolbarLayout;
     @Bind(R.id.preview)
-    ImageView               mPreview;
+    SimpleDraweeView        mPreview;
     @Bind(R.id.toolbar)
     Toolbar                 toolbar;
     @Bind(R.id.fab)
@@ -83,9 +83,11 @@ public class DetailsActivity extends AbsActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Picasso.with(this)
-                .load(DouJinMoeUrl.previewUrl(book.token))
-                .into(mPreview);
+//        Picasso.with(this)
+//                .load(DouJinMoeUrl.previewUrl(book.token))
+//                .into(mPreview);
+        mPreview.setImageURI(Uri.parse(DouJinMoeUrl.previewUrl(book.token)));
+
         setTitle(book.name);
 
         mAppBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> mSwipeRefreshLayout.setEnabled(verticalOffset == 0));

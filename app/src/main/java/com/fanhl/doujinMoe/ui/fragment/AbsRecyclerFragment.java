@@ -25,12 +25,13 @@ import butterknife.ButterKnife;
  * Created by fanhl on 15/11/10.
  */
 public abstract class AbsRecyclerFragment extends Fragment {
-    protected BookListRecyclerAdapter mAdapter;
-    protected List<Book>              mBooks;
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.recycler_view)
     RecyclerView       mRecyclerView;
+
+    protected BookListRecyclerAdapter mAdapter;
+    protected List<Book>              mBooks;
 
     @Nullable
     @Override
