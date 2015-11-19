@@ -16,7 +16,7 @@
 
 ~~2.用PhotoDraweeView来兼容Fresco和PhotoView.~~
 
-3.我给你讲,Fresco完全不好用.![image](graphics/face1.png)
+3.我给你讲,Fresco完全不好用.![image](graphics/face1.png =100x100)
 
 #问题
 
