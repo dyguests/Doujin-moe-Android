@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:minHeight="160dp">
+             android:minHeight="120dp">
 
-    <!--<ImageView-->
-    <!--android:id="@+id/preview"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:adjustViewBounds="true"-->
-    <!--android:scaleType="centerCrop"-->
-    <!--tools:ignore="ContentDescription"-->
-    <!--tools:src="@mipmap/ic_launcher"/>-->
-
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        app:placeholderImage="@drawable/place_holder"
-        app:placeholderImageScaleType="fitCenter"/>
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/place_holder"/>
 </FrameLayout>

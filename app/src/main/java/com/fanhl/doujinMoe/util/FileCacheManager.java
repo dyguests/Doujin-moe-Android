@@ -5,16 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.Log;
 
-import com.facebook.binaryresource.BinaryResource;
-import com.facebook.cache.common.CacheKey;
-import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
-import com.facebook.imagepipeline.core.ImagePipelineFactory;
-import com.facebook.imagepipeline.request.ImageRequest;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.util.GsonUtil;
 
 import java.io.File;
-import java.io.IOException;
 
 public class FileCacheManager {
     private static final String TAG            = FileCacheManager.class.getSimpleName();
@@ -54,12 +48,18 @@ public class FileCacheManager {
      * @return
      */
     public boolean isCached(String loadUri) {
-        if (loadUri == null) return false;
-        ImageRequest imageRequest = ImageRequest.fromUri(loadUri);
-        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance()
-                .getEncodedCacheKey(imageRequest);
-        return ImagePipelineFactory.getInstance()
-                .getMainDiskStorageCache().hasKey(cacheKey);
+        // FIXME: 15/11/19
+        return false;
+    }
+
+    public Drawable getCachedDrawable(String url) {
+        if (!isCached(url)) {
+            return null;
+        }
+
+        // FIXME: 15/11/19
+
+        return null;
     }
 
     public File getmCacheDir() {
@@ -88,7 +88,7 @@ public class FileCacheManager {
             String bookJson = FileUtil.readFile(bookFile);
             return GsonUtil.obj(bookJson, Book.class);
         }
-        Log.e(TAG, "取得json失败");
+        Log.d(TAG, "取得json失败");
         return book;
     }
 
@@ -107,26 +107,5 @@ public class FileCacheManager {
         String json = GsonUtil.json(book);
 
         return FileUtil.writeFile(f, json);
-    }
-
-    public Drawable getCachedDrawable(String url) {
-        if (!isCached(url)) {
-            return null;
-        }
-
-        ImageRequest imageRequest = ImageRequest.fromUri(url);
-        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance()
-                .getEncodedCacheKey(imageRequest);
-        BinaryResource resource = ImagePipelineFactory.getInstance()
-                .getMainDiskStorageCache().getResource(cacheKey);
-//        File file = ((FileBinaryResource) resource).getFile();
-
-        try {
-            return Drawable.createFromStream(resource.openStream(), "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }

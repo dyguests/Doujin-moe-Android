@@ -13,7 +13,7 @@
 #修改
 
 1.改用fresco,在图库界面使用fresco设置placeHolder.
-
+2.用PhotoDraweeView来兼容Fresco和PhotoView.
 
 #问题
 

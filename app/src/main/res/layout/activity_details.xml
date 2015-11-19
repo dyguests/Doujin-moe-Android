@@ -23,24 +23,21 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/preview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_collapseMode="parallax"
-                app:placeholderImage="@drawable/place_holder"
-                app:placeholderImageScaleType="centerCrop"
                 tools:ignore="ContentDescription"
-                tools:src="@drawable/place_holder"/>
+                tools:src="@mipmap/ic_launcher"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:layout_collapseMode="pin"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

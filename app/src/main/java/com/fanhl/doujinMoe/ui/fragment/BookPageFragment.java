@@ -2,8 +2,6 @@ package com.fanhl.doujinMoe.ui.fragment;
 
 
 import android.app.Fragment;
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -12,16 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.controller.BaseControllerListener;
-import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.image.ImageInfo;
 import com.fanhl.doujinMoe.R;
-import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.ui.GalleryActivity;
@@ -90,33 +79,9 @@ public class BookPageFragment extends Fragment {
         mPhotoViewAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
 
         Page page = book.pages.get(position);
-
-        Drawable cachedDrawable = PageApi.getCachedDrawable(getActivity(), page.preview);
-
-        //for branch Fresco
-
-//        if (cachedDrawable != null) {
-//            GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(getResources())
-//                    .setFadeDuration(300)
-//                    .setPlaceholderImage(cachedDrawable, ScalingUtils.ScaleType.FIT_CENTER)
-//                    .build();
-//            mImageView.setHierarchy(hierarchy);
-//        }
-
-        // FIXME: 15/11/18         Fresco 与 PhotoView 不兼容
-//        DraweeController controller = Fresco.newDraweeControllerBuilder()
-//                .setUri(page.href)
-//                .setControllerListener(new BaseControllerListener<ImageInfo>() {
-//                    @Override
-//                    public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
-//                        mPhotoViewAttacher.update();
-//                    }
-//                }).build();
-//        mImageView.setController(controller);
-
         Picasso.with(getActivity())
                 .load(page.href)
-                .placeholder(cachedDrawable)
+                        // FIXME: 15/11/10 Detail页面取得的preview
                 .into(mImageView, new Callback.EmptyCallback() {
                     @Override
                     public void onSuccess() {
@@ -125,16 +90,6 @@ public class BookPageFragment extends Fragment {
                 });
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override

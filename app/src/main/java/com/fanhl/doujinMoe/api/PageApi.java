@@ -4,11 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import com.facebook.binaryresource.BinaryResource;
-import com.facebook.cache.common.CacheKey;
-import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
-import com.facebook.imagepipeline.core.ImagePipelineFactory;
-import com.facebook.imagepipeline.request.ImageRequest;
 import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
 import com.fanhl.doujinMoe.exception.GetDataFailException;
 import com.fanhl.doujinMoe.model.Book;
