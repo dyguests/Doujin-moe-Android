@@ -92,6 +92,9 @@ public class BookPageFragment extends Fragment {
         Page page = book.pages.get(position);
 
         Drawable cachedDrawable = PageApi.getCachedDrawable(getActivity(), page.preview);
+
+        //for branch Fresco
+
 //        if (cachedDrawable != null) {
 //            GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(getResources())
 //                    .setFadeDuration(300)
