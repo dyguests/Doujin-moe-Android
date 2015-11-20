@@ -16,6 +16,7 @@ public class Book {
     public List<Page> pages;
     /*当前看到的页码*/
     public int        position;
+
     public boolean    downloaded;
 
     public Book() {

@@ -117,7 +117,7 @@ public class FileCacheManager {
         return null;
     }
 
-    private File getBookImagesDir(Book book) {
+    public File getBookImagesDir(Book book) {
         Log.d(TAG, "获取书籍图片存放路径(若无则返回null):" + book);
 
         File bookDir = getBookDir(book);
@@ -132,12 +132,14 @@ public class FileCacheManager {
     }
 
     public Book getBookFormJson(Book book) {
-        Log.i(TAG, "从json中取得book信息:" + book.name);
+        Log.d(TAG, "从json中取得book信息:" + book.name);
         File bookDir  = getBookDir(book);
         File bookFile = new File(bookDir, "book.json");
         if (bookFile.exists() && bookFile.isFile()) {
             String bookJson = FileUtil.readFile(bookFile);
-            return GsonUtil.obj(bookJson, Book.class);
+            Book book1 = GsonUtil.obj(bookJson, Book.class);
+            Log.d(TAG, "取得json成功");
+            return book1;
         }
         Log.d(TAG, "取得json失败");
         return book;

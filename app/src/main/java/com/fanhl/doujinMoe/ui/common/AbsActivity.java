@@ -7,12 +7,13 @@ import android.view.MenuItem;
 
 import com.fanhl.doujinMoe.App;
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.util.DownloadManager;
 
 /**
  * Created by fanhl on 15/10/30.
  */
-public abstract class AbsActivity extends AppCompatActivity {
+public abstract class AbsActivity extends AppCompatActivity implements DownloadManager.OnDownloadManagerInteractionListener {
 
     protected App app;
 
@@ -29,6 +30,18 @@ public abstract class AbsActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        app.getDownloadManager().registerOnDownloadManagerInteractionListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        app.getDownloadManager().unregisterOnDownloadManagerInteractionListener(this);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.onBackPressed();
@@ -36,5 +49,15 @@ public abstract class AbsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDMDownloadSuccess(Book book) {
+        //在需要响应的Activity中实现
+    }
+
+    @Override
+    public void onDMDownloadFail(Book book) {
+        //在需要响应的Activity中实现
     }
 }

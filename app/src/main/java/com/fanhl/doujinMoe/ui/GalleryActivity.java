@@ -86,8 +86,10 @@ public class GalleryActivity extends AbsActivity {
 
         Intent intent = getIntent();
         book = GsonUtil.obj(intent.getStringExtra(EXTRA_BOOK_DATA), Book.class);
+        int tmpPosition = book.position;//详细页点击第三张page时,position=2,此时本地bookJson中position=3.这种情况下使用2这个值.
         //从本地取最新的数据
         book = BookApi.getBookFormJson(this, book);
+        book.position = tmpPosition;
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -155,6 +157,13 @@ public class GalleryActivity extends AbsActivity {
             toggle();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onDMDownloadSuccess(Book book) {
+        if (this.book.name.equals(book.name)) {
+            book.downloaded = true;
         }
     }
 }

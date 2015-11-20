@@ -15,16 +15,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.api.BookApi;
 import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.adapter.PageListRecyclerAdapter;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
-import com.fanhl.doujinMoe.util.DownloadManager;
 import com.fanhl.util.GsonUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -35,7 +34,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class DetailsActivity extends AbsActivity implements DownloadManager.OnDownloadManagerInteractionListener {
+public class DetailsActivity extends AbsActivity {
     public static final String TAG = DetailsActivity.class.getSimpleName();
 
     public static final String EXTRA_BOOK_DATA = "EXTRA_BOOK_DATA";
@@ -55,11 +54,16 @@ public class DetailsActivity extends AbsActivity implements DownloadManager.OnDo
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout      mSwipeRefreshLayout;
 
+    private MenuItem downloadItem;
+
     //custom
 
-    private Book book;
-
+    private   Book                    book;
     protected PageListRecyclerAdapter mAdapter;
+
+    /*初始数据已刷新*/
+    boolean dataRefreshed = false;
+
 
     public static void launch(Activity activity, Book book) {
         Intent intent = new Intent(activity, DetailsActivity.class);
@@ -81,7 +85,7 @@ public class DetailsActivity extends AbsActivity implements DownloadManager.OnDo
 
         Intent intent = getIntent();
         book = new Gson().fromJson(intent.getStringExtra(EXTRA_BOOK_DATA), Book.class);
-//        book = BookApi.getBookFormJson(this, book);//从本地取最新的数据
+        book = BookApi.getBookFormJson(this, book);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -133,7 +137,11 @@ public class DetailsActivity extends AbsActivity implements DownloadManager.OnDo
         if (!mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(true);
         Observable.<Void>create(subscriber -> {
             try {
-                subscriber.onNext(PageApi.pages(book));
+                if (book.downloaded) {
+                    subscriber.onNext(null);
+                } else {
+                    subscriber.onNext(PageApi.pages(book));
+                }
             } catch (Exception e) {
                 subscriber.onError(e);
             }
@@ -143,7 +151,8 @@ public class DetailsActivity extends AbsActivity implements DownloadManager.OnDo
                 .subscribe(aVoid -> {
                     mSwipeRefreshLayout.setRefreshing(false);
                     fab.setEnabled(true);
-                    invalidateOptionsMenu();
+                    dataRefreshed = true;
+                    refreshDownloadItem();
                     mAdapter.notifyDataSetChanged();
                 }, throwable -> {
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -156,8 +165,8 @@ public class DetailsActivity extends AbsActivity implements DownloadManager.OnDo
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_details, menu);
 
-        MenuItem downloadItem = menu.findItem(R.id.action_download);
-        downloadItem.setEnabled(fab.isEnabled());
+        downloadItem = menu.findItem(R.id.action_download);
+        refreshDownloadItem();
 
         return true;
     }
@@ -171,10 +180,32 @@ public class DetailsActivity extends AbsActivity implements DownloadManager.OnDo
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_download) {
+            item.setEnabled(false);
             download(book);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refreshDownloadItem() {
+        if (book.downloaded) {
+            downloadItem.setIcon(R.drawable.fa_download_done);
+            downloadItem.setEnabled(false);
+            return;
+        }
+
+        //初次加载数据
+        if (!dataRefreshed) {
+            downloadItem.setEnabled(false);
+            return;
+        }
+
+        if (app.getDownloadManager().isAccepted(book)) {
+            downloadItem.setEnabled(false);
+            return;
+        }
+
+        downloadItem.setEnabled(true);
     }
 
     private void download(Book book) {
@@ -186,7 +217,22 @@ public class DetailsActivity extends AbsActivity implements DownloadManager.OnDo
     }
 
     @Override
-    public View getSnakebarParentView() {
-        return mRecyclerView;
+    public void onDMDownloadSuccess(Book book) {
+        Snackbar.make(mRecyclerView, String.format(getString(R.string.download_book_success), book.name), Snackbar.LENGTH_LONG).setAction(R.string.action_check, v -> {
+            // FIXME: 15/11/20 跳转到下载列表页面.
+        }).show();
+
+        if (this.book.name.equals(book.name)) {
+            book.downloaded = true;
+        }
+    }
+
+    @Override
+    public void onDMDownloadFail(Book book) {
+        Snackbar.make(mRecyclerView, String.format(getString(R.string.download_book_success), book.name), Snackbar.LENGTH_LONG).show();
+
+        if (this.book.name.equals(book.name)) {
+            refreshDownloadItem();
+        }
     }
 }

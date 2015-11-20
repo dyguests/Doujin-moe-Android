@@ -4,16 +4,12 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
 
-import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.api.BookApi;
 import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.IndexItem;
-import com.fanhl.doujinMoe.ui.common.AbsActivity;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -26,6 +22,7 @@ import rx.functions.Action0;
 import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 
 /**
+ * 进行下载处理
  * Created by fanhl on 15/11/19.
  */
 public class DownloadManager {
@@ -85,15 +82,12 @@ public class DownloadManager {
                         download(book, () -> {
                             downloadedBooks.offer(downloadingBook);
                             downloadingBook = null;
-                            // FIXME: 15/11/20 ((AbsActivity) interactionListener) 的写法不严谨....
-                            ((AbsActivity) interactionListener).runOnUiThread(() -> Snackbar.make(interactionListener.getSnakebarParentView(), String.format(getString(R.string.download_book_success), book.name), Snackbar.LENGTH_LONG).setAction(R.string.action_check, v -> {
-                                // FIXME: 15/11/20 跳转到下载列表页面.
-                            }).show());
+                            if (interactionListener != null) interactionListener.onDMDownloadSuccess(book);
                             Log.i(TAG, "下载完成:" + book.name);
                         }, () -> {
                             failBooks.offer(downloadingBook);
                             downloadingBook = null;
-                            ((AbsActivity) interactionListener).runOnUiThread(() -> Snackbar.make(interactionListener.getSnakebarParentView(), String.format(getString(R.string.download_book_fail), book.name), Snackbar.LENGTH_SHORT).show());
+                            if (interactionListener != null) interactionListener.onDMDownloadFail(book);
                             Log.e(TAG, "下载失败:" + book.name);
                         });
                     }
@@ -158,6 +152,23 @@ public class DownloadManager {
         }
     }
 
+    /*判断当前书籍是否 加入 要下载列表 或者 正在下载中*/
+    public boolean isAccepted(Book book) {// FIXME: 15/11/20 加锁?
+        for (Book waitBook : waitBooks) {
+            if (waitBook.name.equals(book.name)) {
+                return true;
+            }
+        }
+
+        if (downloadingBook != null) {
+            if (downloadingBook.name.equals(book.name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public interface OnDownloadSuccessListener {
         void onDownloadSuccess();
     }
@@ -167,6 +178,8 @@ public class DownloadManager {
     }
 
     public interface OnDownloadManagerInteractionListener {
-        View getSnakebarParentView();
+        void onDMDownloadSuccess(Book book);
+
+        void onDMDownloadFail(Book book);
     }
 }

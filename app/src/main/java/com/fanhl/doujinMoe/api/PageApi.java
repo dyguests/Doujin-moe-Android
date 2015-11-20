@@ -9,6 +9,7 @@ import com.fanhl.doujinMoe.exception.GetDataFailException;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.util.FileCacheManager;
+import com.fanhl.doujinMoe.util.NumberUtil;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -86,7 +87,7 @@ public class PageApi extends BaseApi {
             response = client.newCall(request).execute();
             sink = Okio.buffer(Okio.sink(pageFile));
             sink.writeAll(response.body().source());
-
+            Log.d(TAG, "第 " + (index + 1) + "/" + book.pages.size() + " 张图片下载完成.");
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,6 +104,14 @@ public class PageApi extends BaseApi {
         return false;
     }
 
+    public static File getPageFile(Context context, Book book, int index) {
+        FileCacheManager m = FileCacheManager.getInstance(context);
+
+        File bookImagesDir = m.getBookImagesDir(book);
+        File pageFile      = new File(bookImagesDir, getPageName(book, index));
+        return pageFile;
+    }
+
     /**
      * 生成page名字
      *
@@ -110,8 +119,7 @@ public class PageApi extends BaseApi {
      * @param index
      */
     public static String getPageName(Book book, int index) {
-        Page page = book.pages.get(index);
-        return (index + 1) + "." + getExtension(page);
+        return NumberUtil.formatPrefix(index) + "." + getExtension(book.pages.get(index));
     }
 
     /**

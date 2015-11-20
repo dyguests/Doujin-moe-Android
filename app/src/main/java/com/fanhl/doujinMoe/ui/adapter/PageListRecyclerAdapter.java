@@ -8,12 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.model.Book;
-import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.ui.common.AbsRecyclerViewAdapter;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,16 +20,11 @@ import butterknife.ButterKnife;
  * Created by fanhl on 15/11/6.
  */
 public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecyclerAdapter.ViewHolder> {
-    private final Book       book;
-    /**
-     * 来自于book {@link #book}
-     */
-    private final List<Page> list;
+    private final Book book;
 
     public PageListRecyclerAdapter(Context context, RecyclerView mRecyclerView, Book book) {
         super(context, mRecyclerView);
         this.book = book;
-        this.list = book.pages;
     }
 
     @Override
@@ -43,13 +36,12 @@ public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecy
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        Page item = list.get(position);
-        holder.bind(this.context, item);
+        holder.bind(this.context, book, position);
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return book.pages.size();
     }
 
     public class ViewHolder extends AbsRecyclerViewAdapter.ClickableViewHolder {
@@ -61,10 +53,16 @@ public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecy
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(Context context, Page item) {
-            Picasso.with(context)
-                    .load(item.preview)
-                    .into(mPreview);
+        public void bind(Context context, Book book, int position) {
+            if (book.downloaded) {
+                Picasso.with(context)
+                        .load(PageApi.getPageFile(context, book, position))
+                        .into(mPreview);
+            } else {
+                Picasso.with(context)
+                        .load(book.pages.get(position).preview)
+                        .into(mPreview);
+            }
         }
     }
 }

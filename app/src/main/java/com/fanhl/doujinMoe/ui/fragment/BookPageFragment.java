@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.ui.GalleryActivity;
@@ -78,16 +79,27 @@ public class BookPageFragment extends Fragment {
         mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
         mPhotoViewAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
 
-        Page page = book.pages.get(position);
-        Picasso.with(getActivity())
-                .load(page.href)
-                        // FIXME: 15/11/10 Detail页面取得的preview
-                .into(mImageView, new Callback.EmptyCallback() {
-                    @Override
-                    public void onSuccess() {
-                        mPhotoViewAttacher.update();
-                    }
-                });
+        if (book.downloaded || PageApi.isPageDownloaded(getActivity(), book, position)) {
+            Picasso.with(getActivity())
+                    .load(PageApi.getPageFile(getActivity(), book, position))
+                    .into(mImageView, new Callback.EmptyCallback() {
+                        @Override
+                        public void onSuccess() {
+                            mPhotoViewAttacher.update();
+                        }
+                    });
+        } else {
+            Page page = book.pages.get(position);
+            Picasso.with(getActivity())
+                    .load(page.href)
+                            // FIXME: 15/11/10 Detail页面取得的preview
+                    .into(mImageView, new Callback.EmptyCallback() {
+                        @Override
+                        public void onSuccess() {
+                            mPhotoViewAttacher.update();
+                        }
+                    });
+        }
 
         return view;
     }
