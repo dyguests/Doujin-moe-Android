@@ -174,9 +174,8 @@ public class FileCacheManager {
         Page page = pages.get(index);
         if (page == null || page.href == null) return false;
         //page: http://static.doujin-moe.us/t-p9grmmtq.jpg
-        String extension = PageApi.getExtension(page);
         //1.jpg
-        String pageName = (index + 1) + "." + extension;
+        String pageName = PageApi.getPageName(book, index);
 
         File pageFile = new File(bookImagesDir, pageName);
         return pageFile.exists() && pageFile.isFile();

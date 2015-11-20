@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.fanhl.doujinMoe.App;
 import com.fanhl.doujinMoe.R;
 
 /**
  * Created by fanhl on 15/10/30.
  */
 public abstract class AbsActivity extends AppCompatActivity {
+
+    protected App app;
+
     /**
      * 后台任务用handler
      */
@@ -23,6 +27,8 @@ public abstract class AbsActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(getResources().getColor(R.color.primary));
             getWindow().setNavigationBarColor(getResources().getColor(R.color.primary));
         }
+
+        app = ((App) getApplication());
 
 //        BackgroundThread backgroundThread = new BackgroundThread();
 //        backgroundThread.start();

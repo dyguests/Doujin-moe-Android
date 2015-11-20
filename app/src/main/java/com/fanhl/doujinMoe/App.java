@@ -13,5 +13,10 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        downloadManager = DownloadManager.getInstance(this);
+    }
+
+    public DownloadManager getDownloadManager() {
+        return downloadManager;
     }
 }

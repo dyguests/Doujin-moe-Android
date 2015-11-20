@@ -73,7 +73,8 @@ public class DetailsActivity extends AbsActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        fab.setEnabled(false);//取得数据后再能点详细
+        //取得数据后再能点详细
+        fab.setEnabled(false);
         fab.setOnClickListener(view -> GalleryActivity.launch(DetailsActivity.this, book));
 
         Intent intent = getIntent();
@@ -127,6 +128,7 @@ public class DetailsActivity extends AbsActivity {
                 .subscribe(aVoid -> {
                     mSwipeRefreshLayout.setRefreshing(false);
                     fab.setEnabled(true);
+                    invalidateOptionsMenu();
                     mAdapter.notifyDataSetChanged();
                 }, throwable -> {
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -138,6 +140,10 @@ public class DetailsActivity extends AbsActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_details, menu);
+
+        MenuItem downloadItem = menu.findItem(R.id.action_download);
+        downloadItem.setEnabled(fab.isEnabled());
+
         return true;
     }
 
@@ -150,8 +156,17 @@ public class DetailsActivity extends AbsActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_download) {
+            download(book);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void download(Book book) {
+        //用不用先在 snakeBar上确认一下是否下载呢.
+
+        Log.d(TAG, "新增要下载的书籍:" + book.name);
+
+        app.getDownloadManager().accept(book);
     }
 }

@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
+
+        <item name="actionMenuTextColor">@color/icons</item>
+        <item name="android:actionMenuTextColor">@color/icons</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

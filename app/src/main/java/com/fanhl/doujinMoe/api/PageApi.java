@@ -111,7 +111,7 @@ public class PageApi extends BaseApi {
      */
     public static String getPageName(Book book, int index) {
         Page page = book.pages.get(index);
-        return (index + 1) + getExtension(page);
+        return (index + 1) + "." + getExtension(page);
     }
 
     /**
