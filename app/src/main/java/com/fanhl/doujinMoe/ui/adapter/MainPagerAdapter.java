@@ -50,8 +50,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 navigationView.setCheckedItem(R.id.nav_newest);
                 break;
             case 1:
-                activity.setTitle(activity.getString(R.string.title_newest));
-                navigationView.setCheckedItem(R.id.nav_newest);
+                activity.setTitle(activity.getString(R.string.text_best_get_fail));
+                navigationView.setCheckedItem(R.id.nav_best);
                 break;
             default:
                 break;

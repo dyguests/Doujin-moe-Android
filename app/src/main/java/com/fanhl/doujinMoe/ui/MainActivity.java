@@ -66,6 +66,7 @@ public class MainActivity extends AbsActivity
             }
         });
 
+        //执行一次,初始化 显示标题, 抽屉选中项
 //        mViewpager.setCurrentItem(0);//默认为0时不用写
         mPagerAdapter.pageSelected(this, navigationView, 0);
     }
@@ -109,9 +110,9 @@ public class MainActivity extends AbsActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_newest) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+            mViewpager.setCurrentItem(0);
+        } else if (id == R.id.nav_best) {
+            mViewpager.setCurrentItem(1);
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {

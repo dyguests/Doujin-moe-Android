@@ -10,6 +10,7 @@
     <string name="action_check">查看</string>
 
     <string name="title_newest">最新</string>
+    <string name="title_best">排行榜</string>
     <string name="text_newest_get_fail">取得 最新漫画 失败.</string>
     <string name="text_best_get_fail">取得 排行榜 失败.</string>
     <string name="title_activity_details">Book Details</string>
