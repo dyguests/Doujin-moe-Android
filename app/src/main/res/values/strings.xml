@@ -11,8 +11,10 @@
 
     <string name="title_newest">最新</string>
     <string name="title_best">排行榜</string>
+    <string name="title_downloaded">已下载</string>
     <string name="text_newest_get_fail">取得 最新漫画 失败.</string>
     <string name="text_best_get_fail">取得 排行榜 失败.</string>
+    <string name="text_download_get_fail">取得 已下载书籍 失败.</string>
     <string name="title_activity_details">Book Details</string>
     <string name="refresh_fail">刷新数据失败.</string>
     <string name="title_activity_gallery">GalleryActivity</string>

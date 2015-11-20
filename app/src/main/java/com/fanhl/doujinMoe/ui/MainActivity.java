@@ -110,11 +110,11 @@ public class MainActivity extends AbsActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_newest) {
-            mViewpager.setCurrentItem(0);
+            mViewpager.setCurrentItem(MainPagerAdapter.NEWEST_INDEX);
         } else if (id == R.id.nav_best) {
-            mViewpager.setCurrentItem(1);
-        } else if (id == R.id.nav_slideshow) {
-
+            mViewpager.setCurrentItem(MainPagerAdapter.BEST_INDEX);
+        } else if (id == R.id.nav_downloaded) {
+            mViewpager.setCurrentItem(MainPagerAdapter.DOWNLOADED_INDEX);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.common.AbsRecyclerViewAdapter;
@@ -79,23 +80,16 @@ public class BookListRecyclerAdapter extends AbsRecyclerViewAdapter<BookListRecy
         private void bind(Context context, Book item, int color) {
             mTitle.setText(item.name);
 
-            if (!item.downloaded) {
+            if (item.downloaded) {
+                Picasso.with(context)
+                        .load(PageApi.getPageFile(context, item, 0))
+                        .into(mPreview);
+            } else {
                 TextDrawable drawablePlaceHolder = TextDrawable.builder().buildRect(Utility.getFirstCharacter(item.name), color);
                 Picasso.with(context)
                         .load(DouJinMoeUrl.previewUrl(item.token))
                         .placeholder(drawablePlaceHolder)
                         .into(mPreview);
-            } else {
-                //加载预览图
-//                String pagePath = PageApi.getPreviewPath(context, item);
-//                if (pagePath != null) {
-//                    Picasso.with(context)
-//                            .load("file:" + pagePath)
-//                            .placeholder(drawablePlaceHolder)
-//                            .into(mPreview);
-//                }
-
-//                mLabelView.setVisibility(View.VISIBLE);
             }
 
             this.item = item;

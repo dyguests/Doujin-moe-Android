@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * Created by fanhl on 15/11/10.
  */
-public abstract class AbsRecyclerFragment extends Fragment {
+public abstract class AbsBookRecyclerFragment extends AbsFragment {
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.recycler_view)
@@ -39,6 +39,7 @@ public abstract class AbsRecyclerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_newest, container, false);
         ButterKnife.bind(this, view);
         assignViews();
+        initData();
         refreshData();
         return view;
     }
@@ -67,6 +68,10 @@ public abstract class AbsRecyclerFragment extends Fragment {
             BookListRecyclerAdapter.ViewHolder holder = (BookListRecyclerAdapter.ViewHolder) viewHolder;
             DetailsActivity.launch(getActivity(), holder.getItem());
         });
+    }
+
+    protected void initData() {
+
     }
 
     protected abstract void refreshData();

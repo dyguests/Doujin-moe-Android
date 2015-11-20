@@ -14,7 +14,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by fanhl on 15/11/8.
  */
-public class NewestFragment extends AbsRecyclerFragment {
+public class NewestFragment extends AbsBookRecyclerFragment {
     public static final String TAG = NewestFragment.class.getSimpleName();
 
     public static NewestFragment newInstance() {

@@ -7,6 +7,8 @@ import android.support.v13.app.FragmentPagerAdapter;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.ui.MainActivity;
+import com.fanhl.doujinMoe.ui.fragment.BestFragment;
+import com.fanhl.doujinMoe.ui.fragment.DownloadedFragment;
 import com.fanhl.doujinMoe.ui.fragment.NewestFragment;
 
 /**
@@ -14,23 +16,35 @@ import com.fanhl.doujinMoe.ui.fragment.NewestFragment;
  */
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
+    public static final int NEWEST_INDEX     = 0;
+    public static final int BEST_INDEX       = 1;
+    public static final int DOWNLOADED_INDEX = 2;
+
+    public static final int PAGE_COUNT = 3;
+
     private final NewestFragment newestFragment;
-    private final NewestFragment contentFragment;
+    private final BestFragment   bestFragment;
+
+    private final DownloadedFragment downloadedFragment;
 
     public MainPagerAdapter(FragmentManager fm) {
         super(fm);
 
         newestFragment = NewestFragment.newInstance();
-        contentFragment = NewestFragment.newInstance();
+        bestFragment = BestFragment.newInstance();
+
+        downloadedFragment = DownloadedFragment.newInstance();
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
+            case NEWEST_INDEX:
                 return newestFragment;
-            case 1:
-                return contentFragment;
+            case BEST_INDEX:
+                return bestFragment;
+            case DOWNLOADED_INDEX:
+                return downloadedFragment;
             default:
                 return null;
         }
@@ -45,13 +59,17 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
      */
     public void pageSelected(MainActivity activity, NavigationView navigationView, int position) {
         switch (position) {
-            case 0:
+            case NEWEST_INDEX:
                 activity.setTitle(activity.getString(R.string.title_newest));
                 navigationView.setCheckedItem(R.id.nav_newest);
                 break;
-            case 1:
-                activity.setTitle(activity.getString(R.string.text_best_get_fail));
+            case BEST_INDEX:
+                activity.setTitle(activity.getString(R.string.title_best));
                 navigationView.setCheckedItem(R.id.nav_best);
+                break;
+            case DOWNLOADED_INDEX:
+                activity.setTitle(activity.getString(R.string.title_downloaded));
+                navigationView.setCheckedItem(R.id.nav_downloaded);
                 break;
             default:
                 break;
@@ -60,6 +78,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return PAGE_COUNT;
     }
 }

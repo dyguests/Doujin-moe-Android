@@ -2,7 +2,6 @@ package com.fanhl.doujinMoe.util;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -10,6 +9,7 @@ import com.fanhl.doujinMoe.api.BookApi;
 import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.IndexItem;
+import com.fanhl.util.ThreadUtil;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -19,10 +19,8 @@ import rx.Scheduler;
 import rx.android.schedulers.HandlerScheduler;
 import rx.functions.Action0;
 
-import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
-
 /**
- * 进行下载处理
+ * 下载处理管理
  * Created by fanhl on 15/11/19.
  */
 public class DownloadManager {
@@ -59,9 +57,7 @@ public class DownloadManager {
     }
 
     private DownloadManager(Context context) {
-        HandlerThread downloadThread = new HandlerThread("SchedulerSample-BackgroundThread", THREAD_PRIORITY_BACKGROUND);
-        downloadThread.start();
-        downloadHandler = new Handler(downloadThread.getLooper());
+        downloadHandler = ThreadUtil.createBackgroundHandler("DownloadThread");
 
         this.context = context;
 
@@ -93,10 +89,10 @@ public class DownloadManager {
                     }
                 }
 
+                ThreadUtil.sleep(1000);
                 // recurse until unsubscribed (schedule will do nothing if unsubscribed)
                 worker.schedule(this);
             }
-
         });
 
         // some time later...

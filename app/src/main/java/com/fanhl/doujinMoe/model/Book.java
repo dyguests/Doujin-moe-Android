@@ -1,6 +1,7 @@
 package com.fanhl.doujinMoe.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +17,8 @@ public class Book {
     public List<Page> pages;
     /*当前看到的页码*/
     public int        position;
-
+    /*最新阅读日期*/
+    public Date       recent;
     public boolean    downloaded;
 
     public Book() {

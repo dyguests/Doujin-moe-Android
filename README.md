@@ -10,13 +10,27 @@
 
 觀看時請留意是否適用於當地法律法規。( > _ < )
 
+#功能
+
+1.书籍下载.
+
 #备注
 
 1.书籍中的page命名规则按 1.jpg(png ...) ,2.jpg 的方式来命名,不采用网站上的"乱码".
+
 2.若已下载,添加一个重新下载的处理???
+
 3.有空把所有null判断/验证判断全换成抛异常.
+
 4.在detail页面给下载中的MenuItem加动画.bookList页面给book加动画.
+
 5.最近阅读,喜欢(bookmark),已下载(本地\[本地导入和网站上下载的分开放??\]).
+
+6.navigate不够放,改成网格型吧..
+
+7.加排序(排序方式(date,ranking,name)
+
+8.把超过一个月(?)没看的未下载的书(只缓存了book.json,position等)删掉.
 
 #修改
 
@@ -24,7 +38,7 @@
 
 ~~2.用PhotoDraweeView来兼容Fresco和PhotoView.~~
 
-3.我给你讲,Fresco完全不好用.![image](graphics/face1.png)
+3.换回Picasso.Fresco完全不好用.![image](graphics/face1.png)
 
 #问题
 

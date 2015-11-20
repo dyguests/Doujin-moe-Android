@@ -11,12 +11,16 @@ import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.util.GsonUtil;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FileCacheManager {
     private static final String TAG            = FileCacheManager.class.getSimpleName();
     public static final  String PROJECT_FOLDER = "Doujin-Moe";
     public static final  String IMAGE_FOLDER   = "images";
+
+    public static final String BOOK_JSON_FILENAME = "book.json";
 
     private static FileCacheManager mInstance;
 
@@ -134,7 +138,7 @@ public class FileCacheManager {
     public Book getBookFormJson(Book book) {
         Log.d(TAG, "从json中取得book信息:" + book.name);
         File bookDir  = getBookDir(book);
-        File bookFile = new File(bookDir, "book.json");
+        File bookFile = new File(bookDir, BOOK_JSON_FILENAME);
         if (bookFile.exists() && bookFile.isFile()) {
             String bookJson = FileUtil.readFile(bookFile);
             Book book1 = GsonUtil.obj(bookJson, Book.class);
@@ -154,7 +158,7 @@ public class FileCacheManager {
             return false;
         }
 
-        File f = new File(bookDir, "book.json");
+        File f = new File(bookDir, BOOK_JSON_FILENAME);
 
         if (f.exists() && !f.delete()) {
             Log.d(TAG, "删除旧的book.json失败");
@@ -205,5 +209,27 @@ public class FileCacheManager {
         // FIXME: 15/11/20 需要创建文件吗? createNewFile?
 
         return pageFile;
+    }
+
+    /**
+     * 取得本地书籍(已下载,喜爱...)
+     *
+     * @return
+     */
+    public List<Book> getLocalBooks() {
+        List<Book> list = new ArrayList<>();
+
+        File[] files = mExternalDir.listFiles(File::isDirectory);
+        if (files == null) return list;
+        Arrays.sort(files, (lhs, rhs) -> lhs.getName().compareTo(rhs.getName()));// FIXME: 15/11/20 不排序?
+
+        for (File file : files) {
+            File bookJsonFile = new File(file, BOOK_JSON_FILENAME);
+            if (bookJsonFile.exists()) {
+                String bookJson = FileUtil.readFile(bookJsonFile);
+                list.add(GsonUtil.obj(bookJson, Book.class));
+            }
+        }
+        return list;
     }
 }

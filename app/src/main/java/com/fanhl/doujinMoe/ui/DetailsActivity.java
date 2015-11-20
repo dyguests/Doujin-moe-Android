@@ -138,14 +138,15 @@ public class DetailsActivity extends AbsActivity {
         Observable.<Void>create(subscriber -> {
             try {
                 if (book.downloaded) {
+                    Log.d(TAG, "书籍已下载:" + book.name);
                     subscriber.onNext(null);
                 } else {
                     subscriber.onNext(PageApi.pages(book));
                 }
+                subscriber.onCompleted();
             } catch (Exception e) {
                 subscriber.onError(e);
             }
-            subscriber.onCompleted();
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aVoid -> {
@@ -188,6 +189,10 @@ public class DetailsActivity extends AbsActivity {
     }
 
     private void refreshDownloadItem() {
+        if (downloadItem == null) {
+            return;
+        }
+
         if (book.downloaded) {
             downloadItem.setIcon(R.drawable.fa_download_done);
             downloadItem.setEnabled(false);
@@ -200,6 +205,7 @@ public class DetailsActivity extends AbsActivity {
             return;
         }
 
+        // FIXME: 15/11/20 把这块分成 将要下载 和 正在下载中 ,并对应不同的 actionView
         if (app.getDownloadManager().isAccepted(book)) {
             downloadItem.setEnabled(false);
             return;
