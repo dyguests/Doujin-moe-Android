@@ -1,6 +1,8 @@
 package com.fanhl.doujinMoe.api;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.fanhl.doujinMoe.exception.GetBookFailException;

@@ -2,6 +2,7 @@ package com.fanhl.doujinMoe.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -218,7 +219,6 @@ public class DetailsActivity extends AbsActivity {
         //用不用先在 snakeBar上确认一下是否下载呢.
 
         Log.d(TAG, "新增要下载的书籍:" + book.name);
-
         app.getDownloadManager().accept(book);
     }
 
