@@ -14,7 +14,7 @@ public abstract class AbsActivity extends AppCompatActivity {
     /**
      * 后台任务用handler
      */
-//    protected Handler backgroundHandler;
+//    protected Handler downloadHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +26,7 @@ public abstract class AbsActivity extends AppCompatActivity {
 
 //        BackgroundThread backgroundThread = new BackgroundThread();
 //        backgroundThread.start();
-//        backgroundHandler = new Handler(backgroundThread.getLooper());
+//        downloadHandler = new Handler(backgroundThread.getLooper());
     }
 
     @Override

@@ -9,13 +9,20 @@ import com.fanhl.doujinMoe.exception.GetDataFailException;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.util.FileCacheManager;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
+
+import okio.BufferedSink;
+import okio.Okio;
 
 /**
  * Created by fanhl on 15/11/8.
@@ -55,5 +62,71 @@ public class PageApi extends BaseApi {
 
     public static Drawable getCachedDrawable(Context context, String url) {
         return FileCacheManager.getInstance(context).getCachedDrawable(url);
+    }
+
+    public static boolean isPageDownloaded(Context context, Book book, int index) {
+        return FileCacheManager.getInstance(context).isPageDownloaded(book, index);
+    }
+
+    public static boolean downloadPage(Context context, Book book, int index) {
+        FileCacheManager m = FileCacheManager.getInstance(context);
+
+        File pageFile = m.createPageFile(book, index);
+
+        if (pageFile == null) return false;
+
+        Page page = book.pages.get(index);
+
+        //download file
+        OkHttpClient client  = new OkHttpClient();
+        Request      request = new Request.Builder().url(page.href).build();
+        Response     response;
+        BufferedSink sink    = null;
+        try {
+            response = client.newCall(request).execute();
+            sink = Okio.buffer(Okio.sink(pageFile));
+            sink.writeAll(response.body().source());
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (sink != null) {
+                try {
+                    sink.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 生成page名字
+     *
+     * @param book
+     * @param index
+     */
+    public static String getPageName(Book book, int index) {
+        Page page = book.pages.get(index);
+        return (index + 1) + getExtension(page);
+    }
+
+    /**
+     * 取得书籍扩展名
+     *
+     * @param page
+     * @return
+     */
+    public static String getExtension(Page page) {
+        if (page == null || page.preview == null) return "";// FIXME: 15/11/20 preview 和 href 的文件 扩展名是一致的么???
+
+        String[] parts = page.preview.split("\\.");
+
+        if (parts.length < 2) return "";
+
+        return parts[parts.length - 1];
     }
 }
