@@ -77,6 +77,7 @@ public class DownloadManager {
                         download(book, () -> {
                             downloadedBooks.offer(downloadingBook);
                             downloadingBook = null;
+//                            Snackbar.  // FIXME: 15/11/20 显示下载完成.
                             Log.i(TAG, "下载完成:" + book.name);
                         }, () -> {
                             failBooks.offer(downloadingBook);
@@ -136,5 +137,11 @@ public class DownloadManager {
 
     public interface OnDownloadFailListener {
         void onDownloadFail();
+    }
+
+    public interface OnDownloadManagerInteractionListener {
+        void onDownloadSuccess(Book book);
+
+        void onDownloadFail(Book book);
     }
 }
