@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.fanhl.doujinMoe.R;
@@ -23,6 +24,7 @@ import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.adapter.PageListRecyclerAdapter;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
+import com.fanhl.doujinMoe.util.DownloadManager;
 import com.fanhl.util.GsonUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -33,7 +35,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class DetailsActivity extends AbsActivity {
+public class DetailsActivity extends AbsActivity implements DownloadManager.OnDownloadManagerInteractionListener {
     public static final String TAG = DetailsActivity.class.getSimpleName();
 
     public static final String EXTRA_BOOK_DATA = "EXTRA_BOOK_DATA";
@@ -114,6 +116,19 @@ public class DetailsActivity extends AbsActivity {
         refreshData();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        app.getDownloadManager().registerOnDownloadManagerInteractionListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        app.getDownloadManager().unregisterOnDownloadManagerInteractionListener(this);
+    }
+
     private void refreshData() {
         if (!mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(true);
         Observable.<Void>create(subscriber -> {
@@ -168,5 +183,10 @@ public class DetailsActivity extends AbsActivity {
         Log.d(TAG, "新增要下载的书籍:" + book.name);
 
         app.getDownloadManager().accept(book);
+    }
+
+    @Override
+    public View getSnakebarParentView() {
+        return mRecyclerView;
     }
 }

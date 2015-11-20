@@ -11,16 +11,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.ui.adapter.MainPagerAdapter;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
+import com.fanhl.doujinMoe.util.DownloadManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AbsActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DownloadManager.OnDownloadManagerInteractionListener {
 
     @Bind(R.id.drawer_layout)
     DrawerLayout         drawer;
@@ -68,6 +70,19 @@ public class MainActivity extends AbsActivity
 //        mViewpager.setCurrentItem(0);//默认为0时不用写
         mPagerAdapter.pageSelected(this, navigationView, 0);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        app.getDownloadManager().registerOnDownloadManagerInteractionListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        app.getDownloadManager().unregisterOnDownloadManagerInteractionListener(this);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -123,5 +138,10 @@ public class MainActivity extends AbsActivity
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public View getSnakebarParentView() {
+        return mViewpager;
     }
 }

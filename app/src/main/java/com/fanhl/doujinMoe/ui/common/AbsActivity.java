@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import com.fanhl.doujinMoe.App;
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.util.DownloadManager;
 
 /**
  * Created by fanhl on 15/10/30.
@@ -15,10 +16,6 @@ public abstract class AbsActivity extends AppCompatActivity {
 
     protected App app;
 
-    /**
-     * 后台任务用handler
-     */
-//    protected Handler downloadHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +26,6 @@ public abstract class AbsActivity extends AppCompatActivity {
         }
 
         app = ((App) getApplication());
-
-//        BackgroundThread backgroundThread = new BackgroundThread();
-//        backgroundThread.start();
-//        downloadHandler = new Handler(backgroundThread.getLooper());
     }
 
     @Override
@@ -44,11 +37,4 @@ public abstract class AbsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-//    public static class BackgroundThread extends HandlerThread {
-//        public BackgroundThread() {
-//            super("SchedulerSample-BackgroundThread", THREAD_PRIORITY_BACKGROUND);
-//        }
-//    }
 }
