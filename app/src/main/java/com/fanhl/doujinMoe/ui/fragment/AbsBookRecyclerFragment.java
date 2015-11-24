@@ -1,6 +1,5 @@
 package com.fanhl.doujinMoe.ui.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -36,7 +35,7 @@ public abstract class AbsBookRecyclerFragment extends AbsFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_newest, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycle, container, false);
         ButterKnife.bind(this, view);
         assignViews();
         initData();

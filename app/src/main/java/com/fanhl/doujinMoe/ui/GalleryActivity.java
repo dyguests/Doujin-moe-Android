@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -29,8 +31,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class GalleryActivity extends AbsActivity {
-    public static final String TAG             = GalleryActivity.class.getSimpleName();
-    public static final String EXTRA_BOOK_DATA = "EXTRA_BOOK_DATA";
+    public static final  String TAG                    = GalleryActivity.class.getSimpleName();
+    private static final int    AUTO_HIDE_DELAY_MILLIS = 3000;
+    public static final  String EXTRA_BOOK_DATA        = "EXTRA_BOOK_DATA";
 
     @Bind(R.id.toolbar)
     Toolbar           toolbar;
@@ -50,8 +53,6 @@ public class GalleryActivity extends AbsActivity {
     private Book book;
 
     private FullScreenHelper mFullScreenHelper;
-
-    private GalleryPagerAdapter mPagerAdapter;
 
     public static void launch(Activity activity, Book book) {
         Intent intent = new Intent(activity, GalleryActivity.class);
@@ -86,6 +87,7 @@ public class GalleryActivity extends AbsActivity {
 
         Intent intent = getIntent();
         book = GsonUtil.obj(intent.getStringExtra(EXTRA_BOOK_DATA), Book.class);
+        assert book != null;
         int tmpPosition = book.position;//详细页点击第三张page时,position=2,此时本地bookJson中position=3.这种情况下使用2这个值.
         //从本地取最新的数据
         book = BookApi.getBookFormJson(this, book);
@@ -98,7 +100,7 @@ public class GalleryActivity extends AbsActivity {
 
         setTitle(book.name);
 
-        mPagerAdapter = new GalleryPagerAdapter(getFragmentManager(), book);
+        GalleryPagerAdapter mPagerAdapter = new GalleryPagerAdapter(getFragmentManager(), book);
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(book.position, false);
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -134,6 +136,12 @@ public class GalleryActivity extends AbsActivity {
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        new Handler().postDelayed(this::hide, AUTO_HIDE_DELAY_MILLIS);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         BookApi.saveBookJson(this, book);
@@ -141,14 +149,22 @@ public class GalleryActivity extends AbsActivity {
 
     public void toggle() {
         if (mAppBar.getAlpha() != 0f) {
-            ViewCompat.animate(mAppBar).alpha(0f).start();
-            ViewCompat.animate(mBottomBar).alpha(0f).start();
-            mFullScreenHelper.setFullScreen(true);
+            hide();
         } else if (mAppBar.getAlpha() != 1f) {
-            ViewCompat.animate(mAppBar).alpha(1f).start();
-            ViewCompat.animate(mBottomBar).alpha(1f).start();
-            mFullScreenHelper.setFullScreen(false);
+            show();
         }
+    }
+
+    private void hide() {
+        ViewCompat.animate(mAppBar).alpha(0f).start();
+        ViewCompat.animate(mBottomBar).alpha(0f).start();
+        mFullScreenHelper.setFullScreen(true);
+    }
+
+    private void show() {
+        ViewCompat.animate(mAppBar).alpha(1f).start();
+        ViewCompat.animate(mBottomBar).alpha(1f).start();
+        mFullScreenHelper.setFullScreen(false);
     }
 
     @Override
@@ -166,4 +182,5 @@ public class GalleryActivity extends AbsActivity {
             book.downloaded = true;
         }
     }
+
 }
