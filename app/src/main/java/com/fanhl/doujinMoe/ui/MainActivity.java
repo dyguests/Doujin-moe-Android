@@ -117,6 +117,8 @@ public class MainActivity extends AbsActivity
             mViewpager.setCurrentItem(MainPagerAdapter.DOWNLOADED_INDEX);
         } else if (id == R.id.nav_manage) {
 
+        } else if (id == R.id.nav_download_manage) {
+            DownloadManagerActivity.launch(this);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

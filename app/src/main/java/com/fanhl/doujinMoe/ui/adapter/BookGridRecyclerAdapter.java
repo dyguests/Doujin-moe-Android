@@ -26,13 +26,13 @@ import butterknife.ButterKnife;
 /**
  * Created by fanhl on 15/10/29.
  */
-public class BookListRecyclerAdapter extends AbsRecyclerViewAdapter<BookListRecyclerAdapter.ViewHolder> {
-    public static final String TAG = BookListRecyclerAdapter.class.getSimpleName();
+public class BookGridRecyclerAdapter extends AbsRecyclerViewAdapter<BookGridRecyclerAdapter.ViewHolder> {
+    public static final String TAG = BookGridRecyclerAdapter.class.getSimpleName();
 
     private final List<Book>     list;
     private final ColorGenerator mColorGenerator;
 
-    public BookListRecyclerAdapter(Context context, RecyclerView mRecyclerView, List<Book> list) {
+    public BookGridRecyclerAdapter(Context context, RecyclerView mRecyclerView, List<Book> list) {
         super(context, mRecyclerView);
         this.list = list;
 

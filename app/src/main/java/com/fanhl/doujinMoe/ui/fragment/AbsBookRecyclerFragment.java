@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.DetailsActivity;
-import com.fanhl.doujinMoe.ui.adapter.BookListRecyclerAdapter;
+import com.fanhl.doujinMoe.ui.adapter.BookGridRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +29,13 @@ public abstract class AbsBookRecyclerFragment extends AbsFragment {
     @Bind(R.id.recycler_view)
     RecyclerView       mRecyclerView;
 
-    protected BookListRecyclerAdapter mAdapter;
+    protected BookGridRecyclerAdapter mAdapter;
     protected List<Book>              mBooks;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recycle, container, false);
+        View view = inflater.inflate(R.layout.fragment_swipe_recycle, container, false);
         ButterKnife.bind(this, view);
         assignViews();
         initData();
@@ -60,11 +60,11 @@ public abstract class AbsBookRecyclerFragment extends AbsFragment {
 
         //mRecyclerView
         mBooks = new ArrayList<>();
-        mAdapter = new BookListRecyclerAdapter(getActivity(), mRecyclerView, mBooks);
+        mAdapter = new BookGridRecyclerAdapter(getActivity(), mRecyclerView, mBooks);
         mRecyclerView.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener((position, viewHolder) -> {
-            BookListRecyclerAdapter.ViewHolder holder = (BookListRecyclerAdapter.ViewHolder) viewHolder;
+            BookGridRecyclerAdapter.ViewHolder holder = (BookGridRecyclerAdapter.ViewHolder) viewHolder;
             DetailsActivity.launch(getActivity(), holder.getItem());
         });
     }

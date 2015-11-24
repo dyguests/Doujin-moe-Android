@@ -34,6 +34,11 @@
             android:label="@string/title_activity_gallery"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".ui.DownloadManagerActivity"
+            android:label="@string/title_activity_download_manager"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
