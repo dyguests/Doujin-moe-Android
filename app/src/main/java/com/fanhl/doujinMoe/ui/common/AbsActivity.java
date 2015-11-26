@@ -15,7 +15,9 @@ import com.fanhl.doujinMoe.util.DownloadManager;
  */
 public abstract class AbsActivity extends AppCompatActivity implements DownloadManager.OnDownloadManagerInteractionListener {
 
-    protected App app;
+    protected App             app;
+
+    private DownloadManager downloadManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,18 +29,19 @@ public abstract class AbsActivity extends AppCompatActivity implements DownloadM
         }
 
         app = ((App) getApplication());
+        downloadManager = app.getDownloadManager();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        app.getDownloadManager().registerOnDownloadManagerInteractionListener(this);
+        downloadManager.registerOnDownloadManagerInteractionListener(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        app.getDownloadManager().unregisterOnDownloadManagerInteractionListener(this);
+        downloadManager.unregisterOnDownloadManagerInteractionListener(this);
     }
 
     @Override
@@ -59,5 +62,9 @@ public abstract class AbsActivity extends AppCompatActivity implements DownloadM
     @Override
     public void onDMDownloadFail(Book book) {
         //在需要响应的Activity中实现
+    }
+
+    public DownloadManager getDownloadManager() {
+        return downloadManager;
     }
 }

@@ -24,7 +24,7 @@ public class DownloadManagerRecyclerAdapter extends AbsRecyclerViewAdapter<Downl
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_book_card, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_item_download_card, parent, false);
         return new ViewHolder(view);
     }
 

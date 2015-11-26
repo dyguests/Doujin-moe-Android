@@ -9,12 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fanhl.doujinMoe.R;
-import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.adapter.DownloadManagerRecyclerAdapter;
 import com.fanhl.doujinMoe.ui.fragment.AbsFragment;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fanhl.doujinMoe.util.DownloadManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,7 +25,7 @@ public class DownloadingFragment extends AbsFragment {
     RecyclerView mRecyclerView;
 
     DownloadManagerRecyclerAdapter mAdapter;
-    protected List<Book> mBooks;
+    private DownloadManager downloadManager;
 
     @Nullable
     @Override
@@ -51,8 +48,8 @@ public class DownloadingFragment extends AbsFragment {
         mRecyclerView.setHasFixedSize(true);
 
         //mRecyclerView
-        mBooks = new ArrayList<>();
-        mAdapter = new DownloadManagerRecyclerAdapter(getActivity(), mRecyclerView, mBooks);
+        downloadManager = getAbsActivity().getDownloadManager();
+        mAdapter = new DownloadManagerRecyclerAdapter(getActivity(), mRecyclerView, downloadManager);
         mRecyclerView.setAdapter(mAdapter);
     }
 }
