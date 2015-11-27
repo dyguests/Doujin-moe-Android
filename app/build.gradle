@@ -43,4 +43,6 @@ dependencies {
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 //    compile 'com.facebook.fresco:fresco:0.8.1'
+
+//    compile 'ch.halcyon:squareprogressbar:1.6.0'
 }

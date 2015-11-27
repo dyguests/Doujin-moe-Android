@@ -2,7 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content">
+             android:layout_height="wrap_content"
+             tools:layout_height="200dp"
+             tools:layout_width="150dp">
 
     <!--书籍信息显示-->
     <FrameLayout
@@ -43,7 +45,18 @@
     <FrameLayout
         android:id="@+id/download_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/app_bar_translucent_black">
+
+        <!--fixme 之后改成 progressBar-->
+        <TextView
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/icons"
+            android:textSize="24sp"
+            tools:text="22/33"/>
     </FrameLayout>
 
 </FrameLayout>

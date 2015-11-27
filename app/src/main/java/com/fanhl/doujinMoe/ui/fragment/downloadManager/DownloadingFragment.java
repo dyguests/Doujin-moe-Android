@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fanhl.doujinMoe.R;
-import com.fanhl.doujinMoe.ui.adapter.DownloadManagerRecyclerAdapter;
+import com.fanhl.doujinMoe.ui.adapter.downloadManager.DownloadManagerRecyclerAdapter;
 import com.fanhl.doujinMoe.ui.fragment.AbsFragment;
 import com.fanhl.doujinMoe.util.DownloadManager;
 
