@@ -15,14 +15,14 @@
     <string name="text_newest_get_fail">取得 最新漫画 失败.</string>
     <string name="text_best_get_fail">取得 排行榜 失败.</string>
     <string name="text_download_get_fail">取得 已下载书籍 失败.</string>
-    <string name="title_activity_details">Book Details</string>
+    <string name="title_activity_details">书籍详细</string>
     <string name="refresh_fail">刷新数据失败.</string>
-    <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="title_activity_gallery">图库</string>
     <string name="info_total_pages">%1$d/%2$d</string>
     <string name="download_book_success">书籍 %s 下载成功.</string>
     <string name="download_book_fail">书籍 %s 下载失败.</string>
     <string name="action_bookmark">书签</string>
-    <string name="title_activity_download_manager">DownloadManagerActivity</string>
+    <string name="title_activity_download_manager">下载管理</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="download_manage">下载管理</string>
     <string name="wait_for_download">等待下载</string>

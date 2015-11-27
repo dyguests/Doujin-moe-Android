@@ -54,6 +54,9 @@ public class LocalManager {
 
     void refresh() {
         Observable.<List<Book>>create(subscriber -> {
+            recentBooks.clear();
+            loveBooks.clear();
+            downloadedBooks.clear();
             try {
                 subscriber.onNext(BookApi.getLocalBooks(context));
                 subscriber.onCompleted();

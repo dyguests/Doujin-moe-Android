@@ -1,6 +1,7 @@
 package com.fanhl.doujinMoe.ui.adapter.downloadManager;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 
 import com.fanhl.doujinMoe.util.DownloadManager;
@@ -9,6 +10,8 @@ import com.fanhl.doujinMoe.util.DownloadManager;
  * Created by fanhl on 15/11/27.
  */
 public class DownloadingRecyclerAdapter extends AbsDownloadManagerRecyclerAdapter {
+
+
     public DownloadingRecyclerAdapter(Context context, RecyclerView mRecyclerView, DownloadManager downloadManager) {
         super(context, mRecyclerView, downloadManager);
     }
@@ -20,10 +23,10 @@ public class DownloadingRecyclerAdapter extends AbsDownloadManagerRecyclerAdapte
             if (position == 0) {
                 holder.bind(downloadManager.getDownloadingBook(), downloadManager);
             } else {
-                holder.bind(downloadManager.getWaitBooks().get(position - 1));
+                holder.bind(downloadManager.getWaitBooks().get(position - 1), downloadManager);
             }
         } else {
-            holder.bind(downloadManager.getWaitBooks().get(position));
+            holder.bind(downloadManager.getWaitBooks().get(position), downloadManager);
         }
 
     }

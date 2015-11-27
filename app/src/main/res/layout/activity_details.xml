@@ -23,6 +23,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <!--fixme 等会加个遮罩半透明-->
             <ImageView
                 android:id="@+id/preview"
                 android:layout_width="match_parent"

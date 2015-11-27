@@ -1,6 +1,7 @@
 package com.fanhl.doujinMoe.ui.adapter.downloadManager;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,13 @@ import butterknife.ButterKnife;
  */
 public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewAdapter<AbsDownloadManagerRecyclerAdapter.ViewHolder> {
     protected final DownloadManager downloadManager;
+    private final   Handler         uihandler;
 
     public AbsDownloadManagerRecyclerAdapter(Context context, RecyclerView mRecyclerView, DownloadManager downloadManager) {
         super(context, mRecyclerView);
         this.context = context;
         this.downloadManager = downloadManager;
+        uihandler = new Handler();
     }
 
     @Override
@@ -69,6 +72,7 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
         }
 
         public void bind(Book item) {
+            mTitle.setText(item.name);
             if (item.downloaded) {
                 Picasso.with(AbsDownloadManagerRecyclerAdapter.this.context)
                         .load(PageApi.getPageFile(AbsDownloadManagerRecyclerAdapter.this.context, item, 0))
@@ -116,9 +120,9 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
             if (book == null || !book.name.equals(item.name)) return;
 
             //ui Thread
-            mProgress.getHandler().post(() -> mProgress.setText(String.format(context.getResources().getString(R.string.info_total_pages), progress + 1, book.count)));
+            uihandler.post(() -> mProgress.setText(String.format(context.getResources().getString(R.string.info_total_pages), progress + 1, book.count)));
             if (progress + 1 == book.count) {
-                mDownloadContainer.getHandler().post(() -> mDownloadContainer.setVisibility(View.GONE));
+                uihandler.post(() -> mDownloadContainer.setVisibility(View.GONE));
             }
         }
     }
