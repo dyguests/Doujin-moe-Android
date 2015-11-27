@@ -19,6 +19,7 @@ public class DownloadingRecyclerAdapter extends AbsDownloadManagerRecyclerAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
+        // FIXME: 15/11/27 存在一个正在下载,多个未下载时.当正在下载完成后.再notifyDataChanged后显示不正常.
         if (downloadManager.getDownloadingBook() != null) {
             if (position == 0) {
                 holder.bind(downloadManager.getDownloadingBook(), downloadManager);

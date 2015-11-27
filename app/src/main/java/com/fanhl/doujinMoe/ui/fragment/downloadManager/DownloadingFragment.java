@@ -1,5 +1,6 @@
 package com.fanhl.doujinMoe.ui.fragment.downloadManager;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.adapter.downloadManager.DownloadingRecyclerAdapter;
-import com.fanhl.doujinMoe.ui.fragment.AbsFragment;
 import com.fanhl.doujinMoe.util.DownloadManager;
 
 import butterknife.Bind;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
 /**
  * Created by fanhl on 15/11/24.
  */
-public class DownloadingFragment extends AbsFragment {
+public class DownloadingFragment extends AbsDownloadManagerFragment {
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -47,6 +48,18 @@ public class DownloadingFragment extends AbsFragment {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        // FIXME: 15/11/27 绑定上 DownloadManagerActivity 的 下载完成/失败 ,实现adapter.notify...
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        // FIXME: 15/11/27 解除绑定上 DownloadManagerActivity 的 下载完成/失败 ,实现adapter.notify...
+    }
+
     private void assignViews() {
         //流式布局
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.span_count_book), StaggeredGridLayoutManager.VERTICAL);
@@ -57,5 +70,10 @@ public class DownloadingFragment extends AbsFragment {
         downloadManager = getAbsActivity().getDownloadManager();
         mAdapter = new DownloadingRecyclerAdapter(getActivity(), mRecyclerView, downloadManager);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onDownloadBookChanged(Book book, boolean success) {
+        mAdapter.notifyDataSetChanged();
     }
 }

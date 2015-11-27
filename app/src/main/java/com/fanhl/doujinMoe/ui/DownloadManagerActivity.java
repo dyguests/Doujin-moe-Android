@@ -22,9 +22,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.interfaceX.OnDownloadManagerBookChangeListener;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
 import com.fanhl.doujinMoe.ui.fragment.downloadManager.DownloadingFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +49,8 @@ public class DownloadManagerActivity extends AbsActivity {
     CoordinatorLayout    mMainContent;
 
     private DownloadManagerPagerAdapter mSectionsPagerAdapter;
+
+    List<OnDownloadManagerBookChangeListener> onDownloadManagerBookChangeListeners;
 
     public static void launch(Activity activity) {
         Intent intent = new Intent(activity, DownloadManagerActivity.class);
@@ -102,16 +108,50 @@ public class DownloadManagerActivity extends AbsActivity {
         Snackbar.make(mMainContent, String.format(getString(R.string.download_book_success), book.name), Snackbar.LENGTH_LONG).setAction(R.string.action_check, v -> {
             // FIXME: 15/11/20 跳转到下载列表页面.
         }).show();
+
+        dispatchOnDownloadManagerBookChanged(book, true);
     }
 
     @Override
     public void onDMDownloadFail(Book book) {
         Snackbar.make(mMainContent, String.format(getString(R.string.download_book_fail), book.name), Snackbar.LENGTH_LONG).show();
+
+        dispatchOnDownloadManagerBookChanged(book, false);
+    }
+
+    private void dispatchOnDownloadManagerBookChanged(Book book, boolean success) {
+        if (onDownloadManagerBookChangeListeners != null) {
+            for (OnDownloadManagerBookChangeListener onDownloadManagerBookChangeListener : onDownloadManagerBookChangeListeners) {
+                if (onDownloadManagerBookChangeListener != null) {
+                    onDownloadManagerBookChangeListener.onDownloadBookChanged(book, success);
+                }
+            }
+        }
+    }
+
+    public void addOnDownloadManagerBookChangeListener(OnDownloadManagerBookChangeListener onDownloadManagerBookChangeListener) {
+        if (onDownloadManagerBookChangeListeners == null) {
+            onDownloadManagerBookChangeListeners = new ArrayList<>();
+        }
+        onDownloadManagerBookChangeListeners.add(onDownloadManagerBookChangeListener);
+    }
+
+    public void removeOnDownloadManagerBookChangeListener(OnDownloadManagerBookChangeListener onDownloadManagerBookChangeListener) {
+        if (onDownloadManagerBookChangeListeners != null) {
+            onDownloadManagerBookChangeListeners.remove(onDownloadManagerBookChangeListener);
+        }
+    }
+
+    public void clearOnDownloadManagerBookChangeListener() {
+        if (onDownloadManagerBookChangeListeners != null) {
+            onDownloadManagerBookChangeListeners.clear();
+        }
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
+    @Deprecated
     public static class PlaceholderFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
