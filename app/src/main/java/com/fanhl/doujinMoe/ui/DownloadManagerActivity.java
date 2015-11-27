@@ -215,11 +215,11 @@ public class DownloadManagerActivity extends AbsActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return getString(R.string.fragment_downloading_title);
                 case 1:
-                    return "SECTION 2";
+                    return getString(R.string.fragment_download_success_title);
                 case 2:
-                    return "SECTION 3";
+                    return getString(R.string.fragment_download_fail_title);
             }
             return null;
         }

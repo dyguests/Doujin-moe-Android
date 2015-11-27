@@ -1,6 +1,5 @@
 package com.fanhl.doujinMoe.ui.fragment.downloadManager;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -46,18 +45,6 @@ public class DownloadingFragment extends AbsDownloadManagerFragment {
         super.onDestroyView();
         mRecyclerView.setAdapter(null);
         ButterKnife.unbind(this);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        // FIXME: 15/11/27 绑定上 DownloadManagerActivity 的 下载完成/失败 ,实现adapter.notify...
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        // FIXME: 15/11/27 解除绑定上 DownloadManagerActivity 的 下载完成/失败 ,实现adapter.notify...
     }
 
     private void assignViews() {
