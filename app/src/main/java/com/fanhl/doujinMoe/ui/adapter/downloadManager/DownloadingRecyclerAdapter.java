@@ -18,7 +18,7 @@ public class DownloadingRecyclerAdapter extends AbsDownloadManagerRecyclerAdapte
         super.onBindViewHolder(holder, position);
         if (downloadManager.getDownloadingBook() != null) {
             if (position == 0) {
-                holder.bind(downloadManager.getDownloadingBook());
+                holder.bind(downloadManager.getDownloadingBook(), downloadManager);
             } else {
                 holder.bind(downloadManager.getWaitBooks().get(position - 1));
             }

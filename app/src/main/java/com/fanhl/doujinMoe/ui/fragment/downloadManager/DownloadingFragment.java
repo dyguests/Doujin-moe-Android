@@ -43,6 +43,7 @@ public class DownloadingFragment extends AbsFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mRecyclerView.setAdapter(null);
         ButterKnife.unbind(this);
     }
 

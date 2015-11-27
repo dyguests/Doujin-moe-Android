@@ -49,6 +49,10 @@ public class LocalManager {
         loveBooks = new ArrayList<>();
         downloadedBooks = new ArrayList<>();
 
+        refresh();
+    }
+
+    void refresh() {
         Observable.<List<Book>>create(subscriber -> {
             try {
                 subscriber.onNext(BookApi.getLocalBooks(context));

@@ -47,7 +47,8 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
         holder.unbind(downloadManager);
     }
 
-    public class ViewHolder extends AbsRecyclerViewAdapter.ClickableViewHolder {
+
+    public class ViewHolder extends AbsRecyclerViewAdapter.ClickableViewHolder implements DownloadManager.OnDownloadProgressChangeListener {
         private final Context context;
 
         @Bind(R.id.preview)
@@ -85,8 +86,13 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
             this.item = item;
         }
 
-        public void unbind(DownloadManager downloadManager) {
+        public void bind(Book book, DownloadManager downloadManager) {
+            bind(book);
+            downloadManager.addOnDownloadProgressChangeListener(this);
+        }
 
+        public void unbind(DownloadManager downloadManager) {
+            downloadManager.removeOnDownloadProgressChangeListener(this);
         }
 
         /**
@@ -103,6 +109,17 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
 
         private int getColor(Book item) {
             return ColorGenerator.MATERIAL.getColor(item.name);
+        }
+
+        @Override
+        public void onDownloadProgressChanged(Book book, int progress) {
+            if (book == null || !book.name.equals(item.name)) return;
+
+            //ui Thread
+            mProgress.getHandler().post(() -> mProgress.setText(String.format(context.getResources().getString(R.string.info_total_pages), progress + 1, book.count)));
+            if (progress + 1 == book.count) {
+                mDownloadContainer.getHandler().post(() -> mDownloadContainer.setVisibility(View.GONE));
+            }
         }
     }
 }

@@ -15,8 +15,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        downloadManager = DownloadManager.getInstance(this);
         localManager = LocalManager.getInstance(this);
+        downloadManager = DownloadManager.getInstance(this,localManager);
     }
 
     public DownloadManager getDownloadManager() {

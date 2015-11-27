@@ -27,8 +27,10 @@ import rx.functions.Action0;
 public class DownloadManager {
     public static final String TAG = DownloadManager.class.getSimpleName();
 
-    private static DownloadManager  mInstance;
-    private final  Scheduler.Worker worker;
+    private static DownloadManager mInstance;
+
+    private final Scheduler.Worker worker;
+    private final LocalManager     localManager;
 
     /**
      * 下载用handler
@@ -51,18 +53,20 @@ public class DownloadManager {
 
     private List<OnDownloadProgressChangeListener> mOnDownloadProgressChangeListeners;
 
-    public static DownloadManager getInstance(Context context) {
+    public static DownloadManager getInstance(Context context, LocalManager localManager) {
         if (mInstance == null) {
-            mInstance = new DownloadManager(context);
+            mInstance = new DownloadManager(context, localManager);
         }
 
         return mInstance;
     }
 
-    private DownloadManager(Context context) {
+    private DownloadManager(Context context, LocalManager localManager) {
         downloadHandler = ThreadUtil.createBackgroundHandler("DownloadThread");
 
         this.context = context;
+
+        this.localManager = localManager;
 
         waitBooks = new LinkedList<>();
         //downloadingBook = null;
@@ -135,10 +139,14 @@ public class DownloadManager {
                     } else {
                         isAllDownloaded[0] = false;
                     }
-                }, throwable -> onDownloadFailListener.onDownloadFail(), () -> {
+                }, throwable -> {
+                    Log.e(TAG, Log.getStackTraceString(throwable));
+                    onDownloadFailListener.onDownloadFail();
+                }, () -> {
                     if (isAllDownloaded[0]) {
                         book.downloaded = true;
                         BookApi.saveBookJson(context, book);
+                        localManager.refresh();
                         onDownloadSuccessListener.onDownloadSuccess();
                     } else onDownloadFailListener.onDownloadFail();
                 });
@@ -184,7 +192,6 @@ public class DownloadManager {
         }
     }
 
-
     /*判断当前书籍是否 加入 要下载列表 或者 正在下载中*/
     public boolean isAccepted(Book book) {// FIXME: 15/11/20 加锁?
         for (Book waitBook : waitBooks) {
@@ -201,7 +208,6 @@ public class DownloadManager {
 
         return false;
     }
-
 
     public LinkedList<Book> getWaitBooks() {
         return waitBooks;
