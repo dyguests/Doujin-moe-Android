@@ -235,7 +235,7 @@ public class DetailsActivity extends AbsActivity {
 
     @Override
     public void onDMDownloadFail(Book book) {
-        Snackbar.make(mRecyclerView, String.format(getString(R.string.download_book_success), book.name), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mRecyclerView, String.format(getString(R.string.download_book_fail), book.name), Snackbar.LENGTH_LONG).show();
 
         if (this.book.name.equals(book.name)) {
             refreshDownloadItem();

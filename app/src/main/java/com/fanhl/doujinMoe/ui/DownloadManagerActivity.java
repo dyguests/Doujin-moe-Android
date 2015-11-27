@@ -1,6 +1,8 @@
 package com.fanhl.doujinMoe.ui;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -8,11 +10,9 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,11 +22,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fanhl.doujinMoe.R;
+import com.fanhl.doujinMoe.model.Book;
+import com.fanhl.doujinMoe.ui.common.AbsActivity;
+import com.fanhl.doujinMoe.ui.fragment.downloadManager.DownloadingFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DownloadManagerActivity extends AppCompatActivity {
+public class DownloadManagerActivity extends AbsActivity {
 
     @Bind(R.id.toolbar)
     Toolbar              toolbar;
@@ -57,8 +60,12 @@ public class DownloadManagerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
-        mSectionsPagerAdapter = new DownloadManagerPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new DownloadManagerPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
         tabLayout.setupWithViewPager(mViewPager);
 
@@ -88,6 +95,18 @@ public class DownloadManagerActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDMDownloadSuccess(Book book) {
+        Snackbar.make(mMainContent, String.format(getString(R.string.download_book_success), book.name), Snackbar.LENGTH_LONG).setAction(R.string.action_check, v -> {
+            // FIXME: 15/11/20 跳转到下载列表页面.
+        }).show();
+    }
+
+    @Override
+    public void onDMDownloadFail(Book book) {
+        Snackbar.make(mMainContent, String.format(getString(R.string.download_book_fail), book.name), Snackbar.LENGTH_LONG).show();
     }
 
     /**
@@ -137,6 +156,10 @@ public class DownloadManagerActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return DownloadingFragment.newInstance();
+            }
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);

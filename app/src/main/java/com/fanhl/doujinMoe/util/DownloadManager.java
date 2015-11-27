@@ -11,8 +11,9 @@ import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.IndexItem;
 import com.fanhl.util.ThreadUtil;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 
 import rx.Observable;
 import rx.Scheduler;
@@ -36,17 +37,19 @@ public class DownloadManager {
 
     private final Context context;
 
-    /*要下载的书*/
-    Queue<Book> waitBooks;
+    /*要下载的书 注:当Queue用*/
+    LinkedList<Book> waitBooks;
     /*正在下载的书*/
-    Book        downloadingBook;
+    Book             downloadingBook;
     /*下载完成的书*/
-    Queue<Book> downloadedBooks;
+    LinkedList<Book> downloadedBooks;
     /*下载失败的书*/
-    Queue<Book> failBooks;
+    LinkedList<Book> failBooks;
 
     /*用于回调,下载完成后在activity中显示*/
     private OnDownloadManagerInteractionListener interactionListener;
+
+    private List<OnDownloadProgressChangeListener> mOnDownloadProgressChangeListeners;
 
     public static DownloadManager getInstance(Context context) {
         if (mInstance == null) {
@@ -127,8 +130,11 @@ public class DownloadManager {
             subscriber.onCompleted();
         }).filter(bookIndexItem -> !PageApi.isPageDownloaded(context, bookIndexItem.item, bookIndexItem.index))
                 .subscribe(bookIndexItem -> {
-                    if (!PageApi.downloadPage(context, bookIndexItem.item, bookIndexItem.index))
+                    if (PageApi.downloadPage(context, bookIndexItem.item, bookIndexItem.index)) {
+                        dispatchOnDownloadProgressChanged(bookIndexItem.item, bookIndexItem.index);
+                    } else {
                         isAllDownloaded[0] = false;
+                    }
                 }, throwable -> onDownloadFailListener.onDownloadFail(), () -> {
                     if (isAllDownloaded[0]) {
                         book.downloaded = true;
@@ -137,6 +143,17 @@ public class DownloadManager {
                     } else onDownloadFailListener.onDownloadFail();
                 });
     }
+
+    private void dispatchOnDownloadProgressChanged(Book book, int index) {
+        if (mOnDownloadProgressChangeListeners != null) {
+            for (OnDownloadProgressChangeListener mOnDownloadProgressChangeListener : mOnDownloadProgressChangeListeners) {
+                if (mOnDownloadProgressChangeListener != null) {
+                    mOnDownloadProgressChangeListener.onDownloadProgressChanged(book, index);
+                }
+            }
+        }
+    }
+
 
     public void registerOnDownloadManagerInteractionListener(OnDownloadManagerInteractionListener onDownloadManagerInteractionListener) {
         this.interactionListener = onDownloadManagerInteractionListener;
@@ -147,6 +164,26 @@ public class DownloadManager {
             this.interactionListener = null;
         }
     }
+
+    public void addOnDownloadProgressChangeListener(OnDownloadProgressChangeListener listener) {
+        if (mOnDownloadProgressChangeListeners == null) {
+            mOnDownloadProgressChangeListeners = new ArrayList<>();
+        }
+        mOnDownloadProgressChangeListeners.add(listener);
+    }
+
+    public void removeOnDownloadProgressChangeListener(OnDownloadProgressChangeListener listener) {
+        if (mOnDownloadProgressChangeListeners != null) {
+            mOnDownloadProgressChangeListeners.remove(listener);
+        }
+    }
+
+    public void clearOnDownloadProgressChangeListener() {
+        if (mOnDownloadProgressChangeListeners != null) {
+            mOnDownloadProgressChangeListeners.clear();
+        }
+    }
+
 
     /*判断当前书籍是否 加入 要下载列表 或者 正在下载中*/
     public boolean isAccepted(Book book) {// FIXME: 15/11/20 加锁?
@@ -165,6 +202,23 @@ public class DownloadManager {
         return false;
     }
 
+
+    public LinkedList<Book> getWaitBooks() {
+        return waitBooks;
+    }
+
+    public Book getDownloadingBook() {
+        return downloadingBook;
+    }
+
+    public LinkedList<Book> getDownloadedBooks() {
+        return downloadedBooks;
+    }
+
+    public LinkedList<Book> getFailBooks() {
+        return failBooks;
+    }
+
     public interface OnDownloadSuccessListener {
         void onDownloadSuccess();
     }
@@ -177,5 +231,12 @@ public class DownloadManager {
         void onDMDownloadSuccess(Book book);
 
         void onDMDownloadFail(Book book);
+    }
+
+    /**
+     * 用于通知书籍的下载进度变更
+     */
+    public interface OnDownloadProgressChangeListener {
+        void onDownloadProgressChanged(Book book, int index);
     }
 }

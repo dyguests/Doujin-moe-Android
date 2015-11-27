@@ -2,14 +2,14 @@ package com.fanhl.doujinMoe.ui.fragment.downloadManager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fanhl.doujinMoe.R;
-import com.fanhl.doujinMoe.ui.adapter.downloadManager.DownloadManagerRecyclerAdapter;
+import com.fanhl.doujinMoe.ui.adapter.downloadManager.DownloadingRecyclerAdapter;
 import com.fanhl.doujinMoe.ui.fragment.AbsFragment;
 import com.fanhl.doujinMoe.util.DownloadManager;
 
@@ -24,8 +24,12 @@ public class DownloadingFragment extends AbsFragment {
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
-    DownloadManagerRecyclerAdapter mAdapter;
+    DownloadingRecyclerAdapter mAdapter;
     private DownloadManager downloadManager;
+
+    public static DownloadingFragment newInstance() {
+        return new DownloadingFragment();
+    }
 
     @Nullable
     @Override
@@ -43,13 +47,14 @@ public class DownloadingFragment extends AbsFragment {
     }
 
     private void assignViews() {
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
+        //流式布局
+        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.span_count_book), StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
 
         //mRecyclerView
         downloadManager = getAbsActivity().getDownloadManager();
-        mAdapter = new DownloadManagerRecyclerAdapter(getActivity(), mRecyclerView, downloadManager);
+        mAdapter = new DownloadingRecyclerAdapter(getActivity(), mRecyclerView, downloadManager);
         mRecyclerView.setAdapter(mAdapter);
     }
 }

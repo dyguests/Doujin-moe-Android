@@ -139,6 +139,6 @@ public class MainActivity extends AbsActivity
 
     @Override
     public void onDMDownloadFail(Book book) {
-        Snackbar.make(mViewpager, String.format(getString(R.string.download_book_success), book.name), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mViewpager, String.format(getString(R.string.download_book_fail), book.name), Snackbar.LENGTH_LONG).show();
     }
 }
