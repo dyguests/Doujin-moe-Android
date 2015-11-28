@@ -84,7 +84,12 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
                         .load(DouJinMoeUrl.previewUrl(item.token))
                         .placeholder(drawablePlaceHolder)
                         .into(mPreview);
-                mProgress.setText(R.string.wait_for_download);
+
+                if (!item.isDownloading()) {
+                    mProgress.setText(R.string.wait_for_download);
+                } else {
+                    mProgress.setText(context.getResources().getString(R.string.info_total_pages, item.downloadedPosition, item.count));
+                }
             }
 
             this.item = item;
@@ -99,18 +104,6 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
             downloadManager.removeOnDownloadProgressChangeListener(this);
         }
 
-        /**
-         * 修改进度
-         *
-         * @param index
-         * @param count
-         */
-        public void progress(int index, int count) {
-            if (index + 1 < count) mDownloadContainer.setVisibility(View.VISIBLE);
-            mProgress.setText(String.format(context.getResources().getString(R.string.info_total_pages), index + 1, count));
-            if (index + 1 == count) mDownloadContainer.setVisibility(View.GONE);
-        }
-
         private int getColor(Book item) {
             return ColorGenerator.MATERIAL.getColor(item.name);
         }
@@ -120,7 +113,7 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
             if (book == null || !book.name.equals(item.name)) return;
 
             //ui Thread
-            uihandler.post(() -> mProgress.setText(String.format(context.getResources().getString(R.string.info_total_pages), progress + 1, book.count)));
+            uihandler.post(() -> mProgress.setText(context.getResources().getString(R.string.info_total_pages, progress + 1, book.count)));
             if (progress + 1 == book.count) {
                 uihandler.post(() -> mDownloadContainer.setVisibility(View.GONE));
             }

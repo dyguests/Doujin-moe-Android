@@ -128,6 +128,7 @@ public class DownloadManager {
         //下载图片
         final boolean[] isAllDownloaded = {true};
         Observable.<IndexItem<Book>>create(subscriber -> {
+            book.status = Book.Status.DOWNLOADING;
             for (int i = 0; i < book.pages.size(); i++) {
                 subscriber.onNext(new IndexItem<>(book, i));
             }
@@ -135,12 +136,14 @@ public class DownloadManager {
         }).filter(bookIndexItem -> !PageApi.isPageDownloaded(context, bookIndexItem.item, bookIndexItem.index))
                 .subscribe(bookIndexItem -> {
                     if (PageApi.downloadPage(context, bookIndexItem.item, bookIndexItem.index)) {
+                        bookIndexItem.item.downloadedPosition = bookIndexItem.index;
                         dispatchOnDownloadProgressChanged(bookIndexItem.item, bookIndexItem.index);
                     } else {
                         isAllDownloaded[0] = false;
                     }
                 }, throwable -> {
                     Log.e(TAG, Log.getStackTraceString(throwable));
+                    book.status = Book.Status.NONE;
                     onDownloadFailListener.onDownloadFail();
                 }, () -> {
                     if (isAllDownloaded[0]) {
@@ -154,9 +157,9 @@ public class DownloadManager {
 
     private void dispatchOnDownloadProgressChanged(Book book, int index) {
         if (mOnDownloadProgressChangeListeners != null) {
-            for (OnDownloadProgressChangeListener mOnDownloadProgressChangeListener : mOnDownloadProgressChangeListeners) {
-                if (mOnDownloadProgressChangeListener != null) {
-                    mOnDownloadProgressChangeListener.onDownloadProgressChanged(book, index);
+            for (OnDownloadProgressChangeListener listener : mOnDownloadProgressChangeListeners) {
+                if (listener != null) {
+                    listener.onDownloadProgressChanged(book, index);
                 }
             }
         }

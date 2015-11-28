@@ -25,7 +25,7 @@ public class Book {
     //--------------其它相关-----------------
 
     /*当 status=.DOWNLOADING 时记录下载到的页码*/
-    public int downloadPosition;
+    public int downloadedPosition = -1;
 
     public Book() {
         pages = new ArrayList<>();
@@ -36,8 +36,12 @@ public class Book {
         return "Book(" + name + "," + token + ")";
     }
 
+    public boolean isDownloading() {
+        return status == Status.DOWNLOADING;
+    }
+
     public boolean isDownloaded() {
-        return status == Status.NONE;
+        return status == Status.DOWNLOADED;
     }
 
     public enum Status {
