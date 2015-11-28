@@ -18,10 +18,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by fanhl on 15/11/24.
+ * Created by fanhl on 15/11/27.
  */
-public class DownloadingFragment extends AbsDownloadManagerFragment {
-    public static final String TAG = DownloadingFragment.class.getSimpleName();
+public class DownloadSuccessFragment extends AbsDownloadManagerFragment {
+    public static final String TAG = DownloadSuccessFragment.class.getSimpleName();
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -29,8 +29,8 @@ public class DownloadingFragment extends AbsDownloadManagerFragment {
     AbsDownloadManagerRecyclerAdapter mAdapter;
     private DownloadManager downloadManager;
 
-    public static DownloadingFragment newInstance() {
-        return new DownloadingFragment();
+    public static DownloadSuccessFragment newInstance() {
+        return new DownloadSuccessFragment();
     }
 
     @Nullable
@@ -61,22 +61,12 @@ public class DownloadingFragment extends AbsDownloadManagerFragment {
             @Override
             public void onBindViewHolder(ViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
-                // FIXME: 15/11/27 存在一个正在下载,多个未下载时.当正在下载完成后.再notifyDataChanged后显示不正常.
-                if (downloadManager.getDownloadingBook() != null) {
-                    if (position == 0) {
-                        holder.bind(downloadManager.getDownloadingBook(), downloadManager);
-                    } else {
-                        holder.bind(downloadManager.getWaitBooks().get(position - 1), downloadManager);
-                    }
-                } else {
-                    holder.bind(downloadManager.getWaitBooks().get(position), downloadManager);
-                }
-
+                holder.bind(downloadManager.getDownloadedBooks().get(position));
             }
 
             @Override
             public int getItemCount() {
-                return downloadManager.getWaitBooks().size() + (downloadManager.getDownloadingBook() == null ? 0 : 1);
+                return downloadManager.getDownloadedBooks().size();
             }
         };
         mRecyclerView.setAdapter(mAdapter);

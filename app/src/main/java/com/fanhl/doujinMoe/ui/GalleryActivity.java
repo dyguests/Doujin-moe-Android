@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 
 public class GalleryActivity extends AbsActivity {
     public static final  String TAG                    = GalleryActivity.class.getSimpleName();
-    private static final int    AUTO_HIDE_DELAY_MILLIS = 3000;
+    private static final int    AUTO_HIDE_DELAY_MILLIS = 1500;
     public static final  String EXTRA_BOOK_DATA        = "EXTRA_BOOK_DATA";
 
     @Bind(R.id.toolbar)

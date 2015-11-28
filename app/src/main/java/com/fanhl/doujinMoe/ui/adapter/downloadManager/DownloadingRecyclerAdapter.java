@@ -9,6 +9,7 @@ import com.fanhl.doujinMoe.util.DownloadManager;
 /**
  * Created by fanhl on 15/11/27.
  */
+@Deprecated
 public class DownloadingRecyclerAdapter extends AbsDownloadManagerRecyclerAdapter {
 
 

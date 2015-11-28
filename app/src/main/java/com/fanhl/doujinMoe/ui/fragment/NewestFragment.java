@@ -34,11 +34,13 @@ public class NewestFragment extends AbsBookRecyclerFragment {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(newestForm -> {
+                    if (mSwipeRefreshLayout == null) return;
                     mSwipeRefreshLayout.setRefreshing(false);
                     mBooks.clear();
                     mBooks.addAll(newestForm.newest);
                     mAdapter.notifyDataSetChanged();
                 }, throwable -> {
+                    if (mSwipeRefreshLayout == null) return;
                     mSwipeRefreshLayout.setRefreshing(false);
                     Log.e(TAG, Log.getStackTraceString(throwable));
                     Snackbar.make(mSwipeRefreshLayout, R.string.text_newest_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();

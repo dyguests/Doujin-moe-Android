@@ -14,17 +14,15 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.interfaceX.OnDownloadManagerBookChangeListener;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
+import com.fanhl.doujinMoe.ui.fragment.downloadManager.DownloadFailFragment;
+import com.fanhl.doujinMoe.ui.fragment.downloadManager.DownloadSuccessFragment;
 import com.fanhl.doujinMoe.ui.fragment.downloadManager.DownloadingFragment;
 
 import java.util.ArrayList;
@@ -73,6 +71,7 @@ public class DownloadManagerActivity extends AbsActivity {
 
         mSectionsPagerAdapter = new DownloadManagerPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(2);//使3个fragment都保持活动
         tabLayout.setupWithViewPager(mViewPager);
 
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -149,46 +148,14 @@ public class DownloadManagerActivity extends AbsActivity {
     }
 
     /**
-     * A placeholder fragment containing a simple view.
-     */
-    @Deprecated
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle              args     = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View     rootView = inflater.inflate(R.layout.fragment_download_manager, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-    /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class DownloadManagerPagerAdapter extends FragmentPagerAdapter {
+
+        private DownloadingFragment     downloadingFragment;
+        private DownloadSuccessFragment downloadSuccessFragment;
+        private DownloadFailFragment    downloadFailFragment;
 
         public DownloadManagerPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -198,11 +165,22 @@ public class DownloadManagerActivity extends AbsActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return DownloadingFragment.newInstance();
+                    if (downloadingFragment == null) {
+                        downloadingFragment = DownloadingFragment.newInstance();
+                    }
+                    return downloadingFragment;
+                case 1:
+                    if (downloadSuccessFragment == null) {
+                        downloadSuccessFragment = DownloadSuccessFragment.newInstance();
+                    }
+                    return downloadSuccessFragment;
+                case 2:
+                    if (downloadFailFragment == null) {
+                        downloadFailFragment = DownloadFailFragment.newInstance();
+                    }
+                    return downloadFailFragment;
             }
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return null;
         }
 
         @Override
