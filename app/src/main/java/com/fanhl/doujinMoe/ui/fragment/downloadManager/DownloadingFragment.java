@@ -2,6 +2,7 @@ package com.fanhl.doujinMoe.ui.fragment.downloadManager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.model.Book;
+import com.fanhl.doujinMoe.ui.adapter.PageListRecyclerAdapter;
 import com.fanhl.doujinMoe.ui.adapter.downloadManager.AbsDownloadManagerRecyclerAdapter;
 import com.fanhl.doujinMoe.util.DownloadManager;
 
@@ -79,6 +81,14 @@ public class DownloadingFragment extends AbsDownloadManagerFragment {
                 return downloadManager.getWaitBooks().size() + (downloadManager.getDownloadingBook() == null ? 0 : 1);
             }
         };
+
+        mAdapter.setOnItemLongClickListener((position, holder) -> {
+            Snackbar.make(mRecyclerView, R.string.text_cancel_download, Snackbar.LENGTH_LONG).setAction(R.string.action_cancel, v -> {
+                downloadManager.cancelDownload(((AbsDownloadManagerRecyclerAdapter.ViewHolder) holder).item);
+            });
+            return true;
+        });
+
         mRecyclerView.setAdapter(mAdapter);
     }
 

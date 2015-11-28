@@ -29,4 +29,6 @@
     <string name="fragment_downloading_title">下载中</string>
     <string name="fragment_download_success_title">下载完成</string>
     <string name="fragment_download_fail_title">下载失败</string>
+    <string name="text_cancel_download">是否取消下载</string>
+    <string name="action_cancel">取消</string>
 </resources>

@@ -88,7 +88,7 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
                 if (!item.isDownloading()) {
                     mProgress.setText(R.string.wait_for_download);
                 } else {
-                    mProgress.setText(context.getResources().getString(R.string.info_total_pages, item.downloadedPosition, item.count));
+                    mProgress.setText(context.getResources().getString(R.string.info_total_pages, item.downloadedPosition + 1, item.count));
                 }
             }
 
@@ -109,14 +109,15 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
         }
 
         @Override
-        public void onDownloadProgressChanged(Book book, int progress) {
+        public void onDownloadProgressChanged(Book book) {
             if (book == null || !book.name.equals(item.name)) return;
 
             //ui Thread
-            uihandler.post(() -> mProgress.setText(context.getResources().getString(R.string.info_total_pages, progress + 1, book.count)));
-            if (progress + 1 == book.count) {
-                uihandler.post(() -> mDownloadContainer.setVisibility(View.GONE));
-            }
+            uihandler.post(() -> mProgress.setText(context.getResources().getString(R.string.info_total_pages, book.downloadedPosition + 1, book.count)));
+            // FIXME: 15/11/28 以下无用删除
+//            if (book.downloadedPosition + 1 == book.count) {
+//                uihandler.post(() -> mDownloadContainer.setVisibility(View.GONE));
+//            }
         }
     }
 }

@@ -40,13 +40,16 @@ public class DownloadManager {
     private final Context context;
 
     /*要下载的书 注:当Queue用*/
-    LinkedList<Book> waitBooks;
+    final LinkedList<Book> waitBooks;
     /*正在下载的书*/
     Book             downloadingBook;
     /*下载完成的书*/
     LinkedList<Book> downloadedBooks;
     /*下载失败的书*/
     LinkedList<Book> failBooks;
+
+    //fixme 线程安全 有空试试?
+//    List<String> linkedList = Collections.synchronizedList(new LinkedList<String>())
 
     /*用于回调,下载完成后在activity中显示*/
     private OnDownloadManagerInteractionListener interactionListener;
@@ -137,7 +140,7 @@ public class DownloadManager {
                 .subscribe(bookIndexItem -> {
                     if (PageApi.downloadPage(context, bookIndexItem.item, bookIndexItem.index)) {
                         bookIndexItem.item.downloadedPosition = bookIndexItem.index;
-                        dispatchOnDownloadProgressChanged(bookIndexItem.item, bookIndexItem.index);
+                        dispatchOnDownloadProgressChanged(bookIndexItem.item);
                     } else {
                         isAllDownloaded[0] = false;
                     }
@@ -155,11 +158,11 @@ public class DownloadManager {
                 });
     }
 
-    private void dispatchOnDownloadProgressChanged(Book book, int index) {
+    private void dispatchOnDownloadProgressChanged(Book book) {
         if (mOnDownloadProgressChangeListeners != null) {
             for (OnDownloadProgressChangeListener listener : mOnDownloadProgressChangeListeners) {
                 if (listener != null) {
-                    listener.onDownloadProgressChanged(book, index);
+                    listener.onDownloadProgressChanged(book);
                 }
             }
         }
@@ -212,6 +215,24 @@ public class DownloadManager {
         return false;
     }
 
+    /**
+     * 取消book的下载
+     *
+     * @param book
+     */
+    public synchronized void cancelDownload(Book book) {
+        synchronized (waitBooks) {
+            if (waitBooks.indexOf(book) > 0) {
+                if (waitBooks.remove(book)) {
+                    failBooks.add(book);
+                }
+            } else if (downloadingBook == book) {
+                // FIXME: 15/11/28 解除正在下载的观察者
+//                failBooks.add(book);
+            }
+        }
+    }
+
     public LinkedList<Book> getWaitBooks() {
         return waitBooks;
     }
@@ -246,6 +267,6 @@ public class DownloadManager {
      * 用于通知书籍的下载进度变更
      */
     public interface OnDownloadProgressChangeListener {
-        void onDownloadProgressChanged(Book book, int index);
+        void onDownloadProgressChanged(Book book);
     }
 }
