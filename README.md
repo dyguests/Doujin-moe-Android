@@ -4,7 +4,7 @@
 
 主要代码参考自[NHentai-android](https://github.com/fython/NHentai-android).
 
-![sample1](/graphics/device-2015-11-28-222059.png)
+<a href="./graphics/device-2015-11-28-222059.png"><img src="./graphics/device-2015-11-28-222059.png" width="40%"/></a>
 
 #特別聲明
 
