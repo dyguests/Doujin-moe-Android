@@ -14,6 +14,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -32,6 +33,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class DownloadManagerActivity extends AbsActivity {
+    public static final String TAG = DownloadManagerActivity.class.getSimpleName();
 
     @Bind(R.id.toolbar)
     Toolbar              toolbar;
@@ -48,7 +50,7 @@ public class DownloadManagerActivity extends AbsActivity {
 
     private DownloadManagerPagerAdapter mSectionsPagerAdapter;
 
-    List<OnDownloadManagerBookChangeListener> onDownloadManagerBookChangeListeners;
+    List<OnDownloadManagerBookChangeListener> onDMBookChangeListeners;
 
     public static void launch(Activity activity) {
         Intent intent = new Intent(activity, DownloadManagerActivity.class);
@@ -113,37 +115,38 @@ public class DownloadManagerActivity extends AbsActivity {
 
     @Override
     public void onDMDownloadFail(Book book) {
+        Log.d(TAG, "onDMDownloadFail 书籍(" + book.name + ")下载失败");
         Snackbar.make(mMainContent, String.format(getString(R.string.download_book_fail), book.name), Snackbar.LENGTH_LONG).show();
 
         dispatchOnDownloadManagerBookChanged(book, false);
     }
 
     private void dispatchOnDownloadManagerBookChanged(Book book, boolean success) {
-        if (onDownloadManagerBookChangeListeners != null) {
-            for (OnDownloadManagerBookChangeListener onDownloadManagerBookChangeListener : onDownloadManagerBookChangeListeners) {
-                if (onDownloadManagerBookChangeListener != null) {
-                    onDownloadManagerBookChangeListener.onDownloadBookChanged(book, success);
+        if (onDMBookChangeListeners != null) {
+            for (OnDownloadManagerBookChangeListener listener : onDMBookChangeListeners) {
+                if (listener != null) {
+                    listener.onDownloadBookChanged(book, success);
                 }
             }
         }
     }
 
     public void addOnDownloadManagerBookChangeListener(OnDownloadManagerBookChangeListener onDownloadManagerBookChangeListener) {
-        if (onDownloadManagerBookChangeListeners == null) {
-            onDownloadManagerBookChangeListeners = new ArrayList<>();
+        if (onDMBookChangeListeners == null) {
+            onDMBookChangeListeners = new ArrayList<>();
         }
-        onDownloadManagerBookChangeListeners.add(onDownloadManagerBookChangeListener);
+        onDMBookChangeListeners.add(onDownloadManagerBookChangeListener);
     }
 
     public void removeOnDownloadManagerBookChangeListener(OnDownloadManagerBookChangeListener onDownloadManagerBookChangeListener) {
-        if (onDownloadManagerBookChangeListeners != null) {
-            onDownloadManagerBookChangeListeners.remove(onDownloadManagerBookChangeListener);
+        if (onDMBookChangeListeners != null) {
+            onDMBookChangeListeners.remove(onDownloadManagerBookChangeListener);
         }
     }
 
     public void clearOnDownloadManagerBookChangeListener() {
-        if (onDownloadManagerBookChangeListeners != null) {
-            onDownloadManagerBookChangeListeners.clear();
+        if (onDMBookChangeListeners != null) {
+            onDMBookChangeListeners.clear();
         }
     }
 

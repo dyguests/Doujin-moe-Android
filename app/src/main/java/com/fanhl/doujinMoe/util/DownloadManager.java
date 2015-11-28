@@ -17,6 +17,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Scheduler;
+import rx.Subscriber;
 import rx.android.schedulers.HandlerScheduler;
 import rx.functions.Action0;
 
@@ -55,6 +56,7 @@ public class DownloadManager {
     private OnDownloadManagerInteractionListener interactionListener;
 
     private List<OnDownloadProgressChangeListener> mOnDownloadProgressChangeListeners;
+    private Subscriber<IndexItem<Book>>            downloadingSubscriber;
 
     public static DownloadManager getInstance(Context context, LocalManager localManager) {
         if (mInstance == null) {
@@ -120,6 +122,7 @@ public class DownloadManager {
      * @param book
      */
     public void accept(Book book) {
+        book.status = Book.Status.WAIT_DOWNLOAD;
         waitBooks.offer(book);
     }
 
@@ -130,6 +133,37 @@ public class DownloadManager {
 
         //下载图片
         final boolean[] isAllDownloaded = {true};
+
+        //下载page用观察者
+        downloadingSubscriber = new Subscriber<IndexItem<Book>>() {
+            @Override
+            public void onNext(IndexItem<Book> bookIndexItem) {
+                if (PageApi.downloadPage(context, bookIndexItem.item, bookIndexItem.index)) {
+                    bookIndexItem.item.downloadedPosition = bookIndexItem.index;
+                    dispatchOnDownloadProgressChanged(bookIndexItem.item);
+                } else {
+                    isAllDownloaded[0] = false;
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+                book.status = Book.Status.NONE;
+                onDownloadFailListener.onDownloadFail();
+            }
+
+            @Override
+            public void onCompleted() {
+                if (isAllDownloaded[0]) {
+                    book.status = Book.Status.DOWNLOADED;
+                    BookApi.saveBookJson(context, book);
+                    localManager.refresh();
+                    onDownloadSuccessListener.onDownloadSuccess();
+                } else onDownloadFailListener.onDownloadFail();
+            }
+        };
+
         Observable.<IndexItem<Book>>create(subscriber -> {
             book.status = Book.Status.DOWNLOADING;
             for (int i = 0; i < book.pages.size(); i++) {
@@ -137,25 +171,7 @@ public class DownloadManager {
             }
             subscriber.onCompleted();
         }).filter(bookIndexItem -> !PageApi.isPageDownloaded(context, bookIndexItem.item, bookIndexItem.index))
-                .subscribe(bookIndexItem -> {
-                    if (PageApi.downloadPage(context, bookIndexItem.item, bookIndexItem.index)) {
-                        bookIndexItem.item.downloadedPosition = bookIndexItem.index;
-                        dispatchOnDownloadProgressChanged(bookIndexItem.item);
-                    } else {
-                        isAllDownloaded[0] = false;
-                    }
-                }, throwable -> {
-                    Log.e(TAG, Log.getStackTraceString(throwable));
-                    book.status = Book.Status.NONE;
-                    onDownloadFailListener.onDownloadFail();
-                }, () -> {
-                    if (isAllDownloaded[0]) {
-                        book.status = Book.Status.DOWNLOADED;
-                        BookApi.saveBookJson(context, book);
-                        localManager.refresh();
-                        onDownloadSuccessListener.onDownloadSuccess();
-                    } else onDownloadFailListener.onDownloadFail();
-                });
+                .subscribe(downloadingSubscriber);
     }
 
     private void dispatchOnDownloadProgressChanged(Book book) {
@@ -222,15 +238,25 @@ public class DownloadManager {
      */
     public synchronized void cancelDownload(Book book) {
         synchronized (waitBooks) {
-            if (waitBooks.indexOf(book) > 0) {
+            if (waitBooks.contains(book)) {
+                Log.d(TAG, "取消书籍(" + book.name + ",未下载" + ")的下载");
                 if (waitBooks.remove(book)) {
+                    book.status = Book.Status.NONE;
                     failBooks.add(book);
                 }
-            } else if (downloadingBook == book) {
-                // FIXME: 15/11/28 解除正在下载的观察者
-//                failBooks.add(book);
+            } else if (downloadingBook == book && downloadingSubscriber != null && !downloadingSubscriber.isUnsubscribed()) {
+                Log.d(TAG, "取消书籍(" + book.name + ",下载中" + ")的下载");
+                downloadingSubscriber.unsubscribe();
+                downloadingBook = null;
+                downloadingSubscriber = null;
+                book.status = Book.Status.NONE;
+                failBooks.add(book);
+            } else {
+                Log.d(TAG, "未找到书籍(" + book.name + ")");
             }
         }
+
+        if (interactionListener != null) interactionListener.onDMDownloadFail(book);
     }
 
     public LinkedList<Book> getWaitBooks() {

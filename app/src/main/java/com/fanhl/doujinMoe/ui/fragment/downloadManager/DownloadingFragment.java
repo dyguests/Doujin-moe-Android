@@ -3,6 +3,7 @@ package com.fanhl.doujinMoe.ui.fragment.downloadManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -12,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.model.Book;
-import com.fanhl.doujinMoe.ui.adapter.PageListRecyclerAdapter;
+import com.fanhl.doujinMoe.ui.DetailsActivity;
 import com.fanhl.doujinMoe.ui.adapter.downloadManager.AbsDownloadManagerRecyclerAdapter;
 import com.fanhl.doujinMoe.util.DownloadManager;
 
@@ -25,8 +26,10 @@ import butterknife.ButterKnife;
 public class DownloadingFragment extends AbsDownloadManagerFragment {
     public static final String TAG = DownloadingFragment.class.getSimpleName();
 
+//    @Bind(R.id.swipe_refresh_layout)
+//    SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    RecyclerView       mRecyclerView;
 
     AbsDownloadManagerRecyclerAdapter mAdapter;
     private DownloadManager downloadManager;
@@ -82,14 +85,18 @@ public class DownloadingFragment extends AbsDownloadManagerFragment {
             }
         };
 
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener((position, viewHolder) -> {
+            DetailsActivity.launch(getActivity(), ((AbsDownloadManagerRecyclerAdapter.ViewHolder) viewHolder).item);
+        });
         mAdapter.setOnItemLongClickListener((position, holder) -> {
+            Log.d(TAG, "取消下载确认.");
             Snackbar.make(mRecyclerView, R.string.text_cancel_download, Snackbar.LENGTH_LONG).setAction(R.string.action_cancel, v -> {
                 downloadManager.cancelDownload(((AbsDownloadManagerRecyclerAdapter.ViewHolder) holder).item);
-            });
+            }).show();
             return true;
         });
-
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

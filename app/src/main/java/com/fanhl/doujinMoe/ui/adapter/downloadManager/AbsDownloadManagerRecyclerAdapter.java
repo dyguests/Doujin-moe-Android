@@ -85,10 +85,12 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
                         .placeholder(drawablePlaceHolder)
                         .into(mPreview);
 
-                if (!item.isDownloading()) {
+                if (item.isWaitDownload()) {
                     mProgress.setText(R.string.wait_for_download);
-                } else {
+                } else if (item.isDownloading()) {
                     mProgress.setText(context.getResources().getString(R.string.info_total_pages, item.downloadedPosition + 1, item.count));
+                } else {
+                    mDownloadContainer.setVisibility(View.GONE);
                 }
             }
 

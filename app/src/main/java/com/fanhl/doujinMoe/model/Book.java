@@ -44,7 +44,11 @@ public class Book {
         return status == Status.DOWNLOADED;
     }
 
+    public boolean isWaitDownload() {
+        return status == Status.WAIT_DOWNLOAD;
+    }
+
     public enum Status {
-        NONE, DOWNLOADING, DOWNLOADED
+        NONE, WAIT_DOWNLOAD, DOWNLOADING, DOWNLOADED
     }
 }
