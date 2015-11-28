@@ -19,7 +19,13 @@ public class Book {
     public int        position;
     /*最新阅读日期*/
     public Date       recent;
-    public boolean    downloaded;
+    /*下载状态*/
+    public Status     status;
+
+    //--------------其它相关-----------------
+
+    /*当 status=.DOWNLOADING 时记录下载到的页码*/
+    public int downloadPosition;
 
     public Book() {
         pages = new ArrayList<>();
@@ -28,5 +34,13 @@ public class Book {
     @Override
     public String toString() {
         return "Book(" + name + "," + token + ")";
+    }
+
+    public boolean isDownloaded() {
+        return status == Status.NONE;
+    }
+
+    public enum Status {
+        NONE, DOWNLOADING, DOWNLOADED
     }
 }

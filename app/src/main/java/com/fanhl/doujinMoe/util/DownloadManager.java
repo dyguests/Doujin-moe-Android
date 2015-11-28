@@ -144,7 +144,7 @@ public class DownloadManager {
                     onDownloadFailListener.onDownloadFail();
                 }, () -> {
                     if (isAllDownloaded[0]) {
-                        book.downloaded = true;
+                        book.status = Book.Status.DOWNLOADED;
                         BookApi.saveBookJson(context, book);
                         localManager.refresh();
                         onDownloadSuccessListener.onDownloadSuccess();

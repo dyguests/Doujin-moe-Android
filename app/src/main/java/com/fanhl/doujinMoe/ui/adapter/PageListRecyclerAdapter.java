@@ -54,7 +54,7 @@ public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecy
         }
 
         public void bind(Context context, Book book, int position) {
-            if (book.downloaded) {
+            if (book.isDownloaded()) {
                 Picasso.with(context)
                         .load(PageApi.getPageFile(context, book, position))
                         .into(mPreview);

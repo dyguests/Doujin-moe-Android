@@ -73,7 +73,7 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
 
         public void bind(Book item) {
             mTitle.setText(item.name);
-            if (item.downloaded) {
+            if (item.isDownloaded()) {
                 Picasso.with(AbsDownloadManagerRecyclerAdapter.this.context)
                         .load(PageApi.getPageFile(AbsDownloadManagerRecyclerAdapter.this.context, item, 0))
                         .into(mPreview);

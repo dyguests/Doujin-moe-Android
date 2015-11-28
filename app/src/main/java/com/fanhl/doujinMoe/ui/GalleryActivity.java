@@ -179,7 +179,7 @@ public class GalleryActivity extends AbsActivity {
     @Override
     public void onDMDownloadSuccess(Book book) {
         if (this.book.name.equals(book.name)) {
-            book.downloaded = true;
+            book.status = Book.Status.DOWNLOADED;
         }
     }
 

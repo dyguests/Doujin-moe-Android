@@ -69,7 +69,7 @@ public class LocalManager {
                     if (book.recent != null) {
                         recentBooks.add(book);
                     }
-                    if (book.downloaded) {
+                    if (book.isDownloaded()) {
                         downloadedBooks.add(book);
                     }
                 }, throwable -> Log.e(TAG, Log.getStackTraceString(throwable)), () -> {

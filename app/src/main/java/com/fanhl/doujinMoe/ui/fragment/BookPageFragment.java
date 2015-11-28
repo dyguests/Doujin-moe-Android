@@ -79,7 +79,7 @@ public class BookPageFragment extends Fragment {
         mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
         mPhotoViewAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
 
-        if (book.downloaded || PageApi.isPageDownloaded(getActivity(), book, position)) {
+        if (book.isDownloaded() || PageApi.isPageDownloaded(getActivity(), book, position)) {
             Picasso.with(getActivity())
                     .load(PageApi.getPageFile(getActivity(), book, position))
                     .into(mImageView, new Callback.EmptyCallback() {

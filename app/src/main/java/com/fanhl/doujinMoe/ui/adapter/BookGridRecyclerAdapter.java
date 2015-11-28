@@ -80,7 +80,7 @@ public class BookGridRecyclerAdapter extends AbsRecyclerViewAdapter<BookGridRecy
         private void bind(Context context, Book item, int color) {
             mTitle.setText(item.name);
 
-            if (item.downloaded) {
+            if (item.isDownloaded()) {
                 Picasso.with(context)
                         .load(PageApi.getPageFile(context, item, 0))
                         .into(mPreview);

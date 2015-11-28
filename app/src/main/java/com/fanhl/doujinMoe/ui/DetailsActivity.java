@@ -2,7 +2,6 @@ package com.fanhl.doujinMoe.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -138,7 +137,7 @@ public class DetailsActivity extends AbsActivity {
         if (!mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(true);
         Observable.<Void>create(subscriber -> {
             try {
-                if (book.downloaded) {
+                if (book.isDownloaded()) {
                     Log.d(TAG, "书籍已下载:" + book.name);
                     subscriber.onNext(null);
                 } else {
@@ -194,7 +193,7 @@ public class DetailsActivity extends AbsActivity {
             return;
         }
 
-        if (book.downloaded) {
+        if (book.isDownloaded()) {
             downloadItem.setIcon(R.drawable.fa_download_done);
             downloadItem.setEnabled(false);
             return;
@@ -229,7 +228,7 @@ public class DetailsActivity extends AbsActivity {
         }).show();
 
         if (this.book.name.equals(book.name)) {
-            book.downloaded = true;
+            book.status = Book.Status.DOWNLOADED;
         }
     }
 
