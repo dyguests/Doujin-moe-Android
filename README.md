@@ -32,6 +32,8 @@
 
 8.把超过一个月(?)没看的未下载的书(只缓存了book.json,position等)删掉.
 
+9.在Gallery页面,加上 重新下载当前页menuItem 的功能
+
 #修改
 
 ~~1.改用fresco,在图库界面使用fresco设置placeHolder.~~
