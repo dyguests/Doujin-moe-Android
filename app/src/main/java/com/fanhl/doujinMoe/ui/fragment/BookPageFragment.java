@@ -82,7 +82,7 @@ public class BookPageFragment extends Fragment {
         mAttacher = new PhotoViewAttacher(mImageView);
         mAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
 
-        refreshWithOrientation(getResources().getConfiguration());
+        refreshForOrientation(getResources().getConfiguration());
 
         if (book.isDownloaded() || PageApi.isPageDownloaded(getActivity(), book, position)) {
             Picasso.with(getActivity())
@@ -119,10 +119,10 @@ public class BookPageFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Log.d(TAG, "横竖屏切换");
-        refreshWithOrientation(newConfig);
+        refreshForOrientation(newConfig);
     }
 
-    private void refreshWithOrientation(Configuration newConfig) {
+    private void refreshForOrientation(Configuration newConfig) {
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
