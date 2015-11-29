@@ -50,12 +50,22 @@ public class PhotoViewAttacherEx extends PhotoViewAttacher {
     static final int EDGE_RIGHT = 1;
     static final int EDGE_BOTH  = 2;
 
+    //add by fanhl
+    static final int EDGE_TOP    = 3;
+    static final int EDGE_BOTTOM = 4;
+
     private float mMinScale = DEFAULT_MIN_SCALE;
     private float mMidScale = DEFAULT_MID_SCALE;
     private float mMaxScale = DEFAULT_MAX_SCALE;
 
     private boolean mAllowParentInterceptOnEdge = true;
     private boolean mBlockParentIntercept       = false;
+
+    /**
+     * if parentView is VerticalViewPager, set parentIsVertical = true;
+     * add by fanhl
+     */
+    private boolean parentIsVertical = false;
 
     private static void checkZoomLevels(float minZoom, float midZoom,
                                         float maxZoom) {
@@ -381,9 +391,14 @@ public class PhotoViewAttacherEx extends PhotoViewAttacher {
          */
         ViewParent parent = imageView.getParent();
         if (mAllowParentInterceptOnEdge && !mScaleDragDetector.isScaling() && !mBlockParentIntercept) {
-            if (mScrollEdge == EDGE_BOTH
-                    || (mScrollEdge == EDGE_LEFT && dx >= 1f)
-                    || (mScrollEdge == EDGE_RIGHT && dx <= -1f)) {
+            /**
+             * modify by fanhl
+             */
+            boolean horizontalEdge = !parentIsVertical && ((mScrollEdge == EDGE_LEFT && dx >= 1f)
+                    || (mScrollEdge == EDGE_RIGHT && dx <= -1f));
+            boolean verticalEdge = parentIsVertical && ((mScrollEdge == EDGE_TOP && dy >= 1f)
+                    || (mScrollEdge == EDGE_BOTTOM && dy <= -1f));
+            if (mScrollEdge == EDGE_BOTH || horizontalEdge || verticalEdge) {
                 if (null != parent)
                     parent.requestDisallowInterceptTouchEvent(false);
             }
@@ -776,15 +791,40 @@ public class PhotoViewAttacherEx extends PhotoViewAttacher {
                     deltaX = (viewWidth - width) / 2 - rect.left;
                     break;
             }
-            mScrollEdge = EDGE_BOTH;
+//            mScrollEdge = EDGE_BOTH;
         } else if (rect.left > 0) {
-            mScrollEdge = EDGE_LEFT;
+//            mScrollEdge = EDGE_LEFT;
             deltaX = -rect.left;
         } else if (rect.right < viewWidth) {
             deltaX = viewWidth - rect.right;
-            mScrollEdge = EDGE_RIGHT;
+//            mScrollEdge = EDGE_RIGHT;
         } else {
-            mScrollEdge = EDGE_NONE;
+//            mScrollEdge = EDGE_NONE;
+        }
+
+        /**
+         * modify by fanhl for VerticalViewPager
+         */
+        if (!parentIsVertical) {
+            if (width <= viewWidth) {
+                mScrollEdge = EDGE_BOTH;
+            } else if (rect.left > 0) {
+                mScrollEdge = EDGE_LEFT;
+            } else if (rect.right < viewWidth) {
+                mScrollEdge = EDGE_RIGHT;
+            } else {
+                mScrollEdge = EDGE_NONE;
+            }
+        } else {
+            if (height <= viewHeight) {
+                mScrollEdge = EDGE_BOTH;
+            } else if (rect.top > 0) {
+                mScrollEdge = EDGE_TOP;
+            } else if (rect.bottom < viewHeight) {
+                mScrollEdge = EDGE_BOTTOM;
+            } else {
+                mScrollEdge = EDGE_NONE;
+            }
         }
 
         // Finally actually translate the matrix
@@ -1126,6 +1166,19 @@ public class PhotoViewAttacherEx extends PhotoViewAttacher {
         return ImageView.ScaleType.CENTER_CROP;
     }
 
+    public boolean isParentIsVertical() {
+        return parentIsVertical;
+    }
+
+    /**
+     * if parentView is VerticalViewPager,set parentIsVertical=true;
+     * else set parentIsVertical=false;
+     *
+     * @param parentIsVertical
+     */
+    public void setParentIsVertical(boolean parentIsVertical) {
+        this.parentIsVertical = parentIsVertical;
+    }
 
     public enum ScaleTypeEx {
         /**
