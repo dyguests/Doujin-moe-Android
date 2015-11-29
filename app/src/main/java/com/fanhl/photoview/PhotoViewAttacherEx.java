@@ -31,7 +31,7 @@ import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
 
 /**
- * add TOP_CROP and BOTTOM_CROP
+ * add CROP_TOP and CROP_BOTTOM
  * Created by fanhl on 15/11/29.
  */
 public class PhotoViewAttacherEx extends PhotoViewAttacher {
@@ -941,12 +941,12 @@ public class PhotoViewAttacherEx extends PhotoViewAttacher {
 
         }
         //custom by fanhl start
-        else if (mScaleType == ScaleTypeEx.TOP_CROP) {
+        else if (mScaleType == ScaleTypeEx.CROP_TOP) {
             float scale = Math.max(widthScale, heightScale);
             mBaseMatrix.postScale(scale, scale);
             mBaseMatrix.postTranslate((viewWidth - drawableWidth * scale) / 2F, 0);
 
-        } else if (mScaleType == ScaleTypeEx.BOTTOM_CROP) {
+        } else if (mScaleType == ScaleTypeEx.CROP_BOTTOM) {
             float scale = Math.max(widthScale, heightScale);
             mBaseMatrix.postScale(scale, scale);
             mBaseMatrix.postTranslate((viewWidth - drawableWidth * scale) / 2F,
@@ -1232,8 +1232,8 @@ public class PhotoViewAttacherEx extends PhotoViewAttacher {
 
         //-----------------custom add ----------------------
 
-        TOP_CROP(61),
-        BOTTOM_CROP(62);
+        CROP_TOP(61),
+        CROP_BOTTOM(62);
 
         ScaleTypeEx(int ni) {
             nativeInt = ni;

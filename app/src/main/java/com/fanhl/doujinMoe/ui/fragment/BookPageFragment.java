@@ -127,7 +127,7 @@ public class BookPageFragment extends Fragment {
             mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
             mAttacher.setParentIsVertical(false);
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mAttacher.setScaleType(PhotoViewAttacherEx.ScaleTypeEx.TOP_CROP);
+            mAttacher.setScaleType(PhotoViewAttacherEx.ScaleTypeEx.CROP_TOP);
             // FIXME: 15/11/29 Top_Crop Bottom_Crop 处理
 //            mAttacher.getDisplayMatrix().setTranslate(0, -mAttacher.getDisplayRect().height() / 2);
             mAttacher.setParentIsVertical(true);
