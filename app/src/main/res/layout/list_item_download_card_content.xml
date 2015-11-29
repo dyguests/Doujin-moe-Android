@@ -3,8 +3,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             tools:layout_height="200dp"
-             tools:layout_width="150dp">
+             tools:layout_width="160dp">
 
     <!--书籍信息显示-->
     <FrameLayout
@@ -15,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
+            android:maxHeight="@dimen/list_item_book_max_height"
             android:minHeight="@dimen/list_item_book_min_height"
             android:scaleType="centerCrop"
             tools:ignore="ContentDescription"

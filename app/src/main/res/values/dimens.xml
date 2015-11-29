@@ -19,4 +19,5 @@
     <dimen name="list_item_book_min_height">160dp</dimen>
     <dimen name="list_item_page_min_height">120dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="list_item_book_max_height">240dp</dimen>
 </resources>

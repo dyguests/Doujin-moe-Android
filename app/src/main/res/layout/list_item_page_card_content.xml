@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content">
+             android:layout_height="wrap_content"
+             tools:layout_width="160dp">
 
     <ImageView
         android:id="@+id/preview"
@@ -10,8 +11,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
+        android:maxHeight="@dimen/list_item_book_max_height"
+        android:minHeight="@dimen/list_item_book_min_height"
         android:scaleType="centerCrop"
-        android:minHeight="@dimen/list_item_page_min_height"
         tools:ignore="ContentDescription"
         tools:src="@drawable/place_holder"/>
 </FrameLayout>

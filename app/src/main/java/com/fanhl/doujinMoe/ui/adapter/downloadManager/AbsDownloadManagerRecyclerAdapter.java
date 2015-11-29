@@ -3,6 +3,7 @@ package com.fanhl.doujinMoe.ui.adapter.downloadManager;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ import butterknife.ButterKnife;
  * Created by fanhl on 15/11/24.
  */
 public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewAdapter<AbsDownloadManagerRecyclerAdapter.ViewHolder> {
+    public static final String TAG = AbsDownloadManagerRecyclerAdapter.class.getSimpleName();
+
     protected final DownloadManager downloadManager;
     private final   Handler         uihandler;
 
@@ -72,6 +75,10 @@ public abstract class AbsDownloadManagerRecyclerAdapter extends AbsRecyclerViewA
         }
 
         public void bind(Book item) {
+            if (item == null) {
+                Log.e(TAG, "书籍为空");
+                return;
+            }
             mTitle.setText(item.name);
             if (item.isDownloaded()) {
                 Picasso.with(AbsDownloadManagerRecyclerAdapter.this.context)
