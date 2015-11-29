@@ -7,7 +7,11 @@
     android:background="@color/gallery_background"
     tools:context="com.fanhl.doujinMoe.ui.GalleryActivity">
 
-    <android.support.v4.view.ViewPager
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/pager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+    <com.directionalviewpager.DirectionalViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

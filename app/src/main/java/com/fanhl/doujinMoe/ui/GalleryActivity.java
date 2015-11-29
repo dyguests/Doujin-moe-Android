@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
+import com.directionalviewpager.DirectionalViewPager;
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.api.BookApi;
 import com.fanhl.doujinMoe.model.Book;
@@ -37,17 +38,17 @@ public class GalleryActivity extends AbsActivity {
     public static final  String EXTRA_BOOK_DATA        = "EXTRA_BOOK_DATA";
 
     @Bind(R.id.toolbar)
-    Toolbar           toolbar;
+    Toolbar              toolbar;
     @Bind(R.id.pager)
-    ViewPager         mPager;
+    DirectionalViewPager mPager;
     @Bind(R.id.app_bar)
-    LinearLayout      mAppBar;
+    LinearLayout         mAppBar;
     @Bind(R.id.bottom_bar)
-    LinearLayout      mBottomBar;
+    LinearLayout         mBottomBar;
     @Bind(R.id.seekBar)
-    AppCompatSeekBar  mSeekBar;
+    AppCompatSeekBar     mSeekBar;
     @Bind(R.id.total_pages_text)
-    AppCompatTextView mTotalPagesText;
+    AppCompatTextView    mTotalPagesText;
 
     //custom
 
@@ -114,7 +115,7 @@ public class GalleryActivity extends AbsActivity {
             }
         });
 
-        // FIXME: 15/11/29 实现黄屏时 向上翻页时 上一页要显示成 CROP_BOTTOM,而不是CROP_TOP
+        refreshForOrientation(getResources().getConfiguration());
 
         mTotalPagesText.setText(getString(R.string.info_total_pages, book.position + 1, book.count));
         mSeekBar.setKeyProgressIncrement(1);
@@ -155,7 +156,15 @@ public class GalleryActivity extends AbsActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        refreshForOrientation(newConfig);
+    }
 
+    private void refreshForOrientation(Configuration newConfig) {
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mPager.setOrientation(DirectionalViewPager.HORIZONTAL);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mPager.setOrientation(DirectionalViewPager.VERTICAL);
+        }
     }
 
     public void toggle() {
