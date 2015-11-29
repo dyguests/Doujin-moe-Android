@@ -252,11 +252,25 @@ public class DownloadManager {
                 book.status = Book.Status.NONE;
                 failBooks.add(book);
             } else {
-                Log.d(TAG, "未找到书籍(" + book.name + ")");
+                Log.e(TAG, "未找到书籍(" + book.name + ")");
             }
         }
 
         if (interactionListener != null) interactionListener.onDMDownloadFail(book);
+    }
+
+    /**
+     * 对下载失败的书籍 重新下载
+     *
+     * @param book
+     */
+    public synchronized void retryDownload(Book book) {
+        if (failBooks.contains(book) && failBooks.remove(book)) {
+            book.status = Book.Status.WAIT_DOWNLOAD;
+            waitBooks.push(book);
+
+            if (interactionListener != null) interactionListener.onDMDownloadFail(book);
+        }
     }
 
     public LinkedList<Book> getWaitBooks() {

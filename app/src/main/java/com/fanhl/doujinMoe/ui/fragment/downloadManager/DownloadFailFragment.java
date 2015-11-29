@@ -2,6 +2,7 @@ package com.fanhl.doujinMoe.ui.fragment.downloadManager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.model.Book;
+import com.fanhl.doujinMoe.ui.DetailsActivity;
 import com.fanhl.doujinMoe.ui.adapter.downloadManager.AbsDownloadManagerRecyclerAdapter;
 import com.fanhl.doujinMoe.util.DownloadManager;
 
@@ -70,6 +72,14 @@ public class DownloadFailFragment extends AbsDownloadManagerFragment {
             }
         };
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((position, viewHolder) -> DetailsActivity.launch(getActivity(), ((AbsDownloadManagerRecyclerAdapter.ViewHolder) viewHolder).item));
+        mAdapter.setOnItemLongClickListener((position, holder) -> {
+            Log.d(TAG, "加入重新下载确认.");
+            Snackbar.make(mRecyclerView, R.string.text_retry_download, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> {
+                downloadManager.retryDownload(((AbsDownloadManagerRecyclerAdapter.ViewHolder) holder).item);
+            }).show();
+            return true;
+        });
     }
 
     @Override

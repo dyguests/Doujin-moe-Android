@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.model.Book;
+import com.fanhl.doujinMoe.ui.DetailsActivity;
 import com.fanhl.doujinMoe.ui.adapter.downloadManager.AbsDownloadManagerRecyclerAdapter;
 import com.fanhl.doujinMoe.util.DownloadManager;
 
@@ -70,6 +71,7 @@ public class DownloadSuccessFragment extends AbsDownloadManagerFragment {
             }
         };
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((position, viewHolder) -> DetailsActivity.launch(getActivity(), ((AbsDownloadManagerRecyclerAdapter.ViewHolder) viewHolder).item));
     }
 
     @Override
