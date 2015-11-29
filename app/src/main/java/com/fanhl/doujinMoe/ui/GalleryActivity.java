@@ -106,7 +106,17 @@ public class GalleryActivity extends AbsActivity {
         mPagerAdapter = new GalleryPagerAdapter(getFragmentManager(), book);
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(book.position, false);
-        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+
+        //for DirectionalViewPager.setOnPageChangeListener not ViewPager.addOnPageChangeListener
+//        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                mSeekBar.setProgress(position);
+//                mTotalPagesText.setText(getString(R.string.info_total_pages, position + 1, book.count));
+//                book.position = position;
+//            }
+//        });
+        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 mSeekBar.setProgress(position);
