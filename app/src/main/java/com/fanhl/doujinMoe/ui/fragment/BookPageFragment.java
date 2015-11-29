@@ -17,6 +17,7 @@ import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.model.Page;
 import com.fanhl.doujinMoe.ui.GalleryActivity;
+import com.fanhl.photoview.PhotoViewAttacherEx;
 import com.fanhl.util.GsonUtil;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -24,7 +25,6 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +47,7 @@ public class BookPageFragment extends Fragment {
     private Book book;
     private int  position;
 
-    private PhotoViewAttacher mAttacher;
+    private PhotoViewAttacherEx mAttacher;
 
     /**
      * @param book
@@ -79,7 +79,7 @@ public class BookPageFragment extends Fragment {
 
         mBackgroundView.setOnClickListener(view1 -> ((GalleryActivity) getActivity()).toggle());
         mTextView.setText(String.valueOf(position + 1));
-        mAttacher = new PhotoViewAttacher(mImageView);
+        mAttacher = new PhotoViewAttacherEx(mImageView);
         mAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
 
         refreshForOrientation(getResources().getConfiguration());
@@ -126,7 +126,7 @@ public class BookPageFragment extends Fragment {
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mAttacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            mAttacher.setScaleType(PhotoViewAttacherEx.ScaleTypeEx.TOP_CROP);
             // FIXME: 15/11/29 Top_Crop Bottom_Crop 处理
 //            mAttacher.getDisplayMatrix().setTranslate(0, -mAttacher.getDisplayRect().height() / 2);
 

@@ -55,5 +55,9 @@ public class DownloadedFragment extends AbsBookRecyclerFragment {
                     Log.e(TAG, Log.getStackTraceString(throwable));
                     Snackbar.make(mSwipeRefreshLayout, R.string.text_download_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
                 });
+        mAdapter.setOnItemLongClickListener((position, holder) -> {
+
+            return true;
+        });
     }
 }
