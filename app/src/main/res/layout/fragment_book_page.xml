@@ -16,7 +16,7 @@
         android:textSize="@dimen/gallery_book_page_number_size"
         tools:text="99"/>
 
-    <ImageView
+    <uk.co.senab.photoview.PhotoView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

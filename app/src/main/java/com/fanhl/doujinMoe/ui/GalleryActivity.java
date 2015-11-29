@@ -2,6 +2,7 @@ package com.fanhl.doujinMoe.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -145,6 +146,12 @@ public class GalleryActivity extends AbsActivity {
     protected void onStop() {
         super.onStop();
         BookApi.saveBookJson(this, book);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
     }
 
     public void toggle() {

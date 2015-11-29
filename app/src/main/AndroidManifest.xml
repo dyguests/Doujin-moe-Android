@@ -33,6 +33,7 @@
         </activity>
         <activity
             android:name=".ui.GalleryActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_gallery"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

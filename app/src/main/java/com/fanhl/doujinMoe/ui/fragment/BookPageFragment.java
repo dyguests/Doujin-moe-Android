@@ -2,8 +2,10 @@ package com.fanhl.doujinMoe.ui.fragment;
 
 
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -39,12 +42,12 @@ public class BookPageFragment extends Fragment {
     @Bind(R.id.textView)
     AppCompatTextView mTextView;
     @Bind(R.id.imageView)
-    ImageView         mImageView;
+    PhotoView         mImageView;
 
     private Book book;
     private int  position;
 
-    private PhotoViewAttacher mPhotoViewAttacher;
+    private PhotoViewAttacher mAttacher;
 
     /**
      * @param book
@@ -76,8 +79,10 @@ public class BookPageFragment extends Fragment {
 
         mBackgroundView.setOnClickListener(view1 -> ((GalleryActivity) getActivity()).toggle());
         mTextView.setText(String.valueOf(position + 1));
-        mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
-        mPhotoViewAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
+        mAttacher = new PhotoViewAttacher(mImageView);
+        mAttacher.setOnViewTapListener((view1, v, v1) -> ((GalleryActivity) getActivity()).toggle());
+
+        refreshWithOrientation(getResources().getConfiguration());
 
         if (book.isDownloaded() || PageApi.isPageDownloaded(getActivity(), book, position)) {
             Picasso.with(getActivity())
@@ -85,18 +90,18 @@ public class BookPageFragment extends Fragment {
                     .into(mImageView, new Callback.EmptyCallback() {
                         @Override
                         public void onSuccess() {
-                            mPhotoViewAttacher.update();
+                            mAttacher.update();
                         }
                     });
         } else {
             Page page = book.pages.get(position);
             Picasso.with(getActivity())
                     .load(page.href)
-                            // FIXME: 15/11/10 Detail页面取得的preview
+                    // FIXME: 15/11/10 Detail页面取得的preview
                     .into(mImageView, new Callback.EmptyCallback() {
                         @Override
                         public void onSuccess() {
-                            mPhotoViewAttacher.update();
+                            mAttacher.update();
                         }
                     });
         }
@@ -108,5 +113,23 @@ public class BookPageFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d(TAG, "横竖屏切换");
+        refreshWithOrientation(newConfig);
+    }
+
+    private void refreshWithOrientation(Configuration newConfig) {
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mAttacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            // FIXME: 15/11/29 Top_Crop Bottom_Crop 处理
+//            mAttacher.getDisplayMatrix().setTranslate(0, -mAttacher.getDisplayRect().height() / 2);
+
+        }
     }
 }
