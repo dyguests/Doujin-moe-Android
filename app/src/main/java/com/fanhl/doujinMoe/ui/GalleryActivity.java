@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.view.DirectionalViewPager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -19,7 +20,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
-import com.directionalviewpager.DirectionalViewPager;
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.api.BookApi;
 import com.fanhl.doujinMoe.model.Book;
