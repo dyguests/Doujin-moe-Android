@@ -52,7 +52,11 @@ public class LocalManager {
         refresh();
     }
 
-    void refresh() {
+    public void refresh() {
+        refresh(null);
+    }
+
+    public void refresh(Runnable callback) {
         Observable.<List<Book>>create(subscriber -> {
             recentBooks.clear();
             loveBooks.clear();
@@ -74,6 +78,8 @@ public class LocalManager {
                     }
                 }, throwable -> Log.e(TAG, Log.getStackTraceString(throwable)), () -> {
                     // FIXME: 15/11/20 recentBooks.sort desc
+
+                    if (callback != null) callback.run();
                 });
     }
 

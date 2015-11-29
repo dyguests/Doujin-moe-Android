@@ -65,7 +65,7 @@ public abstract class AbsBookRecyclerFragment extends AbsFragment {
 
         mAdapter.setOnItemClickListener((position, viewHolder) -> {
             BookGridRecyclerAdapter.ViewHolder holder = (BookGridRecyclerAdapter.ViewHolder) viewHolder;
-            DetailsActivity.launch(getActivity(), holder.getItem());
+            DetailsActivity.launch(getActivity(), holder.item);
         });
     }
 

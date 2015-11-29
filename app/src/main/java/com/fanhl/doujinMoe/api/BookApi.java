@@ -40,4 +40,10 @@ public class BookApi extends BaseApi {
         FileCacheManager m = FileCacheManager.getInstance(context);
         return m.getLocalBooks();
     }
+
+    public static boolean deleteBook(Context context, Book book) {
+        Log.d(TAG, "删除书籍:" + book.name);
+        FileCacheManager m = FileCacheManager.getInstance(context);
+        return m.deleteBook(book);
+    }
 }

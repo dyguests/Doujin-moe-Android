@@ -141,7 +141,7 @@ public class FileCacheManager {
         File bookFile = new File(bookDir, BOOK_JSON_FILENAME);
         if (bookFile.exists() && bookFile.isFile()) {
             String bookJson = FileUtil.readFile(bookFile);
-            Book book1 = GsonUtil.obj(bookJson, Book.class);
+            Book   book1    = GsonUtil.obj(bookJson, Book.class);
             Log.d(TAG, "取得json成功");
             return book1;
         }
@@ -231,5 +231,11 @@ public class FileCacheManager {
             }
         }
         return list;
+    }
+
+    public boolean deleteBook(Book book) {
+        File bookDir = getBookDir(book);
+        return bookDir == null || FileUtil.deleteDirectory(bookDir);
+
     }
 }

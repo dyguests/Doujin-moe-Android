@@ -69,8 +69,7 @@ public class BookGridRecyclerAdapter extends AbsRecyclerViewAdapter<BookGridRecy
         @Bind(R.id.title)
         TextView  mTitle;
 
-
-        Book item;
+        public Book item;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -94,10 +93,5 @@ public class BookGridRecyclerAdapter extends AbsRecyclerViewAdapter<BookGridRecy
 
             this.item = item;
         }
-
-        public Book getItem() {
-            return item;
-        }
-
     }
 }
