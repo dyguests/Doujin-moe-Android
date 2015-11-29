@@ -53,7 +53,8 @@ public class GalleryActivity extends AbsActivity {
 
     private Book book;
 
-    private FullScreenHelper mFullScreenHelper;
+    private FullScreenHelper    mFullScreenHelper;
+    private GalleryPagerAdapter mPagerAdapter;
 
     public static void launch(Activity activity, Book book) {
         Intent intent = new Intent(activity, GalleryActivity.class);
@@ -101,18 +102,21 @@ public class GalleryActivity extends AbsActivity {
 
         setTitle(book.name);
 
-        GalleryPagerAdapter mPagerAdapter = new GalleryPagerAdapter(getFragmentManager(), book);
+        mPagerAdapter = new GalleryPagerAdapter(getFragmentManager(), book);
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(book.position, false);
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 mSeekBar.setProgress(position);
-                mTotalPagesText.setText(String.format(getString(R.string.info_total_pages), position + 1, book.count));
+                mTotalPagesText.setText(getString(R.string.info_total_pages, position + 1, book.count));
                 book.position = position;
             }
         });
-        mTotalPagesText.setText(String.format(getString(R.string.info_total_pages), book.position + 1, book.count));
+
+        // FIXME: 15/11/29 实现黄屏时 向上翻页时 上一页要显示成 CROP_BOTTOM,而不是CROP_TOP
+
+        mTotalPagesText.setText(getString(R.string.info_total_pages, book.position + 1, book.count));
         mSeekBar.setKeyProgressIncrement(1);
         mSeekBar.setMax(book.count - 1);
         mSeekBar.setProgress(book.position);
@@ -122,7 +126,7 @@ public class GalleryActivity extends AbsActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 this.progress = progress;
-                mTotalPagesText.setText(String.format(getString(R.string.info_total_pages), progress + 1, book.count));
+                mTotalPagesText.setText(getString(R.string.info_total_pages, progress + 1, book.count));
             }
 
             @Override

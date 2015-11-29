@@ -44,6 +44,8 @@
 
 3.换回Picasso.Fresco完全不好用.![image](graphics/face1.png)
 
+4.用PhotoViewEx来处理横屏时图片显示的位置.
+
 #问题
 
 |问题     | 解决方案                                  |
