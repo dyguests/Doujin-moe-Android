@@ -28,7 +28,7 @@ public class BestFragment extends AbsBookRecyclerFragment {
         if (!mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(true);
         Observable.<List<Book>>create(subscriber -> {
             try {
-                subscriber.onNext(HomeApi.best(1));
+                subscriber.onNext(HomeApi.best(1, "year"));
                 subscriber.onCompleted();
             } catch (Exception e) {
                 subscriber.onError(e);

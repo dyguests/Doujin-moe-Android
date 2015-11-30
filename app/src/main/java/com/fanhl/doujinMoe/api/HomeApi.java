@@ -42,13 +42,13 @@ public class HomeApi extends BaseApi {
         return newestForm;
     }
 
-    public static List<Book> best(int pageIndex) throws IOException, GetDataFailException {
+    public static List<Book> best(int pageIndex, String sortType) throws IOException, GetDataFailException {
         Log.d(TAG, "取得最新书籍.");
         String token = token();
         Document document = Jsoup.connect(DouJinMoeUrl.BEST)
                 .cookie(TOKEN_KEY, token)
                 .data("page", String.valueOf(pageIndex))
-                .data("sort", "year")// FIXME: 15/11/10 之后再改
+                .data("sort", sortType)// FIXME: 15/11/10 之后再改
                 .timeout(TIME_OUT)
                 .post();
 
