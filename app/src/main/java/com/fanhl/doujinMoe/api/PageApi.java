@@ -72,9 +72,7 @@ public class PageApi extends BaseApi {
     public static boolean downloadPage(Context context, Book book, int index) {
         FileCacheManager m = FileCacheManager.getInstance(context);
 
-        File pageFile = m.createPageFile(book, index);
-
-        if (pageFile == null) return false;
+        File cacheFile = m.createCacheFile();
 
         Page page = book.pages.get(index);
 
@@ -85,12 +83,12 @@ public class PageApi extends BaseApi {
         BufferedSink sink    = null;
         try {
             response = client.newCall(request).execute();
-            sink = Okio.buffer(Okio.sink(pageFile));
+            sink = Okio.buffer(Okio.sink(cacheFile));
             sink.writeAll(response.body().source());
             Log.d(TAG, "第 " + (index + 1) + "/" + book.pages.size() + " 张图片下载完成.");
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         } finally {
             if (sink != null) {
                 try {
@@ -101,7 +99,10 @@ public class PageApi extends BaseApi {
             }
         }
 
-        return false;
+        File pageFile = m.createPageFile(book, index);
+
+        return pageFile != null && cacheFile.renameTo(pageFile);
+
     }
 
     public static File getPageFile(Context context, Book book, int index) {

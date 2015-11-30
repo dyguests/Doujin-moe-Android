@@ -70,7 +70,17 @@ public class FileCacheManager {
         return null;
     }
 
-    public File getmCacheDir() {
+    public File createCacheDir() {
+        if (mCacheDir.exists() && mCacheDir.isDirectory()) {
+            return mCacheDir;
+        }
+        if (mCacheDir.mkdirs()) {
+            return mCacheDir;
+        }
+        return null;
+    }
+
+    public File getCacheDir() {
         return mCacheDir;
     }
 
@@ -206,8 +216,6 @@ public class FileCacheManager {
 
         File pageFile = new File(bookImagesDir, pageName);
 
-        // FIXME: 15/11/20 需要创建文件吗? createNewFile?
-
         return pageFile;
     }
 
@@ -237,5 +245,16 @@ public class FileCacheManager {
         File bookDir = getBookDir(book);
         return bookDir == null || FileUtil.deleteDirectory(bookDir);
 
+    }
+
+    public File createCacheFile() {
+        File cacheDir = createCacheDir();
+
+        File file = new File(cacheDir, "cache.cache");
+
+        if (file.exists()) {
+            file.delete();
+        }
+        return file;
     }
 }

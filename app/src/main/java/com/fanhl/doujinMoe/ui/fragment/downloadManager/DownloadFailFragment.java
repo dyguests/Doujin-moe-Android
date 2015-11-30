@@ -75,7 +75,7 @@ public class DownloadFailFragment extends AbsDownloadManagerFragment {
         mAdapter.setOnItemClickListener((position, viewHolder) -> DetailsActivity.launch(getActivity(), ((AbsDownloadManagerRecyclerAdapter.ViewHolder) viewHolder).item));
         mAdapter.setOnItemLongClickListener((position, holder) -> {
             Log.d(TAG, "加入重新下载确认.");
-            Snackbar.make(mRecyclerView, R.string.text_retry_download, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> {
+            Snackbar.make(mRecyclerView, R.string.text_retry_download, Snackbar.LENGTH_LONG).setAction(R.string.action_download, v -> {
                 downloadManager.retryDownload(((AbsDownloadManagerRecyclerAdapter.ViewHolder) holder).item);
             }).show();
             return true;
