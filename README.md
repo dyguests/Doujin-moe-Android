@@ -38,6 +38,8 @@
 
 9.在Gallery页面,加上 重新下载当前页menuItem 的功能
 
+10.把 Detail页面, download 都换成 retrofit.
+
 #修改
 
 ~~1.改用fresco,在图库界面使用fresco设置placeHolder.~~
