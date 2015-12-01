@@ -2,6 +2,8 @@
 
 啊哈...这是一个Doujin-Moe的Android客户端.
 
+使用了 JSoup,OKHttp,ButterKnife,RxJava,RxAndroid,PhotoViewEx,DirectionalViewPager,Gson....
+
 主要代码参考自[NHentai-android](https://github.com/fython/NHentai-android).
 
 <a href="./graphics/device-2015-11-28-222059.png"><img src="./graphics/device-2015-11-28-222059.png" width="40%"/></a>
