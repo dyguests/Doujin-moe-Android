@@ -43,7 +43,7 @@ public class BestFragment extends AbsBookRecyclerFragment {
                 }, throwable -> {
                     mSwipeRefreshLayout.setRefreshing(false);
                     Log.e(TAG, Log.getStackTraceString(throwable));
-                    Snackbar.make(mSwipeRefreshLayout, R.string.text_newest_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
+                    Snackbar.make(mSwipeRefreshLayout, R.string.text_best_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
                 });
     }
 }
