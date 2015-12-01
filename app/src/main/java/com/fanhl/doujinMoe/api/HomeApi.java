@@ -43,7 +43,7 @@ public class HomeApi extends BaseApi {
     }
 
     public static List<Book> best(int pageIndex, String sortType) throws IOException, GetDataFailException {
-        Log.d(TAG, "取得最新书籍.");
+        Log.d(TAG, "取得排行榜书籍.");
         String token = token();
         Document document = Jsoup.connect(DouJinMoeUrl.BEST)
                 .cookie(TOKEN_KEY, token)
