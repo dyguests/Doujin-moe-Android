@@ -43,29 +43,31 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
             Log.d(TAG, "loading more");
             isLoadingData = true;
 
-            app().getClient().getHomeService().bookList(getSection(), offset, Constants.PAGE_BOOK_COUNT_MAX, getSortType()).enqueue(new Callback<FolderResponse>() {
-                @Override
-                public void onResponse(Response<FolderResponse> response, Retrofit retrofit) {
-                    if (mSwipeRefreshLayout == null) return;
-                    isLoadingData = false;
-                    isLoadingComplete = response.body().complete;
-                    offset += Constants.PAGE_BOOK_COUNT_MAX;
+            app().getClient().getHomeService()
+                    .bookList(getSection(), offset, Constants.PAGE_BOOK_COUNT_MAX, getSortType(), getParam())
+                    .enqueue(new Callback<FolderResponse>() {
+                        @Override
+                        public void onResponse(Response<FolderResponse> response, Retrofit retrofit) {
+                            if (mSwipeRefreshLayout == null) return;
+                            isLoadingData = false;
+                            isLoadingComplete = response.body().complete;
+                            offset += Constants.PAGE_BOOK_COUNT_MAX;
 
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    if (!isLoadMore) mBooks.clear();
-                    mBooks.addAll(response.body().folders);
-                    mAdapter.notifyDataSetChanged();
-                }
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            if (!isLoadMore) mBooks.clear();
+                            mBooks.addAll(response.body().folders);
+                            mAdapter.notifyDataSetChanged();
+                        }
 
-                @Override
-                public void onFailure(Throwable t) {
-                    isLoadingData = false;
-                    if (mSwipeRefreshLayout == null) return;
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    Log.e(NewestFragment.TAG, Log.getStackTraceString(t));
-                    Snackbar.make(mSwipeRefreshLayout, R.string.text_newest_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
-                }
-            });
+                        @Override
+                        public void onFailure(Throwable t) {
+                            isLoadingData = false;
+                            if (mSwipeRefreshLayout == null) return;
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            Log.e(NewestFragment.TAG, Log.getStackTraceString(t));
+                            Snackbar.make(mSwipeRefreshLayout, R.string.text_newest_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
+                        }
+                    });
         }
     }
 
@@ -93,4 +95,9 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
      */
     @NonNull
     protected abstract String getSortType();
+
+    @NonNull
+    protected String getParam() {
+        return "";
+    }
 }

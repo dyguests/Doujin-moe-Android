@@ -116,6 +116,10 @@ public class MainActivity extends AbsActivity
             mViewpager.setCurrentItem(MainPagerAdapter.BEST_INDEX);
         } else if (id == R.id.nav_artist) {
             mViewpager.setCurrentItem(MainPagerAdapter.ARTIST_INDEX);
+        } else if (id == R.id.nav_category) {
+            mViewpager.setCurrentItem(MainPagerAdapter.CATEGORY_INDEX);
+        } else if (id == R.id.nav_abc) {
+            mViewpager.setCurrentItem(MainPagerAdapter.ABC_INDEX);
         } else if (id == R.id.nav_downloaded) {
             mViewpager.setCurrentItem(MainPagerAdapter.DOWNLOADED_INDEX);
         } else if (id == R.id.nav_download_manage) {

@@ -13,7 +13,15 @@
         <item
             android:id="@+id/nav_artist"
             android:icon="@drawable/ic_menu_manage"
-            android:title="@string/Artist"/>
+            android:title="@string/title_artist"/>
+        <item
+            android:id="@+id/nav_category"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/title_category"/>
+        <item
+            android:id="@+id/nav_abc"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/title_abc"/>
         <item
             android:id="@+id/nav_downloaded"
             android:icon="@drawable/ic_menu_slideshow"

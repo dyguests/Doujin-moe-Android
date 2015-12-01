@@ -19,6 +19,6 @@ public interface HomeService {
             @Field("token") String token,
             @Field("offset") int offset,
             @Field("max") int max,
-            @Field("sort") String sort/*,
-            @Field("param") String param*/);
+            @Field("sort") String sort,
+            @Field("param") String param);
 }

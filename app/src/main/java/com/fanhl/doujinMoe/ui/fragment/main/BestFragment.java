@@ -1,5 +1,7 @@
 package com.fanhl.doujinMoe.ui.fragment.main;
 
+import android.app.Fragment;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 /**
