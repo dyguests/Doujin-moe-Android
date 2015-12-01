@@ -11,6 +11,7 @@
 
     <string name="title_newest">最新</string>
     <string name="title_best">排行榜</string>
+    <string name="title_artist">作者</string>
     <string name="title_downloaded">已下载</string>
     <string name="text_newest_get_fail">取得 最新漫画 失败.</string>
     <string name="text_best_get_fail">取得 排行榜 失败.</string>
@@ -34,4 +35,5 @@
     <string name="text_retry_download">是否重新下载?</string>
     <string name="text_book_delete">是否删除书籍 %s .</string>
     <string name="action_delete">删除</string>
+    <string name="Artist">艺术家</string>
 </resources>

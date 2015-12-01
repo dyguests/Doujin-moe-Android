@@ -6,7 +6,6 @@ import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
 import com.fanhl.doujinMoe.api.form.NewestForm;
 import com.fanhl.doujinMoe.exception.GetDataFailException;
 import com.fanhl.doujinMoe.model.Book;
-import com.fanhl.doujinMoe.rest.model.FolderResponse;
 import com.fanhl.util.GsonUtil;
 
 import org.jsoup.Jsoup;
@@ -24,6 +23,7 @@ import java.util.List;
 public class HomeApi extends BaseApi {
     public static final String TAG = HomeApi.class.getSimpleName();
 
+    @Deprecated
     public static NewestForm newest(int pageIndex) throws IOException, GetDataFailException {
         Log.d(TAG, "取得最新书籍.");
         String token = token();
@@ -42,6 +42,7 @@ public class HomeApi extends BaseApi {
         return newestForm;
     }
 
+    @Deprecated
     public static List<Book> best(int pageIndex, String sortType) throws IOException, GetDataFailException {
         Log.d(TAG, "取得排行榜书籍.");
         String token = token();

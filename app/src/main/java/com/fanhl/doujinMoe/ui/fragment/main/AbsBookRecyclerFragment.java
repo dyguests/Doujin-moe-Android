@@ -1,4 +1,4 @@
-package com.fanhl.doujinMoe.ui.fragment;
+package com.fanhl.doujinMoe.ui.fragment.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +13,8 @@ import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.DetailsActivity;
 import com.fanhl.doujinMoe.ui.adapter.BookGridRecyclerAdapter;
+import com.fanhl.doujinMoe.ui.fragment.AbsFragment;
+import com.fanhl.loadmore.OnRcvScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +69,14 @@ public abstract class AbsBookRecyclerFragment extends AbsFragment {
             BookGridRecyclerAdapter.ViewHolder holder = (BookGridRecyclerAdapter.ViewHolder) viewHolder;
             DetailsActivity.launch(getActivity(), holder.item);
         });
+
+        mRecyclerView.addOnScrollListener(new OnRcvScrollListener() {
+            @Override
+            public void onScrollBottom() {
+                super.onScrollBottom();
+                loadMore();
+            }
+        });
     }
 
     protected void initData() {
@@ -74,4 +84,8 @@ public abstract class AbsBookRecyclerFragment extends AbsFragment {
     }
 
     protected abstract void refreshData();
+
+    protected void loadMore() {
+        //load more data
+    }
 }

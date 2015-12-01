@@ -1,4 +1,4 @@
-package com.fanhl.doujinMoe.ui.fragment;
+package com.fanhl.doujinMoe.ui.fragment.main;
 
 import android.os.Handler;
 import android.support.design.widget.Snackbar;

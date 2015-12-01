@@ -7,9 +7,10 @@ import android.support.v13.app.FragmentPagerAdapter;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.ui.MainActivity;
-import com.fanhl.doujinMoe.ui.fragment.BestFragment;
-import com.fanhl.doujinMoe.ui.fragment.DownloadedFragment;
-import com.fanhl.doujinMoe.ui.fragment.NewestFragment;
+import com.fanhl.doujinMoe.ui.fragment.main.ArtistFragment;
+import com.fanhl.doujinMoe.ui.fragment.main.BestFragment;
+import com.fanhl.doujinMoe.ui.fragment.main.DownloadedFragment;
+import com.fanhl.doujinMoe.ui.fragment.main.NewestFragment;
 
 /**
  * Created by fanhl on 15/11/5.
@@ -18,12 +19,14 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     public static final int NEWEST_INDEX     = 0;
     public static final int BEST_INDEX       = 1;
-    public static final int DOWNLOADED_INDEX = 2;
+    public static final int ARTIST_INDEX     = 2;
+    public static final int DOWNLOADED_INDEX = 3;
 
-    public static final int PAGE_COUNT = 3;
+    public static final int PAGE_COUNT = 4;
 
     private final NewestFragment newestFragment;
     private final BestFragment   bestFragment;
+    private final ArtistFragment artistFragment;
 
     private final DownloadedFragment downloadedFragment;
 
@@ -32,6 +35,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
         newestFragment = NewestFragment.newInstance();
         bestFragment = BestFragment.newInstance();
+        artistFragment = ArtistFragment.newInstance();
 
         downloadedFragment = DownloadedFragment.newInstance();
     }
@@ -43,6 +47,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return newestFragment;
             case BEST_INDEX:
                 return bestFragment;
+            case ARTIST_INDEX:
+                return artistFragment;
             case DOWNLOADED_INDEX:
                 return downloadedFragment;
             default:
@@ -66,6 +72,10 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case BEST_INDEX:
                 activity.setTitle(activity.getString(R.string.title_best));
                 navigationView.setCheckedItem(R.id.nav_best);
+                break;
+            case ARTIST_INDEX:
+                activity.setTitle(activity.getString(R.string.title_artist));
+                navigationView.setCheckedItem(R.id.nav_artist);
                 break;
             case DOWNLOADED_INDEX:
                 activity.setTitle(activity.getString(R.string.title_downloaded));

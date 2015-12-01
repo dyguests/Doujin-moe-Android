@@ -59,6 +59,7 @@ public class MainActivity extends AbsActivity
 
         mPagerAdapter = new MainPagerAdapter(getFragmentManager());
         mViewpager.setAdapter(mPagerAdapter);
+        mViewpager.setOffscreenPageLimit(3);//使4个fragment都保持活动
         mViewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -113,10 +114,10 @@ public class MainActivity extends AbsActivity
             mViewpager.setCurrentItem(MainPagerAdapter.NEWEST_INDEX);
         } else if (id == R.id.nav_best) {
             mViewpager.setCurrentItem(MainPagerAdapter.BEST_INDEX);
+        } else if (id == R.id.nav_artist) {
+            mViewpager.setCurrentItem(MainPagerAdapter.ARTIST_INDEX);
         } else if (id == R.id.nav_downloaded) {
             mViewpager.setCurrentItem(MainPagerAdapter.DOWNLOADED_INDEX);
-        } else if (id == R.id.nav_manage) {
-
         } else if (id == R.id.nav_download_manage) {
             DownloadManagerActivity.launch(this);
         } else if (id == R.id.nav_share) {
