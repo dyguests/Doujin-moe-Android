@@ -6,6 +6,7 @@ import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
 import com.fanhl.doujinMoe.api.form.NewestForm;
 import com.fanhl.doujinMoe.exception.GetDataFailException;
 import com.fanhl.doujinMoe.model.Book;
+import com.fanhl.doujinMoe.rest.model.FolderResponse;
 import com.fanhl.util.GsonUtil;
 
 import org.jsoup.Jsoup;

@@ -1,5 +1,7 @@
 package com.fanhl.doujinMoe.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,11 +10,19 @@ import java.util.List;
  * Created by fanhl on 15/11/5.
  */
 public class Book {
-    public String token;
-    public String name;
-    public int    count;
-    public String rating;
-    public String date;
+
+    //--------------------- Gson 解析取得-----------------------
+
+    public String  token;
+    @SerializedName("title")
+    public String  name;
+    @SerializedName("objectcount")
+    public int     count;
+    public boolean main;
+    public String  rating;
+    public String  date;
+
+    //---------------------- 本地信息 ---------------------------
 
     public List<Page> pages;
     /*当前看到的页码*/

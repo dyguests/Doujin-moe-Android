@@ -1,13 +1,15 @@
 package com.fanhl.doujinMoe.rest.model;
 
-import com.google.gson.annotations.SerializedName;
+import com.fanhl.doujinMoe.model.Book;
 
 import java.util.List;
 
 /**
+ * 存放状态,书籍列表
+ * <p>
  * Created by fanhl on 15/12/1.
  */
-public class BookListResponse {
+public class FolderResponse {
     /**
      * success : true
      * message :
@@ -28,15 +30,4 @@ public class BookListResponse {
      */
 
     public List<Book> folders;
-
-    public static class Book {
-        public String  token;
-        @SerializedName("title")
-        public String  name;
-        @SerializedName("objectcount")
-        public int     count;
-        public String  rating;
-        public String  date;
-        public boolean main;
-    }
 }

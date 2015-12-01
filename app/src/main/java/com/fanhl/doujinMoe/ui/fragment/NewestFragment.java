@@ -4,12 +4,11 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 
 import com.fanhl.doujinMoe.R;
-import com.fanhl.doujinMoe.api.HomeApi;
-import com.fanhl.doujinMoe.api.form.NewestForm;
+import com.fanhl.doujinMoe.rest.model.FolderResponse;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by fanhl on 15/11/8.
@@ -24,26 +23,23 @@ public class NewestFragment extends AbsBookRecyclerFragment {
     @Override
     protected void refreshData() {
         if (!mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(true);
-        Observable.<NewestForm>create(subscriber -> {
-            try {
-                subscriber.onNext(HomeApi.newest(1));
-                subscriber.onCompleted();
-            } catch (Exception e) {
-                subscriber.onError(e);
+        app().getClient().getHomeService().bookList("newest", 0, 5, "name").enqueue(new Callback<FolderResponse>() {
+            @Override
+            public void onResponse(Response<FolderResponse> response, Retrofit retrofit) {
+                if (mSwipeRefreshLayout == null) return;
+                mSwipeRefreshLayout.setRefreshing(false);
+                mBooks.clear();
+                mBooks.addAll(response.body().folders);
+                mAdapter.notifyDataSetChanged();
             }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(newestForm -> {
-                    if (mSwipeRefreshLayout == null) return;
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    mBooks.clear();
-                    mBooks.addAll(newestForm.newest);
-                    mAdapter.notifyDataSetChanged();
-                }, throwable -> {
-                    if (mSwipeRefreshLayout == null) return;
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    Log.e(TAG, Log.getStackTraceString(throwable));
-                    Snackbar.make(mSwipeRefreshLayout, R.string.text_newest_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
-                });
+
+            @Override
+            public void onFailure(Throwable t) {
+                if (mSwipeRefreshLayout == null) return;
+                mSwipeRefreshLayout.setRefreshing(false);
+                Log.e(TAG, Log.getStackTraceString(t));
+                Snackbar.make(mSwipeRefreshLayout, R.string.text_newest_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
+            }
+        });
     }
 }
