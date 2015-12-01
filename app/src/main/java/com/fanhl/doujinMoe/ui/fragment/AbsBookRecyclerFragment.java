@@ -49,7 +49,7 @@ public abstract class AbsBookRecyclerFragment extends AbsFragment {
         ButterKnife.unbind(this);
     }
 
-    private void assignViews() {
+    protected void assignViews() {
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getIntArray(R.array.refresh_array));
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshData);
 

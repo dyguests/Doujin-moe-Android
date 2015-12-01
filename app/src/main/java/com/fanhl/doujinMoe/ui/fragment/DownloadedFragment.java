@@ -30,6 +30,22 @@ public class DownloadedFragment extends AbsBookRecyclerFragment {
     }
 
     @Override
+    protected void assignViews() {
+        super.assignViews();
+
+        mAdapter.setOnItemLongClickListener((position, viewHolder) -> {
+            Log.d(TAG, "删除书籍确认.");
+            BookGridRecyclerAdapter.ViewHolder holder = (BookGridRecyclerAdapter.ViewHolder) viewHolder;
+            Snackbar.make(mRecyclerView, getResources().getString(R.string.text_book_delete, holder.item.name), Snackbar.LENGTH_LONG).setAction(R.string.action_delete, v -> {
+                if (BookApi.deleteBook(getActivity(), holder.item)) {
+                    app().getLocalManager().refresh(() -> getActivity().runOnUiThread(this::refreshData));
+                }
+            }).show();
+            return true;
+        });
+    }
+
+    @Override
     protected void initData() {
         super.initData();
         downloadedHandler = ThreadUtil.createBackgroundHandler("已下载用线程");
@@ -57,15 +73,5 @@ public class DownloadedFragment extends AbsBookRecyclerFragment {
                     Log.e(TAG, Log.getStackTraceString(throwable));
                     Snackbar.make(mSwipeRefreshLayout, R.string.text_download_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
                 });
-        mAdapter.setOnItemLongClickListener((position, viewHolder) -> {
-            Log.d(TAG, "删除书籍确认.");
-            BookGridRecyclerAdapter.ViewHolder holder = (BookGridRecyclerAdapter.ViewHolder) viewHolder;
-            Snackbar.make(mRecyclerView, getResources().getString(R.string.text_book_delete, holder.item.name), Snackbar.LENGTH_LONG).setAction(R.string.action_delete, v -> {
-                if (BookApi.deleteBook(getActivity(), holder.item)) {
-                    app().getLocalManager().refresh(() -> getActivity().runOnUiThread(() -> mAdapter.notifyDataSetChanged()));
-                }
-            }).show();
-            return true;
-        });
     }
 }
