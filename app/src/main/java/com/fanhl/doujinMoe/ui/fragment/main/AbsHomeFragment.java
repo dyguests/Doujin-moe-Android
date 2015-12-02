@@ -6,8 +6,10 @@ import android.util.Log;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.common.Constants;
+import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.rest.model.FolderResponse;
 
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -38,7 +40,6 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
     @Override
     protected void initData() {
         super.initData();
-
         subscriber = new Subscriber<FolderResponse>() {
             @Override
             public void onNext(FolderResponse folderResponse) {
@@ -90,6 +91,16 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
                     .bookList(getToken(), offset, Constants.PAGE_BOOK_COUNT_MAX, getSort(), getParam())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+//                    .filter(folderResponse -> {
+//                        if (folderResponse.success) {
+//                            offset += Constants.PAGE_BOOK_COUNT_MAX;
+//
+//                        }else{
+//                            // FIXME: 15/12/2 有办法失败走onError么?
+//                        }
+//                        return folderResponse.success;
+//                    })
+//                    .flatMap(folderResponse -> Observable.<Book>from(folderResponse.folders))
                     .subscribe(subscriber);
         }
     }

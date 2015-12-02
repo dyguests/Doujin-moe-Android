@@ -63,6 +63,17 @@ public class BookGridRecyclerAdapter extends AbsRecyclerViewAdapter<BookGridRecy
         super.onViewRecycled(holder);
     }
 
+    public void addItem(Book item) {
+        list.add(item);
+        notifyItemInserted(list.size() - 1);
+    }
+
+    public void clear() {
+        int size = list.size();
+        list.clear();
+        notifyItemRangeRemoved(0, size - 1);
+    }
+
     public class ViewHolder extends AbsRecyclerViewAdapter.ClickableViewHolder {
         @Bind(R.id.preview)
         ImageView mPreview;
