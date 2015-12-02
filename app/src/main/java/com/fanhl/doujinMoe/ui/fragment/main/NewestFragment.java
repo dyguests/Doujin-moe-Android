@@ -13,13 +13,13 @@ public class NewestFragment extends AbsHomeFragment {
 
     @Override
     @NonNull
-    protected String getSection() {
+    protected String getToken() {
         return "newest";
     }
 
     @Override
     @NonNull
-    protected String getSortType() {
+    protected String getSort() {
         return "name";
     }
 }

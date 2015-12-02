@@ -13,7 +13,7 @@ public class AbcFragment extends AbsHomeFragment {
 
     @Override
     @NonNull
-    protected String getSection() {
+    protected String getToken() {
         return "abc";
     }
 
@@ -22,7 +22,7 @@ public class AbcFragment extends AbsHomeFragment {
      */
     @Override
     @NonNull
-    protected String getSortType() {
+    protected String getSort() {
         return "name";
     }
 

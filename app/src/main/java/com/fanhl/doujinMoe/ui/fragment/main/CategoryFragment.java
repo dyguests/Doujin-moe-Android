@@ -15,7 +15,7 @@ public class CategoryFragment extends AbsHomeFragment {
 
     @Override
     @NonNull
-    protected String getSection() {
+    protected String getToken() {
         return "category";
     }
 
@@ -24,7 +24,7 @@ public class CategoryFragment extends AbsHomeFragment {
      */
     @Override
     @NonNull
-    protected String getSortType() {
+    protected String getSort() {
         return "name";
     }
 }

@@ -44,7 +44,7 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
             isLoadingData = true;
 
             app().getClient().getHomeService()
-                    .bookList(getSection(), offset, Constants.PAGE_BOOK_COUNT_MAX, getSortType(), getParam())
+                    .bookList(getToken(), offset, Constants.PAGE_BOOK_COUNT_MAX, getSort(), getParam())
                     .enqueue(new Callback<FolderResponse>() {
                         @Override
                         public void onResponse(Response<FolderResponse> response, Retrofit retrofit) {
@@ -81,7 +81,7 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
      * @return
      */
     @NonNull
-    protected abstract String getSection();
+    protected abstract String getToken();
 
     /**
      * 取得排序方式
@@ -94,7 +94,7 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
      * @return
      */
     @NonNull
-    protected abstract String getSortType();
+    protected abstract String getSort();
 
     @NonNull
     protected String getParam() {

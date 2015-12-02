@@ -120,6 +120,8 @@ public class MainActivity extends AbsActivity
             mViewpager.setCurrentItem(MainPagerAdapter.CATEGORY_INDEX);
         } else if (id == R.id.nav_abc) {
             mViewpager.setCurrentItem(MainPagerAdapter.ABC_INDEX);
+        } else if (id == R.id.nav_search) {
+            mViewpager.setCurrentItem(MainPagerAdapter.SEARCH_INDEX);
         } else if (id == R.id.nav_downloaded) {
             mViewpager.setCurrentItem(MainPagerAdapter.DOWNLOADED_INDEX);
         } else if (id == R.id.nav_download_manage) {

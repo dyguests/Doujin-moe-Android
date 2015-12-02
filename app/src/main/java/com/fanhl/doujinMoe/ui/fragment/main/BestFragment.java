@@ -14,7 +14,7 @@ public class BestFragment extends AbsHomeFragment {
 
     @Override
     @NonNull
-    protected String getSection() {
+    protected String getToken() {
         return "best";
     }
 
@@ -27,7 +27,7 @@ public class BestFragment extends AbsHomeFragment {
      */
     @Override
     @NonNull
-    protected String getSortType() {
+    protected String getSort() {
         return "mouth";
     }
 }

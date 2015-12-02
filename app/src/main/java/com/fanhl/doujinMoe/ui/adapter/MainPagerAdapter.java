@@ -13,6 +13,7 @@ import com.fanhl.doujinMoe.ui.fragment.main.BestFragment;
 import com.fanhl.doujinMoe.ui.fragment.main.CategoryFragment;
 import com.fanhl.doujinMoe.ui.fragment.main.DownloadedFragment;
 import com.fanhl.doujinMoe.ui.fragment.main.NewestFragment;
+import com.fanhl.doujinMoe.ui.fragment.main.SearchFragment;
 
 /**
  * Created by fanhl on 15/11/5.
@@ -24,16 +25,17 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     public static final int ARTIST_INDEX     = 2;
     public static final int CATEGORY_INDEX   = 3;
     public static final int ABC_INDEX        = 4;
-    public static final int DOWNLOADED_INDEX = 5;
+    public static final int SEARCH_INDEX     = 5;
+    public static final int DOWNLOADED_INDEX = 6;
 
-    public static final int PAGE_COUNT = 6;
+    public static final int PAGE_COUNT = 7;
 
     private NewestFragment     newestFragment;
     private BestFragment       bestFragment;
     private ArtistFragment     artistFragment;
     private CategoryFragment   categoryFragment;
     private AbcFragment        abcFragment;
-    //private SearchFragment        searchFragment;
+    private SearchFragment     searchFragment;
     private DownloadedFragment downloadedFragment;
 
     public MainPagerAdapter(FragmentManager fm) {
@@ -57,6 +59,9 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return categoryFragment;
             case ABC_INDEX:
                 if (abcFragment == null) abcFragment = AbcFragment.newInstance();
+                return abcFragment;
+            case SEARCH_INDEX:
+                if (searchFragment == null) searchFragment = SearchFragment.newInstance();
                 return abcFragment;
             case DOWNLOADED_INDEX:
                 if (downloadedFragment == null) downloadedFragment = DownloadedFragment.newInstance();
@@ -92,6 +97,10 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 navigationView.setCheckedItem(R.id.nav_category);
                 break;
             case ABC_INDEX:
+                activity.setTitle(activity.getString(R.string.title_abc));
+                navigationView.setCheckedItem(R.id.nav_abc);
+                break;
+            case SEARCH_INDEX:
                 activity.setTitle(activity.getString(R.string.title_abc));
                 navigationView.setCheckedItem(R.id.nav_abc);
                 break;
