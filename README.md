@@ -18,7 +18,7 @@
 
 1.书籍下载.
 
-#备注
+#备忘
 
 1.书籍中的page命名规则按 1.jpg(png ...) ,2.jpg 的方式来命名,不采用网站上的"乱码".       OK
 
@@ -40,6 +40,8 @@
 
 10.把 Detail页面, download 都换成 retrofit.
 
+11.把 category和search版块合并到一起.
+
 #修改
 
 ~~1.改用fresco,在图库界面使用fresco设置placeHolder.~~
@@ -51,6 +53,8 @@
 4.用PhotoViewEx来处理横屏时图片显示的位置.
 
 5.Retrofit超好用!!!
+
+6.Retrofit+Rx也超好用!!!!
 
 #问题
 

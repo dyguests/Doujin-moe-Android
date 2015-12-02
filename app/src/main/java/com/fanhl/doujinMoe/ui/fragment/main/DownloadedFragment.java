@@ -71,7 +71,7 @@ public class DownloadedFragment extends AbsBookRecyclerFragment {
                 }, throwable -> {
                     mSwipeRefreshLayout.setRefreshing(false);
                     Log.e(TAG, Log.getStackTraceString(throwable));
-                    Snackbar.make(mSwipeRefreshLayout, R.string.text_download_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
+                    Snackbar.make(mSwipeRefreshLayout, R.string.text_downloaded_get_fail, Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
                 });
     }
 }

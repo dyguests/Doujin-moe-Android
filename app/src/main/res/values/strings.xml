@@ -15,7 +15,11 @@
     <string name="title_downloaded">已下载</string>
     <string name="text_newest_get_fail">取得 最新漫画 失败.</string>
     <string name="text_best_get_fail">取得 排行榜 失败.</string>
-    <string name="text_download_get_fail">取得 已下载书籍 失败.</string>
+    <string name="text_artist_get_fail">取得 作者版块 失败.</string>
+    <string name="text_category_get_fail">取得 类别版块 失败.</string>
+    <string name="text_abc_get_fail">取得 名称版块 失败.</string>
+    <string name="text_search_get_fail">取得 检索版块 失败.</string>
+    <string name="text_downloaded_get_fail">取得 已下载书籍 失败.</string>
     <string name="title_activity_details">书籍详细</string>
     <string name="refresh_fail">刷新数据失败.</string>
     <string name="title_activity_gallery">图库</string>

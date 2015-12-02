@@ -2,6 +2,8 @@ package com.fanhl.doujinMoe.ui.fragment.main;
 
 import android.support.annotation.NonNull;
 
+import com.fanhl.doujinMoe.R;
+
 /**
  * http://m.doujin-moe.us/abc
  * Created by fanhl on 15/12/1.
@@ -41,6 +43,11 @@ public class AbcFragment extends AbsHomeFragment {
     @Override
     protected String getParam() {
         return "Non-series";
+    }
+
+    @Override
+    protected int getLoadFailMsgResId() {
+        return R.string.text_abc_get_fail;
     }
 
     // FIXME: 15/12/2 过滤条件

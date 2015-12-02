@@ -1,8 +1,8 @@
 package com.fanhl.doujinMoe.ui.fragment.main;
 
-import android.app.Fragment;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+
+import com.fanhl.doujinMoe.R;
 
 /**
  * Top Rated
@@ -29,5 +29,10 @@ public class BestFragment extends AbsHomeFragment {
     @NonNull
     protected String getSort() {
         return "mouth";
+    }
+
+    @Override
+    protected int getLoadFailMsgResId() {
+        return R.string.text_best_get_fail;
     }
 }
