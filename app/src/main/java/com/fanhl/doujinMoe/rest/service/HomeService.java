@@ -4,7 +4,6 @@ import com.fanhl.doujinMoe.rest.model.FolderResponse;
 
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
-import retrofit.http.Headers;
 import retrofit.http.POST;
 import rx.Observable;
 
@@ -14,7 +13,6 @@ import rx.Observable;
 public interface HomeService {
     @FormUrlEncoded
     @POST("/ajax/folder.php")
-    @Headers("Content-Type: application/x-www-form-urlencoded; charset=UTF-8")
     Observable<FolderResponse> bookList(
             @Field("token") String token,
             @Field("offset") int offset,
