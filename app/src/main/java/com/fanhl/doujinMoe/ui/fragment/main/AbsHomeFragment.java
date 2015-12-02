@@ -6,7 +6,9 @@ import android.util.Log;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.common.Constants;
+import com.fanhl.doujinMoe.rest.model.FolderResponse;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -21,7 +23,49 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
     private boolean isLoadingComplete = false;
     /*loadMore用*/
     private boolean isLoadingData     = false;
+    /*当前数据加载是 refresh 还是 loadMore*/
+    private boolean isLoadMore        = false;
     private int     offset            = 0;
+    /*处理从服务器取得的数据的观察者*/
+    private Subscriber<FolderResponse> subscriber;
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        subscriber.unsubscribe();
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+
+        subscriber = new Subscriber<FolderResponse>() {
+            @Override
+            public void onNext(FolderResponse folderResponse) {
+                isLoadingData = false;
+                isLoadingComplete = folderResponse.complete;
+                offset += Constants.PAGE_BOOK_COUNT_MAX;
+                if (mSwipeRefreshLayout == null) return;
+                mSwipeRefreshLayout.setRefreshing(false);
+                if (!isLoadMore) mBooks.clear();
+                mBooks.addAll(folderResponse.folders);
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                isLoadingData = false;
+                mSwipeRefreshLayout.setRefreshing(false);
+                if (mSwipeRefreshLayout == null) return;
+                Log.e(NewestFragment.TAG, Log.getStackTraceString(e));
+                Snackbar.make(mSwipeRefreshLayout, getLoadFailMsgResId(), Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
+            }
+
+            @Override
+            public void onCompleted() {
+            }
+        };
+    }
 
     @Override
     protected void refreshData() {
@@ -37,7 +81,8 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
     }
 
     private void loadData(boolean isLoadMore) {
-        if (!isLoadingData && !(isLoadMore && isLoadingComplete)) {
+        this.isLoadMore = isLoadMore;
+        if (!isLoadingData && !(this.isLoadMore && isLoadingComplete)) {
             Log.d(TAG, "loading more");
             isLoadingData = true;
 
@@ -45,22 +90,23 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
                     .bookList(getToken(), offset, Constants.PAGE_BOOK_COUNT_MAX, getSort(), getParam())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(folderResponse -> {
-                        isLoadingData = false;
-                        isLoadingComplete = folderResponse.complete;
-                        offset += Constants.PAGE_BOOK_COUNT_MAX;
-                        if (mSwipeRefreshLayout == null) return;
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        if (!isLoadMore) mBooks.clear();
-                        mBooks.addAll(folderResponse.folders);
-                        mAdapter.notifyDataSetChanged();
-                    }, throwable -> {
-                        isLoadingData = false;
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        if (mSwipeRefreshLayout == null) return;
-                        Log.e(NewestFragment.TAG, Log.getStackTraceString(throwable));
-                        Snackbar.make(mSwipeRefreshLayout, getLoadFailMsgResId(), Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
-                    });
+                    .subscribe(subscriber);
+//                    .subscribe(folderResponse -> {
+//                        isLoadingData = false;
+//                        isLoadingComplete = folderResponse.complete;
+//                        offset += Constants.PAGE_BOOK_COUNT_MAX;
+//                        if (mSwipeRefreshLayout == null) return;
+//                        mSwipeRefreshLayout.setRefreshing(false);
+//                        if (!isLoadMore) mBooks.clear();
+//                        mBooks.addAll(folderResponse.folders);
+//                        mAdapter.notifyDataSetChanged();
+//                    }, throwable -> {
+//                        isLoadingData = false;
+//                        mSwipeRefreshLayout.setRefreshing(false);
+//                        if (mSwipeRefreshLayout == null) return;
+//                        Log.e(NewestFragment.TAG, Log.getStackTraceString(throwable));
+//                        Snackbar.make(mSwipeRefreshLayout, getLoadFailMsgResId(), Snackbar.LENGTH_LONG).setAction(R.string.action_retry, v -> refreshData()).show();
+//                    });
 //                    .enqueue(new Callback<FolderResponse>() {
 //                        @Override
 //                        public void onResponse(Response<FolderResponse> response, Retrofit retrofit) {
