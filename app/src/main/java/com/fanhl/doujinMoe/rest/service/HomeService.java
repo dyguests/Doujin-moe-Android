@@ -8,6 +8,8 @@ import retrofit.http.POST;
 import rx.Observable;
 
 /**
+ * 移动端 数据传输服务 (好像所有服务全走的这一个接口)
+ * <p>
  * Created by fanhl on 15/12/1.
  */
 public interface HomeService {
