@@ -62,7 +62,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return abcFragment;
             case SEARCH_INDEX:
                 if (searchFragment == null) searchFragment = SearchFragment.newInstance();
-                return abcFragment;
+                return searchFragment;
             case DOWNLOADED_INDEX:
                 if (downloadedFragment == null) downloadedFragment = DownloadedFragment.newInstance();
                 return downloadedFragment;
@@ -101,8 +101,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 navigationView.setCheckedItem(R.id.nav_abc);
                 break;
             case SEARCH_INDEX:
-                activity.setTitle(activity.getString(R.string.title_abc));
-                navigationView.setCheckedItem(R.id.nav_abc);
+                activity.setTitle(activity.getString(R.string.title_search));
+                navigationView.setCheckedItem(R.id.nav_search);
                 break;
             case DOWNLOADED_INDEX:
                 activity.setTitle(activity.getString(R.string.title_downloaded));
