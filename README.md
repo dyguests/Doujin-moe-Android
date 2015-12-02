@@ -40,8 +40,6 @@
 
 10.把 Detail页面, download 都换成 retrofit.
 
-11.
-
 #修改
 
 ~~1.改用fresco,在图库界面使用fresco设置placeHolder.~~
@@ -51,6 +49,8 @@
 3.换回Picasso.Fresco完全不好用.![image](graphics/face1.png)
 
 4.用PhotoViewEx来处理横屏时图片显示的位置.
+
+5.Retrofit超好用!!!
 
 #问题
 
