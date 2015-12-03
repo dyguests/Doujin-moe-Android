@@ -60,9 +60,8 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
                         offset += Constants.PAGE_BOOK_COUNT_MAX;
                         if (mSwipeRefreshLayout == null) return;
                         mSwipeRefreshLayout.setRefreshing(false);
-                        if (!isLoadMore) mBooks.clear();
-                        mBooks.addAll(folderResponse.folders);
-                        mAdapter.notifyDataSetChanged();
+                        if (!isLoadMore) mAdapter.clear();
+                        mAdapter.addItems(folderResponse.folders);
                     }, throwable -> {
                         isLoadingData = false;
                         mSwipeRefreshLayout.setRefreshing(false);
