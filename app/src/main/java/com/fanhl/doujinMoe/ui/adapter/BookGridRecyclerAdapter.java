@@ -68,10 +68,16 @@ public class BookGridRecyclerAdapter extends AbsRecyclerViewAdapter<BookGridRecy
         notifyItemInserted(list.size() - 1);
     }
 
+    public void addItems(List<Book> books) {
+        int positionStart = list.size();
+        list.addAll(books);
+        notifyItemRangeInserted(positionStart, books.size());
+    }
+
     public void clear() {
-        int size = list.size();
+        int itemCount = list.size();
         list.clear();
-        notifyItemRangeRemoved(0, size - 1);
+        notifyItemRangeRemoved(0, itemCount);
     }
 
     public class ViewHolder extends AbsRecyclerViewAdapter.ClickableViewHolder {

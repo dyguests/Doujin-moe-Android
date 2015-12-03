@@ -6,10 +6,8 @@ import android.util.Log;
 
 import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.common.Constants;
-import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.rest.model.FolderResponse;
 
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -48,9 +46,10 @@ public abstract class AbsHomeFragment extends AbsBookRecyclerFragment {
                 offset += Constants.PAGE_BOOK_COUNT_MAX;
                 if (mSwipeRefreshLayout == null) return;
                 mSwipeRefreshLayout.setRefreshing(false);
-                if (!isLoadMore) mBooks.clear();
-                mBooks.addAll(folderResponse.folders);
-                mAdapter.notifyDataSetChanged();
+                if (!isLoadMore) mAdapter.clear();//mBooks.clear();
+//                mBooks.addAll(folderResponse.folders);
+//                mAdapter.notifyDataSetChanged();
+                mAdapter.addItems(folderResponse.folders);
             }
 
             @Override
