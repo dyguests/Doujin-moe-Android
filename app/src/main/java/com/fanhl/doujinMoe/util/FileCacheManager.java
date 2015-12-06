@@ -85,7 +85,7 @@ public class FileCacheManager {
     }
 
     public File createBookDir(Book book) {
-        Log.d(TAG, "生成书籍存放路径(若有则直接返回):" + book);
+//        Log.d(TAG, "生成书籍存放路径(若有则直接返回):" + book);
         File bookDir = new File(mExternalDir, book.name);// FIXME: 15/11/17 是否需要 replace 特殊字符
 
         if (bookDir.exists() && bookDir.isDirectory()) {
@@ -94,12 +94,12 @@ public class FileCacheManager {
         if (bookDir.mkdirs()) {
             return bookDir;
         }
-        Log.d(TAG, "生成书籍存放路径失败:" + book);
+        Log.e(TAG, "生成书籍存放路径失败:" + book);
         return null;
     }
 
     private File getBookDir(Book book) {
-        Log.d(TAG, "获取书籍存放路径(若无则返回null):" + book);
+//        Log.d(TAG, "获取书籍存放路径(若无则返回null):" + book);
         File bookDir = new File(mExternalDir, book.name);// FIXME: 15/11/17 是否需要 replace 特殊字符
 
         if (bookDir.exists() && bookDir.isDirectory()) {
@@ -110,12 +110,12 @@ public class FileCacheManager {
     }
 
     public File createBookImagesDir(Book book) {
-        Log.d(TAG, "生成书籍图片存放路径(若有则直接返回):" + book);
+//        Log.d(TAG, "生成书籍图片存放路径(若有则直接返回):" + book);
 
         File bookDir = createBookDir(book);
 
         if (bookDir == null) {
-            Log.d(TAG, "生成书籍图片存放路径失败:" + book);
+            Log.e(TAG, "生成书籍图片存放路径失败:" + book);
             return null;
         }
 
@@ -127,12 +127,12 @@ public class FileCacheManager {
         if (bookImagesDir.mkdirs()) {
             return bookImagesDir;
         }
-        Log.d(TAG, "生成书籍图片存放路径失败:" + book);
+        Log.e(TAG, "生成书籍图片存放路径失败:" + book);
         return null;
     }
 
     public File getBookImagesDir(Book book) {
-        Log.d(TAG, "获取书籍图片存放路径(若无则返回null):" + book);
+//        Log.d(TAG, "获取书籍图片存放路径(若无则返回null):" + book);
 
         File bookDir = getBookDir(book);
 
