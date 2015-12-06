@@ -38,11 +38,13 @@
 
 9.在Gallery页面,加上 重新下载当前页menuItem 的功能
 
-10.把 Detail页面, download 都换成 retrofit.
+10.把 Detail页面, download 都换成 retrofit.   50%
 
 11.把 category和search版块合并到一起.
 
 12.把一堆监听换成EventBus.
+
+13.向上/下翻页时,前/后一页显示成 crop_top/crop_bottom 的显示还有点小问题.
 
 #修改
 
@@ -57,6 +59,8 @@
 5.Retrofit超好用!!!
 
 6.Retrofit+Rx也超好用!!!!
+
+7.fixed picasso oom.
 
 #问题
 
