@@ -107,15 +107,7 @@ public class GalleryActivity extends AbsActivity {
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(book.position, false);
 
-        //for DirectionalViewPager.setOnPageChangeListener not ViewPager.addOnPageChangeListener
-//        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-//            @Override
-//            public void onPageSelected(int position) {
-//                mSeekBar.setProgress(position);
-//                mTotalPagesText.setText(getString(R.string.info_total_pages, position + 1, book.count));
-//                book.position = position;
-//            }
-//        });
+        //注:DirectionalViewPager实现的是过时的方法setOnPageChangeListener
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {

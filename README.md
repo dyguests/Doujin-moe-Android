@@ -2,7 +2,7 @@
 
 啊哈...这是一个Doujin-Moe的Android客户端.
 
-使用了 Retrofit,JSoup,OKHttp,ButterKnife,RxJava,RxAndroid,PhotoViewEx,DirectionalViewPager,Gson....
+使用了 Retrofit,JSoup,OKHttp,ButterKnife,RxJava,RxAndroid,PhotoViewEx,DirectionalViewPager,Gson,EventBus,...
 
 主要代码参考自[NHentai-android](https://github.com/fython/NHentai-android).
 
@@ -41,6 +41,8 @@
 10.把 Detail页面, download 都换成 retrofit.
 
 11.把 category和search版块合并到一起.
+
+12.把一堆监听换成EventBus.
 
 #修改
 
