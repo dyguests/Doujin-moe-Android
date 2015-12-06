@@ -59,7 +59,7 @@ public class MainActivity extends AbsActivity
 
         mPagerAdapter = new MainPagerAdapter(getFragmentManager());
         mViewpager.setAdapter(mPagerAdapter);
-        mViewpager.setOffscreenPageLimit(6);//使6个fragment都保持活动 // FIXME: 15/12/1 用 fragment.saveState 来替换
+        mViewpager.setOffscreenPageLimit(2);//使6个fragment都保持活动 // FIXME: 15/12/1 用 fragment.saveState 来替换
         mViewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {

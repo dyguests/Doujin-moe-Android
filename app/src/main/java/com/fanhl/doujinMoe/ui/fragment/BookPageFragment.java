@@ -74,6 +74,7 @@ public class BookPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        Log.d(TAG, "onCreateView page position:" + position);
         View view = inflater.inflate(R.layout.fragment_book_page, container, false);
         ButterKnife.bind(this, view);
 
@@ -111,6 +112,7 @@ public class BookPageFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+//        Log.d(TAG, "onDestroyView page position:" + position);
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
@@ -127,7 +129,13 @@ public class BookPageFragment extends Fragment {
             mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
             mAttacher.setParentIsVertical(false);
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mAttacher.setScaleType(PhotoViewAttacherEx.ScaleTypeEx.CROP_TOP);
+            if (position >= book.position) {
+//                Log.d(TAG, "refreshForOrientation page position:" + position+ " book.position:"+book.position+" CROP_TOP.");
+                mAttacher.setScaleType(PhotoViewAttacherEx.ScaleTypeEx.CROP_TOP);
+            } else {
+//                Log.d(TAG, "refreshForOrientation page position:" + position+ " book.position:"+book.position+" CROP_BOTTOM.");
+                mAttacher.setScaleType(PhotoViewAttacherEx.ScaleTypeEx.CROP_BOTTOM);
+            }
             mAttacher.setParentIsVertical(true);
         }
     }

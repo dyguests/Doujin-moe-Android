@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -106,11 +107,13 @@ public class GalleryActivity extends AbsActivity {
         mPagerAdapter = new GalleryPagerAdapter(getFragmentManager(), book);
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(book.position, false);
+//        mPager.setOffscreenPageLimit(4);
 
         //注:DirectionalViewPager实现的是过时的方法setOnPageChangeListener
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                Log.d(TAG, "page currentIndex:" + position);
                 mSeekBar.setProgress(position);
                 mTotalPagesText.setText(getString(R.string.info_total_pages, position + 1, book.count));
                 book.position = position;
@@ -138,6 +141,7 @@ public class GalleryActivity extends AbsActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                book.position = progress;
                 mPager.setCurrentItem(progress, false);
             }
         });
