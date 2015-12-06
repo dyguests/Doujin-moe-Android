@@ -20,6 +20,7 @@ import com.fanhl.doujinMoe.ui.GalleryActivity;
 import com.fanhl.photoview.PhotoViewAttacherEx;
 import com.fanhl.util.GsonUtil;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -88,6 +89,9 @@ public class BookPageFragment extends Fragment {
         if (book.isDownloaded() || PageApi.isPageDownloaded(getActivity(), book, position)) {
             Picasso.with(getActivity())
                     .load(PageApi.getPageFile(getActivity(), book, position))
+//                    .load("file:"+PageApi.getPageFilePath(getActivity(), book, position))
+                    // FIXME: 15/12/6 文件太大 oom
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)//不缓存大图到内存
                     .into(mImageView, new Callback.EmptyCallback() {
                         @Override
                         public void onSuccess() {
@@ -98,6 +102,7 @@ public class BookPageFragment extends Fragment {
             Page page = book.pages.get(position);
             Picasso.with(getActivity())
                     .load(page.href)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)//不缓存大图到内存
                     // FIXME: 15/11/10 Detail页面取得的preview
                     .into(mImageView, new Callback.EmptyCallback() {
                         @Override

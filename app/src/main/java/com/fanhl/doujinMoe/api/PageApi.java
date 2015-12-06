@@ -113,6 +113,14 @@ public class PageApi extends BaseApi {
         return pageFile;
     }
 
+    @Deprecated
+    public static String getPageFilePath(Context context, Book book, int index) {
+        FileCacheManager m = FileCacheManager.getInstance(context);
+
+        File bookImagesDir = m.getBookImagesDir(book);
+        return bookImagesDir + getPageName(book, index);
+    }
+
     /**
      * 生成page名字
      *

@@ -11,6 +11,7 @@ import com.fanhl.doujinMoe.R;
 import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.common.AbsRecyclerViewAdapter;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -57,6 +58,7 @@ public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecy
             if (book.isDownloaded()) {
                 Picasso.with(context)
                         .load(PageApi.getPageFile(context, book, position))
+                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)//不缓存大图到内存
                         .into(mPreview);
             } else {
                 Picasso.with(context)
