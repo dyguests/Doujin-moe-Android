@@ -20,10 +20,10 @@ import butterknife.ButterKnife;
 /**
  * Created by fanhl on 15/11/6.
  */
-public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecyclerAdapter.ViewHolder> {
+public class PageGridRecyclerAdapter extends AbsRecyclerViewAdapter<PageGridRecyclerAdapter.ViewHolder> {
     private final Book book;
 
-    public PageListRecyclerAdapter(Context context, RecyclerView mRecyclerView, Book book) {
+    public PageGridRecyclerAdapter(Context context, RecyclerView mRecyclerView, Book book) {
         super(context, mRecyclerView);
         this.book = book;
     }
@@ -59,12 +59,19 @@ public class PageListRecyclerAdapter extends AbsRecyclerViewAdapter<PageListRecy
                 Picasso.with(context)
                         .load(PageApi.getPageFile(context, book, position))
                         .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)//不缓存大图到内存
+//                        .resize(DisplayUtil.dip2px(context, 250), DisplayUtil.dip2px(context, 250))
+                        .fit()
+                        .centerInside()
+//                        .centerCrop()
                         .into(mPreview);
             } else {
                 Picasso.with(context)
                         .load(book.pages.get(position).preview)
+                        .fit()
+                        .centerInside()
                         .into(mPreview);
             }
         }
+
     }
 }

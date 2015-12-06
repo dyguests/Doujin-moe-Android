@@ -22,7 +22,7 @@ import com.fanhl.doujinMoe.api.BookApi;
 import com.fanhl.doujinMoe.api.PageApi;
 import com.fanhl.doujinMoe.api.common.DouJinMoeUrl;
 import com.fanhl.doujinMoe.model.Book;
-import com.fanhl.doujinMoe.ui.adapter.PageListRecyclerAdapter;
+import com.fanhl.doujinMoe.ui.adapter.PageGridRecyclerAdapter;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
 import com.fanhl.util.GsonUtil;
 import com.google.gson.Gson;
@@ -59,7 +59,7 @@ public class DetailsActivity extends AbsActivity {
     //custom
 
     private   Book                    book;
-    protected PageListRecyclerAdapter mAdapter;
+    protected PageGridRecyclerAdapter mAdapter;
 
     /*初始数据已刷新*/
     boolean dataRefreshed = false;
@@ -110,7 +110,7 @@ public class DetailsActivity extends AbsActivity {
 
 
         //mRecyclerView
-        mAdapter = new PageListRecyclerAdapter(this, mRecyclerView, book);
+        mAdapter = new PageGridRecyclerAdapter(this, mRecyclerView, book);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((position, viewHolder) -> {
             book.position = position;

@@ -99,12 +99,16 @@ public class BookGridRecyclerAdapter extends AbsRecyclerViewAdapter<BookGridRecy
             if (item.isDownloaded()) {
                 Picasso.with(context)
                         .load(PageApi.getPageFile(context, item, 0))
+                        .fit()
+                        .centerInside()
                         .into(mPreview);
             } else {
                 TextDrawable drawablePlaceHolder = TextDrawable.builder().buildRect(Utility.getFirstCharacter(item.name), color);
                 Picasso.with(context)
                         .load(DouJinMoeUrl.previewUrl(item.token))
                         .placeholder(drawablePlaceHolder)
+                        .fit()
+                        .centerInside()
                         .into(mPreview);
             }
 
