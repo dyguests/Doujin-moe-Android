@@ -21,14 +21,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="ContentDescription"/>
-
-    <!--fixme 有空删了-->
-    <!--<com.facebook.drawee.view.SimpleDraweeView-->
-    <!--android:id="@+id/imageView"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:scaleType="fitCenter"-->
-    <!--app:placeholderImage="@drawable/place_holder"-->
-    <!--app:placeholderImageScaleType="fitCenter"/>-->
-
 </FrameLayout>
