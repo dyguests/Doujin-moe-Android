@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minHeight="200dp"
     tools:background="@color/gallery_background"
     tools:context=".ui.fragment.BookPageFragment">
 
