@@ -3,7 +3,7 @@ package com.fanhl.doujinMoe.ui.fragment.downloadManager;
 import android.app.Activity;
 import android.util.Log;
 
-import com.fanhl.doujinMoe.interfaceX.OnDownloadManagerBookChangeListener;
+import com.fanhl.doujinMoe.interfaces.OnDownloadManagerBookChangeListener;
 import com.fanhl.doujinMoe.ui.DownloadManagerActivity;
 import com.fanhl.doujinMoe.ui.fragment.AbsFragment;
 

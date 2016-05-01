@@ -32,8 +32,8 @@ public class BookGridRecyclerAdapter extends AbsRecyclerViewAdapter<BookGridRecy
     private final List<Book>     list;
     private final ColorGenerator mColorGenerator;
 
-    public BookGridRecyclerAdapter(Context context, RecyclerView mRecyclerView, List<Book> list) {
-        super(context, mRecyclerView);
+    public BookGridRecyclerAdapter(Context context, RecyclerView recyclerView, List<Book> list) {
+        super(context, recyclerView);
         this.list = list;
 
         mColorGenerator = ColorGenerator.MATERIAL;

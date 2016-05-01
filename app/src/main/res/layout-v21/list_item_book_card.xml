@@ -11,7 +11,7 @@
     android:stateListAnimator="@anim/state_anim_raise"
     app:cardCornerRadius="2dp"
     app:cardElevation="4dp"
-    tools:minWidth="160dp">
+    tools:layout_width="180dp">
 
     <include layout="@layout/list_item_book_card_content"/>
 

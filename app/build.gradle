@@ -9,8 +9,8 @@ android {
         applicationId "com.fanhl.doujinMoe"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 4
-        versionName "0.2.1.0"
+        versionCode 5
+        versionName "0.3.1.0"
     }
     buildTypes {
         release {
@@ -52,6 +52,6 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
-    compile 'io.reactivex:rxandroid:1.0.1'
     compile 'io.reactivex:rxjava:1.0.14'
+    compile 'io.reactivex:rxandroid:1.0.1'
 }

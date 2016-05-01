@@ -19,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fanhl.doujinMoe.R;
-import com.fanhl.doujinMoe.interfaceX.OnDownloadManagerBookChangeListener;
+import com.fanhl.doujinMoe.interfaces.OnDownloadManagerBookChangeListener;
 import com.fanhl.doujinMoe.model.Book;
 import com.fanhl.doujinMoe.ui.common.AbsActivity;
 import com.fanhl.doujinMoe.ui.fragment.downloadManager.DownloadFailFragment;
